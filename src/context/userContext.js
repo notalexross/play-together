@@ -37,7 +37,7 @@ function ContextProvider({ children }) {
       fetch(`${SERVER_URL}/users/`, options)
         .then(response => {
           if (!response.ok) throw new Error(response.status) // this wont actually show the message sent back
-          return responseon()
+          return response.json()
         })
         .then(data => {
           setUserData(userData => {
