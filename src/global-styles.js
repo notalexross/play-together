@@ -46,4 +46,8 @@ export const GlobalStyles = createGlobalStyle`
   button:hover {
     cursor: pointer;
   }
+
+  button:disabled {
+    opacity: 0.3;
+  }
 `;
