@@ -1,5 +1,5 @@
-import { useEffect } from "react"
-import serverUrl from "../serverUrl.js"
+import { useEffect } from 'react'
+import SERVER_URL from '../constants/serverUrl'
 
 export default function(roomId) {
   // const [ state, dispatch ] = useReducer(gameReducer, {
@@ -9,7 +9,7 @@ export default function(roomId) {
   // })
   const dispatch = (action) => {
     const options = {
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify(action),
       headers: {
         'Content-Type': 'application/json'
@@ -18,7 +18,7 @@ export default function(roomId) {
 
     console.log(`posting to server: ${JSON.stringify(action)}`)
 
-    fetch(`${serverUrl}/games/${roomId}`, options)
+    fetch(`${SERVER_URL}/games/${roomId}`, options)
       .then(response => response.json())
       .then(data => console.log(data))
       .catch(e => console.error(e))
@@ -26,7 +26,7 @@ export default function(roomId) {
 
   const syncGameState = async () => {
     try {
-      const response = await fetch(`${serverUrl}/games/${roomId}`)
+      const response = await fetch(`${SERVER_URL}/games/${roomId}`)
       // const response = await fetch(`http://localHost:5000/api/games/${roomId}`)
       if (response.status === 400) return false
       if (!response.ok) throw new Error(response.status) // this wont actually show the message sent back
@@ -38,8 +38,10 @@ export default function(roomId) {
     }
   }
 
-  const sitDown = (userId, seatId) => dispatch({ type: "SIT_DOWN", payload: { seatId, userId }})
-  const standUp = (userId) => dispatch({ type: "STAND_UP", payload: { userId }})
+  // TODO
+  // const sitDown = (userId, seatId) => dispatch({ type: 'SIT_DOWN', payload: { seatId, userId }})
+  const sitDown = (userId, seatId) => console.log({ userId, seatId })
+  const standUp = (userId) => dispatch({ type: 'STAND_UP', payload: { userId }})
 
   useEffect(() => {
     // setup webhooks with server to send and receive state?
@@ -55,10 +57,10 @@ export default function(roomId) {
 
 // function gameReducer(state, action) {
 //   switch (action.type) {
-//     case "SIT_DOWN": {
+//     case 'SIT_DOWN': {
 //       return { ...state, seatedPlayers: [ ...state.seatedPlayers, action.payload. ] }
 //     }
-//     case "STAND_UP": {
+//     case 'STAND_UP': {
 //       return
 //     }
 //     default: {

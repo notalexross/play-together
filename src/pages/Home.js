@@ -1,9 +1,9 @@
-import React, { useContext } from "react"
-import { useHistory } from "react-router-dom"
-import "../styles/Home.css"
-import * as ROUTES from "../constants/routes"
-import { userContext } from "../context/userContext.js"
-import useModal from "../hooks/useModal.js"
+import React, { useContext } from 'react'
+import { useHistory } from 'react-router-dom'
+import * as ROUTES from '../constants/routes'
+import { userContext } from '../context/userContext'
+import useModal from '../hooks/useModal'
+import { Feature } from '../components'
 
 export default function() {
   const history = useHistory()
@@ -29,11 +29,11 @@ export default function() {
   }
 
   return (
-    <div className="home">
-      <h1>Play Together</h1>
-      <p>no download, no registration, and 100% free!</p>
-      <p>just give your friends the link and play</p>
-      <button onClick={handleClick}>create game room</button>
-    </div>
+    <Feature>
+      <Feature.Title>Play Together</Feature.Title>
+      <Feature.Text>No download, no registration, and 100% free!</Feature.Text>
+      <Feature.Text>Just give your friends the link and play</Feature.Text>
+      <Feature.Button onClick={handleClick}>create game room</Feature.Button>
+    </Feature>
   )
 }

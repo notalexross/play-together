@@ -1,6 +1,6 @@
-import React, { useContext } from "react"
-import { modalsContext } from "../context/modalsContext.js"
-import NicknameModal from "../components/NicknameModal.js"
+import React, { useContext } from 'react'
+import { modalsContext } from '../context/modalsContext'
+import NicknameModal from '../containers/NicknameModal'
 
 export default function() {
     const { setCurrentModal } = useContext(modalsContext)

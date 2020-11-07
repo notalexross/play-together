@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef } from 'react'
 
 export default function(url, options = {}) {
   const [ isLoading, setIsLoading ] = useState(true)

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react"
-import serverUrl from "../serverUrl.js"
-import Loading from "../components/Loading.js"
+import React, { useState, useEffect } from 'react'
+import SERVER_URL from '../constants/serverUrl'
+import { Loading } from '../components'
 
 const context = React.createContext()
 const { Provider } = context
@@ -21,23 +21,23 @@ function ContextProvider({ children }) {
 
       let action
       if (userData && userData.id) {
-        action = { type: "UPDATE_USER", payload: userData }
+        action = { type: 'UPDATE_USER', payload: userData }
       } else {
-        action = { type: "CREATE_USER", payload: userData }
+        action = { type: 'CREATE_USER', payload: userData }
       }
 
       const options = {
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(action),
         headers: {
           'Content-Type': 'application/json'
         },
       }
 
-      fetch(`${serverUrl}/users/`, options)
+      fetch(`${SERVER_URL}/users/`, options)
         .then(response => {
           if (!response.ok) throw new Error(response.status) // this wont actually show the message sent back
-          return response.json()
+          return responseon()
         })
         .then(data => {
           setUserData(userData => {
@@ -50,7 +50,7 @@ function ContextProvider({ children }) {
           
         })
         .catch(e => console.error(e))
-        .finally(() => setIsLoading(false))
+        .finally(() => setIsLoading(false))   
     }
 
   }, [shouldUpdateUserData])

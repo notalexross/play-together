@@ -1,6 +1,6 @@
-import React, { useEffect } from "react"
-import { useParams } from "react-router-dom"
-import useGame from "../hooks/useGame.js"
+import React, { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import useGame from '../hooks/useGame'
 
 const context = React.createContext()
 const { Provider } = context
