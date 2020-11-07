@@ -1,17 +1,35 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect, useContext, useRef } from 'react'
 import { Container, Overlay, Close, Title, Text, Form, Submit, InputText } from './styles'
 import { CloseCircle as CloseCircleEmpty } from '@styled-icons/remix-line'
 import { CloseCircle as CloseCircleFilled } from '@styled-icons/remix-fill'
-import { modalsContext } from '../../context/modalsContext'
 import useHover from '../../hooks/useHover'
 
-export default function Modal({ children, ...restProps }) {
+const CloseContext = React.createContext()
+
+export default function Modal({ children, close = () => {}, ...restProps }) {
+  const overlayRef = useRef()
+
+  useEffect(() => {
+    const handleClick = function(event) {
+      if (event.target !== this) return
+      close()
+    }
+
+    overlayRef.current.addEventListener('click', handleClick)
+  
+    return () => {
+      overlayRef.current.removeEventListener('click', handleClick)
+    }
+  }, [])
+
   return (
-      <Overlay {...restProps}>
-        <Container>
-          {children}
-        </Container>
-      </Overlay>
+      <CloseContext.Provider value={{ close }}>
+        <Overlay ref={overlayRef}  {...restProps}>
+          <Container>
+            {children}
+          </Container>
+        </Overlay>
+      </CloseContext.Provider>
     )
 }
 
@@ -36,14 +54,12 @@ Modal.InputText = function ModalInput({ children, type='text', innerRef, ...rest
 }
 
 Modal.Close = function ModalClose({ children, ...restProps }) {
-  const { setCurrentModal } = useContext(modalsContext)
   const [ isHovered, hoverRef ] = useHover()
-
-  const closeModal = () => setCurrentModal()
+  const { close } = useContext(CloseContext)
 
   useEffect(() => {
     const handleKeyPress = event => {
-      if(event.key === 'Escape' || event.keyCode === 27) closeModal()
+      if(event.key === 'Escape' || event.keyCode === 27) close()
     }
 
     window.addEventListener('keydown', handleKeyPress)
@@ -51,7 +67,7 @@ Modal.Close = function ModalClose({ children, ...restProps }) {
   }, [])
 
   return (
-    <Close ref={hoverRef} onClick={closeModal} {...restProps}>
+    <Close ref={hoverRef} onClick={close} {...restProps}>
       {isHovered ? <CloseCircleFilled/> : <CloseCircleEmpty/>}
     </Close>
   )

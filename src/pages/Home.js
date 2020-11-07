@@ -3,17 +3,18 @@ import { useHistory } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
 import { userContext } from '../context/userContext'
 import useModal from '../hooks/useModal'
+import NicknameModal from '../containers/NicknameModal'
 import { Feature } from '../components'
 
 export default function() {
   const history = useHistory()
   const { nickname } = useContext(userContext)
-  const { displayNicknameModal } = useModal()
+  const [ Modal, openModal ] = useModal(NicknameModal)
   const buttonRef = useRef()
 
   const handleClick = event => {
     event.preventDefault()
-    nickname ? enterGameRoom() : displayNicknameModal(enterGameRoom)
+    nickname ? enterGameRoom() : openModal()
   }
 
   const enterGameRoom = () => {
@@ -31,11 +32,14 @@ export default function() {
   }
 
   return (
-    <Feature>
-      <Feature.Title>Play Together</Feature.Title>
-      <Feature.Text>No download, no registration, and 100% free!</Feature.Text>
-      <Feature.Text>Just give your friends the link and play</Feature.Text>
-      <Feature.Button onClick={handleClick} innerRef={buttonRef}>create game room</Feature.Button>
-    </Feature>
+    <>
+      <Feature>
+        <Feature.Title>Play Together</Feature.Title>
+        <Feature.Text>No download, no registration, and 100% free!</Feature.Text>
+        <Feature.Text>Just give your friends the link and play</Feature.Text>
+        <Feature.Button onClick={handleClick} innerRef={buttonRef}>create game room</Feature.Button>
+      </Feature>
+      <Modal onComplete={enterGameRoom}/>
+    </>
   )
 }
