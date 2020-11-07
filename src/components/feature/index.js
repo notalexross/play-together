@@ -17,6 +17,6 @@ Feature.Text = function FeatureText({ children, ...restProps }) {
   return <Text {...restProps}>{children}</Text>
 }
 
-Feature.Button = function FeatureButton({ children, ...restProps }) {
-  return <Button {...restProps}>{children}</Button>
+Feature.Button = function FeatureButton({ children, innerRef, ...restProps }) {
+  return <Button ref={innerRef} {...restProps}>{children}</Button>
 }

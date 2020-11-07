@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
 import { userContext } from '../context/userContext'
@@ -9,15 +9,17 @@ export default function() {
   const history = useHistory()
   const { nickname } = useContext(userContext)
   const { displayNicknameModal } = useModal()
+  const buttonRef = useRef()
 
   const handleClick = event => {
     event.preventDefault()
-    // disable button until response from server is received (after redirect to room)
-    event.target.disabled = true
     nickname ? enterGameRoom() : displayNicknameModal(enterGameRoom)
   }
 
   const enterGameRoom = () => {
+    // TODO
+    // disable button until response from server is received (after redirect to room)
+    buttonRef.current.disabled = true;
     // make room on server, then push client to room
     console.log('creating game room')
     setTimeout(() => {
@@ -33,7 +35,7 @@ export default function() {
       <Feature.Title>Play Together</Feature.Title>
       <Feature.Text>No download, no registration, and 100% free!</Feature.Text>
       <Feature.Text>Just give your friends the link and play</Feature.Text>
-      <Feature.Button onClick={handleClick}>create game room</Feature.Button>
+      <Feature.Button onClick={handleClick} innerRef={buttonRef}>create game room</Feature.Button>
     </Feature>
   )
 }
