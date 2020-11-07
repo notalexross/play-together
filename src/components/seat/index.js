@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Container } from './styles'
-import { gameContext } from '../../context/gameContext'
+import { gameContext } from '../../context/game'
 
 export default function Seat() {
   const { roomId, sitDown } = useContext(gameContext)

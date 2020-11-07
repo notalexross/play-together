@@ -3,33 +3,33 @@ import { Container, Overlay, Close, Title, Text, Form, Submit, InputText } from 
 import { CloseCircle as CloseCircleEmpty } from '@styled-icons/remix-line'
 import { CloseCircle as CloseCircleFilled } from '@styled-icons/remix-fill'
 import useHover from '../../hooks/useHover'
+import { ModalContext } from '../../context/modal'
 
-const CloseContext = React.createContext()
-
-export default function Modal({ children, close = () => {}, ...restProps }) {
+export default function Modal({ children, ...restProps }) {
+  const { closeModal } = useContext(ModalContext)
   const overlayRef = useRef()
 
   useEffect(() => {
+    const ref = overlayRef.current
+
     const handleClick = function(event) {
       if (event.target !== this) return
-      close()
+      closeModal()
     }
 
-    overlayRef.current.addEventListener('click', handleClick)
+    ref.addEventListener('click', handleClick)
   
     return () => {
-      overlayRef.current.removeEventListener('click', handleClick)
+      ref.removeEventListener('click', handleClick)
     }
   }, [])
 
   return (
-      <CloseContext.Provider value={{ close }}>
-        <Overlay ref={overlayRef}  {...restProps}>
-          <Container>
-            {children}
-          </Container>
-        </Overlay>
-      </CloseContext.Provider>
+      <Overlay ref={overlayRef}  {...restProps}>
+        <Container>
+          {children}
+        </Container>
+      </Overlay>
     )
 }
 
@@ -55,11 +55,11 @@ Modal.InputText = function ModalInput({ children, type='text', innerRef, ...rest
 
 Modal.Close = function ModalClose({ children, ...restProps }) {
   const [ isHovered, hoverRef ] = useHover()
-  const { close } = useContext(CloseContext)
+  const { closeModal } = useContext(ModalContext)
 
   useEffect(() => {
     const handleKeyPress = event => {
-      if(event.key === 'Escape' || event.keyCode === 27) close()
+      if(event.key === 'Escape' || event.keyCode === 27) closeModal()
     }
 
     window.addEventListener('keydown', handleKeyPress)
@@ -67,7 +67,7 @@ Modal.Close = function ModalClose({ children, ...restProps }) {
   }, [])
 
   return (
-    <Close ref={hoverRef} onClick={close} {...restProps}>
+    <Close ref={hoverRef} onClick={closeModal} {...restProps}>
       {isHovered ? <CloseCircleFilled/> : <CloseCircleEmpty/>}
     </Close>
   )

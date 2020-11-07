@@ -1,8 +1,8 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
-import { userContext } from '../context/userContext'
+import { userContext } from '../context/user'
 import { Modal } from '../components'
 
-export default function NicknameModal({ close = () => {}, onComplete = () => {} }) {
+export default function NicknameModal({ onComplete = () => {} }) {
   const { setNickname } = useContext(userContext)
   const [ userInput, setUserInput ] = useState('')
   const inputRef = useRef(null)
@@ -21,7 +21,7 @@ export default function NicknameModal({ close = () => {}, onComplete = () => {} 
   }, [inputRef])
 
   return (
-    <Modal close={close}>
+    <Modal>
       <Modal.Close/>
       <Modal.Text>Enter your nickname below</Modal.Text>
       <Modal.Form onSubmit={handleSubmit}>

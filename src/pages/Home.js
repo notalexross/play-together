@@ -1,12 +1,12 @@
 import React, { useContext, useRef } from 'react'
 import { useHistory } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
-import { userContext } from '../context/userContext'
+import { userContext } from '../context/user'
 import useModal from '../hooks/useModal'
 import NicknameModal from '../containers/NicknameModal'
 import { Feature } from '../components'
 
-export default function() {
+export default function Home() {
   const history = useHistory()
   const { nickname } = useContext(userContext)
   const [ Modal, openModal ] = useModal(NicknameModal)

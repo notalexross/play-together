@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
-import { GameContextProvider } from '../context/gameContext'
-import { userContext } from '../context/userContext'
+import { GameContextProvider } from '../context/game'
+import { userContext } from '../context/user'
 import RoomRedirect from '../helpers/RoomRedirect'
 import { Seat } from '../components'
 import ChangeNicknameButton from '../containers/ChangeNicknameButton'
 
-export default function() {
+export default function GameRoom() {
   const { roomId } = useParams()
   const { nickname } = useContext(userContext)
 

@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import SERVER_URL from '../constants/serverUrl'
 
-export default function(roomId) {
+export default function useGame(roomId) {
   // const [ state, dispatch ] = useReducer(gameReducer, {
   //   roomId: null,
   //   seatedPlayers: [],

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 
-export default function(hoverRef) {
+export default function useHover(hoverRef) {
   const [ isHovered, setIsHovered ] = useState(false)
   const defaultRef = useRef(null)
 

@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 
-export default function(url, options = {}) {
+export default function useFetch(url, options = {}) {
   const [ isLoading, setIsLoading ] = useState(true)
   const [ error, setError ] = useState(null)
   const [ response, setResponse ] = useState(null)

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Redirect, useParams } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
 import { Loading } from '../components'
 import SERVER_URL from '../constants/serverUrl'
 import useFetch from '../hooks/useFetch'
 
-export default function({ children }) {
+export default function RoomRedirect({ children }) {
   const { roomId } = useParams()
 
   // TODO
