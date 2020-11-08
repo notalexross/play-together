@@ -1,4 +1,20 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+
+const drop = keyframes`
+  from {
+    transform: translateY(-20px);
+  }
+`;
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+`;
 
 export const Overlay = styled.div`
   display: flex;
@@ -11,13 +27,17 @@ export const Overlay = styled.div`
   right: 0;
   background: rgba(0,0,0,0.6);
   color: #000;
+
+  animation: ${fadeIn} 0.1s linear 1;
 `
 
 export const Container = styled.section`
   position: relative;
   background: white;
   padding: 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
+
+  animation: ${drop} 0.1s linear 1;
 `
 
 export const Close = styled.div`
