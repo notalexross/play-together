@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
 import { userContext } from '../context/user'
 import useModal from '../hooks/useModal'
-import NicknameModal from '../containers/NicknameModal'
+import NicknameModal from '../containers/nickname-modal'
 import { Feature } from '../components'
 
 export default function Home() {

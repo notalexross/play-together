@@ -1,29 +1,36 @@
-import React, { useContext } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import * as ROUTES from '../constants/routes'
+import React from 'react'
 import { GameContextProvider } from '../context/game'
-import { userContext } from '../context/user'
 import RoomRedirect from '../helpers/RoomRedirect'
 import { Seat } from '../components'
-import ChangeNicknameButton from '../containers/ChangeNicknameButton'
+import RoomContainer from '../containers/room'
 
 export default function GameRoom() {
-  const { roomId } = useParams()
-  const { nickname } = useContext(userContext)
-
   return (
     <RoomRedirect>
       <GameContextProvider>
-        <Link to={ROUTES.HOME}>
-          <button>Home</button>
-        </Link>
-        <p>nickname: {nickname}</p> <ChangeNicknameButton/>
-        <p>roomId: {roomId}</p>
-        <br/>
-        <Seat />
-        <Seat />
-        <Seat />
+        <RoomContainer />
       </GameContextProvider>
     </RoomRedirect>
   )
 }
+
+// export default function GameRoom() {
+//   const { roomId } = useParams()
+//   const { nickname } = useContext(userContext)
+
+//   return (
+//     <RoomRedirect>
+//       <GameContextProvider>
+//         <Link to={ROUTES.HOME}>
+//           <button>Home</button>
+//         </Link>
+//         <p>nickname: {nickname}</p> <ChangeNicknameButton/>
+//         <p>roomId: {roomId}</p>
+//         <br/>
+//         <Seat />
+//         <Seat />
+//         <Seat />
+//       </GameContextProvider>
+//     </RoomRedirect>
+//   )
+// }
