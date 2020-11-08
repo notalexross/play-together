@@ -9,8 +9,8 @@ export default function useHover(hoverRef) {
   useEffect(() => {
     const ref = hoverRef.current
 
-    const onMouseEnter = () => setIsHovered(true)
-    const onMouseLeave = () => setIsHovered(false)
+    const onMouseEnter = () => {setIsHovered(true)}
+    const onMouseLeave = () => {setIsHovered(false)}
 
     ref.addEventListener('mouseenter', onMouseEnter)
     ref.addEventListener('mouseleave', onMouseLeave)

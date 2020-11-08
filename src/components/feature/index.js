@@ -17,6 +17,6 @@ Feature.Text = function FeatureText({ children, ...restProps }) {
   return <Text {...restProps}>{children}</Text>
 }
 
-Feature.Button = function FeatureButton({ children, innerRef, ...restProps }) {
-  return <Button ref={innerRef} {...restProps}>{children}</Button>
-}
+Feature.Button = React.forwardRef(({ children, ...restProps }, ref) => {
+  return <Button ref={ref} {...restProps}>{children}</Button>
+})

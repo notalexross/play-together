@@ -1,4 +1,5 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { userContext } from '../context/user'
 import { Modal } from '../components'
 
@@ -26,7 +27,7 @@ export default function NicknameModal({ onComplete = () => {} }) {
       <Modal.Text>Enter your nickname below</Modal.Text>
       <Modal.Form onSubmit={handleSubmit}>
         <Modal.InputText
-          innerRef={inputRef}
+          ref={inputRef}
           placeholder='enter your nickname'
           value={userInput}
           onChange={event => setUserInput(event.target.value)}
@@ -35,4 +36,8 @@ export default function NicknameModal({ onComplete = () => {} }) {
       </Modal.Form>
     </Modal>
   )
+}
+
+NicknameModal.propTypes ={
+  onComplete: PropTypes.func
 }

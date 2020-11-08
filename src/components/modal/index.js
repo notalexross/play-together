@@ -1,4 +1,5 @@
 import React, { useEffect, useContext, useRef } from 'react'
+import PropTypes from 'prop-types'
 import { Container, Overlay, Close, Title, Text, Form, Submit, InputText } from './styles'
 import { CloseCircle as CloseCircleEmpty } from '@styled-icons/remix-line'
 import { CloseCircle as CloseCircleFilled } from '@styled-icons/remix-fill'
@@ -49,8 +50,12 @@ Modal.Submit = function ModalSubmit({ children, ...restProps }) {
   return <Submit {...restProps}>{children}</Submit>
 }
 
-Modal.InputText = function ModalInput({ children, type='text', innerRef, ...restProps }) {
-  return <InputText type={type} ref={innerRef} {...restProps}>{children}</InputText>
+Modal.InputText = React.forwardRef(({ children, type='text', ...restProps }, ref) => {
+  return <InputText type={type} ref={ref} {...restProps}>{children}</InputText>
+})
+
+Modal.InputText.propTypes = {
+  type: PropTypes.string
 }
 
 Modal.Close = function ModalClose({ children, ...restProps }) {

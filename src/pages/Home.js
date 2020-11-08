@@ -37,7 +37,7 @@ export default function Home() {
         <Feature.Title>Play Together</Feature.Title>
         <Feature.Text>No download, no registration, and 100% free!</Feature.Text>
         <Feature.Text>Just give your friends the link and play</Feature.Text>
-        <Feature.Button onClick={handleClick} innerRef={buttonRef}>create game room</Feature.Button>
+        <Feature.Button onClick={handleClick} ref={buttonRef}>create game room</Feature.Button>
       </Feature>
       <Modal onComplete={enterGameRoom}/>
     </>
