@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 export const Container = styled.div`
   position: relative;
   background: #1e1e1e;
-  height: 100vh;
+  min-height: 100vh;
 `
 
 export const HomeLink = styled(Link)``

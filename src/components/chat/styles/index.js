@@ -6,14 +6,15 @@ export const Container = styled.div`
   bottom: 0;
   right: 0;
   width: 400px;
-  height: 400px;
+  // max-height: 400px;
   background: #252525;
   border: solid;
-
-  // display: grid;
-  // grid-template-rows: auto auto;
   display: flex;
   flex-direction: column-reverse;
+
+  // TODO just for testing, remove later
+  resize: vertical;
+  overflow: auto;
 `
 
 export const SendWrapper = styled.div`
@@ -27,11 +28,11 @@ export const Send = styled.button`
   padding: 0.5em 1.25em;
   border: none;
   border-radius: 0.4em;
-  background: black;
+  background: #1e1e1e;
   color: inherit;
 `
 
-export const Message = styled.textarea`
+export const TextInput = styled.textarea`
   box-sizing: border-box;
   background: #1e1e1e;
   border: none;
@@ -56,7 +57,8 @@ export const Error = styled.p`
 export const Log = styled.div`
   box-sizing: border-box;
   background: green;
-  height: 200px;
+  flex-grow: 1;
+  min-height: 300px;
 `
 
 export const Form = styled.form`

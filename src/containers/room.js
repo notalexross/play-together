@@ -56,7 +56,7 @@ export default function RoomContainer() {
       <Room.Options></Room.Options>
       <Chat>
         <Chat.Form>
-          <Chat.Message></Chat.Message>
+          <Chat.TextInput />
           <Chat.Send>Send</Chat.Send>
         </Chat.Form>
         <Chat.Log></Chat.Log>

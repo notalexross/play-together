@@ -1,7 +1,7 @@
 // TODO
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Container, SendWrapper, Send, Message, Error, Log, Form } from './styles'
+import { Container, SendWrapper, Send, TextInput, Error, Log, Form } from './styles'
 
 export default function Chat({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>
@@ -17,7 +17,7 @@ Chat.Send = function ChatSend({ children, ...restProps }) {
   )
 }
 
-Chat.Message = function ChatMessage({ children, ...restProps }) {
+Chat.TextInput = function ChatTextInput({ ...restProps }) {
   const [ text, setText ] = useState('')
   const [ error, setError ] = useState('')
   const prevScrollHeight = useRef()
@@ -42,7 +42,7 @@ Chat.Message = function ChatMessage({ children, ...restProps }) {
   return (
     <>
       {error ? <Error>{error}</Error> : null}
-      <Message 
+      <TextInput 
         ref={messageRef}
         value={text}
         onChange={event => setText(event.target.value)}
@@ -52,9 +52,7 @@ Chat.Message = function ChatMessage({ children, ...restProps }) {
         placeholder="Send a message"
         maxLength={maxLength}
         {...restProps}
-      >
-        {children}
-      </Message>
+      />
     </>
   )
 }
