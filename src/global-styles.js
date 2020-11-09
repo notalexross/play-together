@@ -7,13 +7,13 @@ export const GlobalStyles = createGlobalStyle`
   }
   
   body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // min-height: 100vh;
 
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #1e1e1e;
+    // background-color: #1e1e1e;
     color: #e5e5e5;
   }
   
@@ -22,10 +22,10 @@ export const GlobalStyles = createGlobalStyle`
     text-decoration: none;
   }
   
-  #root {
-    background: #252525;
-    padding: 2rem;
-  }
+  // #root {
+  //   background: #252525;
+  //   padding: 2rem;
+  // }
   
   button {
     margin-top: 1rem;

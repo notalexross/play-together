@@ -11,7 +11,7 @@ export default function RoomContainer() {
   const { nickname } = useContext(userContext)
   const { sitDown } = useContext(gameContext)
   const { roomId } = useParams()
-  
+
   // TODO
   const players = [{id: 1111, name: 'barry', hand: [1,2], stats: {played: 5, wins: 2}}, {id: 2222, name: 'larry', hand: [3,4], stats: {played: 5, wins: 3}}]
 
@@ -54,7 +54,13 @@ export default function RoomContainer() {
         <GameSelect.Game>Chess</GameSelect.Game>
       </GameSelect>
       <Room.Options></Room.Options>
-      <Chat></Chat>
+      <Chat>
+        <Chat.Form>
+          <Chat.Message></Chat.Message>
+          <Chat.Send>Send</Chat.Send>
+        </Chat.Form>
+        <Chat.Log></Chat.Log>
+      </Chat>
     </Room>
   )
 }
