@@ -4,6 +4,9 @@ export const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #1e1e1e;
 `
 
 export const Title = styled.h1`
