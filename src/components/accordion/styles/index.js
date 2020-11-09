@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.section`
   display: flex;
   flex-direction: column;
-  background: #252525;
+  background: #1e1e1e;
   border: solid 1px;
   width: 300px;
   height: 500px;
@@ -21,6 +21,7 @@ export const Header = styled.div`
   align-items: center;
   cursor: pointer;
   user-select: none;
+  background: #252525;
 `;
 
 export const Body = styled.div`
