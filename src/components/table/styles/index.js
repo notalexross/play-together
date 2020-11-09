@@ -1,7 +1,9 @@
 // TODO
 import styled from 'styled-components'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  border: solid 1px;
+`
 
 export const Board = styled.div``
 

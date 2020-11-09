@@ -2,19 +2,12 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 400px;
-  // max-height: 400px;
+  width: 300px;
   background: #252525;
-  border: solid;
   display: flex;
   flex-direction: column-reverse;
-
-  // TODO just for testing, remove later
-  resize: vertical;
-  overflow: auto;
+  border: solid 1px;
+  // height: 100%;
 `
 
 export const SendWrapper = styled.div`
