@@ -16,6 +16,9 @@ export const Item = styled.div`
   &:last-of-type {
     border-bottom: solid 1px #e5e5e533;
   }
+  &:first-of-type {
+    border-top: none;
+  }
 `;
 
 export const Header = styled.div`

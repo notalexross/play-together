@@ -8,7 +8,7 @@ export const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   background: #252525;
-  border-bottom: solid 1px #e5e5e5;
+  border-bottom: solid 1px #e5e5e555;
   padding: 1em;
 `
 
