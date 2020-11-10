@@ -28,8 +28,9 @@ export const Text = styled.p`
   user-select: none;
 `
 
-export const TextCopy = styled.p`
+export const TextCopy = styled.span`
   background: #1e1e1e;
   padding: 0.3em 0.6em;
   cursor: pointer;
+  user-select: none;
 `
