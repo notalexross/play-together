@@ -2,12 +2,14 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  width: 300px;
   background: #252525;
   display: flex;
   flex-direction: column-reverse;
-  border: solid 1px;
-  // height: 100%;
+  box-sizing: border-box;
+  border-left: solid 1px #e5e5e533;
+  height: 100%;
+  width: 300px;
+  // margin-right: -1000px;
 `
 
 export const SendWrapper = styled.div`
@@ -49,7 +51,7 @@ export const Error = styled.p`
 
 export const Log = styled.div`
   box-sizing: border-box;
-  background: green;
+  // background: green;
   flex-grow: 1;
   min-height: 300px;
 `

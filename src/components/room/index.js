@@ -3,11 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Container, Panel } from './styles'
 
-export default function Room({ children, position, ...restProps }) {
-
-  //TODO
-  console.log(position)
-
+export default function Room({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>
 }
 

@@ -3,14 +3,33 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   background: #252525;
-  height: 80px;
+  border-bottom: solid 1px #e5e5e5;
+  padding: 1em;
 `
 
-export const HomeLink = styled(Link)``
+export const HomeLink = styled(Link)`
+  color: inherit;
+  user-select: none;
+`
 
-export const User = styled.div``
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
 
-export const UserNickname = styled.p``
+export const Text = styled.p`
+  margin-right: 0.2em;
+  user-select: none;
+`
 
-export const Info = styled.div``
+export const TextCopy = styled.p`
+  background: #1e1e1e;
+  padding: 0.3em 0.6em;
+  cursor: pointer;
+`

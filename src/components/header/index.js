@@ -1,7 +1,7 @@
 // TODO
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Container, HomeLink, User, UserNickname, Info } from './styles'
+import { Container, HomeLink, Wrapper, Text, TextCopy } from './styles'
 
 export default function Header({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>
@@ -11,14 +11,19 @@ Header.HomeLink = function HeaderUserHomeLink({ children, ...restProps }) {
   return <HomeLink {...restProps}>{children}</HomeLink>
 }
 
-Header.User = function HeaderUser({ children, ...restProps }) {
-  return <User {...restProps}>{children}</User>
+Header.Text = function HeaderText({ children, ...restProps }) {
+  return <Text {...restProps}>{children}</Text>
 }
 
-Header.UserNickname = function HeaderUserNickname({ children, ...restProps }) {
-  return <UserNickname {...restProps}>{children}</UserNickname>
+Header.TextCopy = function HeaderTextCopy({ children, ...restProps }) {
+
+  const handleClick = event => {
+    console.log(event.target.textContent)
+  }
+
+  return <TextCopy onClick={handleClick} {...restProps}>{children}</TextCopy>
 }
 
-Header.Info = function HeaderInfo({ children, ...restProps }) {
-  return <Info {...restProps}>{children}</Info>
+Header.Wrapper = function HeaderWrapper({ children, ...restProps }) {
+  return <Wrapper {...restProps}>{children}</Wrapper>
 }

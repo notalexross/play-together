@@ -4,9 +4,11 @@ export const Container = styled.section`
   display: flex;
   flex-direction: column;
   background: #1e1e1e;
-  border: solid 1px;
+  box-sizing: border-box;
+  border-right: solid 1px #e5e5e533;
+  height: 100%;
   width: 300px;
-  height: 500px;
+  // margin-left: -1000px;
 `;
 
 export const Item = styled.div`

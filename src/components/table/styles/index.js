@@ -2,7 +2,9 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  border: solid 1px;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 10em;
 `
 
 export const Board = styled.div``

@@ -12,7 +12,32 @@ export default function RoomContainer() {
   // what about empty seats when you haven't sat down yet?
   return (
     <Room>
-      <Room.Panel position="center">
+      <Room.Panel>
+        <Accordion>
+          <Accordion.Item>
+            <Accordion.Header>Game</Accordion.Header>
+            <Accordion.Body>
+              <GameSelect>
+                <GameSelect.Game>Uno</GameSelect.Game>
+                <GameSelect.Game>Chess</GameSelect.Game>
+              </GameSelect>
+            </Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item>
+            <Accordion.Header>Game Options</Accordion.Header>
+            <Accordion.Body>game options</Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item>
+            <Accordion.Header>Room Options</Accordion.Header>
+            <Accordion.Body>room options</Accordion.Body>
+          </Accordion.Item>
+          <Accordion.Item>
+            <Accordion.Header>Settings</Accordion.Header>
+            <Accordion.Body>settings</Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
+      </Room.Panel>
+      <Room.Panel>
         <Table>
           <Table.Board></Table.Board>
           <Table.Seats>
@@ -39,32 +64,7 @@ export default function RoomContainer() {
           </Table.Actions>
         </Table>
       </Room.Panel>
-      <Room.Panel  position="left">
-        <Accordion>
-          <Accordion.Item>
-            <Accordion.Header>Game</Accordion.Header>
-            <Accordion.Body>
-              <GameSelect>
-                <GameSelect.Game>Uno</GameSelect.Game>
-                <GameSelect.Game>Chess</GameSelect.Game>
-              </GameSelect>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item>
-            <Accordion.Header>Game Options</Accordion.Header>
-            <Accordion.Body>game options</Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item>
-            <Accordion.Header>Room Options</Accordion.Header>
-            <Accordion.Body>room options</Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item>
-            <Accordion.Header>Settings</Accordion.Header>
-            <Accordion.Body>settings</Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
-      </Room.Panel>
-      <Room.Panel  position="right">
+      <Room.Panel>
         <Chat>
           <Chat.Form>
             <Chat.TextInput />
