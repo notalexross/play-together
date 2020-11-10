@@ -1,7 +1,9 @@
 // TODO
-import React, { useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Container, HomeLink, Wrapper, Text, TextCopy } from './styles'
+import { Tooltip } from '..'
+import useHover from '../../hooks/useHover.js'
 
 export default function Header({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>
@@ -16,23 +18,34 @@ Header.Text = function HeaderText({ children, ...restProps }) {
 }
 
 Header.TextCopy = function HeaderTextCopy({ children, ...restProps }) {
+  const [ tooltip, setTooltip ] = useState('')
+  const [ isHovered, hoverRef ] = useHover()
+
+  useEffect(() => {
+    if(!isHovered) {
+      setTooltip('click to copy')
+    }
+  }, [isHovered])
+
   // TODO add tooltip when clicked to indicate copied (and when hovered over?)
   const handleClick = event => {
-    const copyField = document.createElement("input");
-    copyField.style = "position: absolute; left: -1000px; top: -1000px";
+    const copyField = document.createElement('input');
+    copyField.style = 'position: absolute; left: -1000px; top: -1000px';
     copyField.value = event.target.textContent;
     document.body.appendChild(copyField);
     copyField.select();
-    document.execCommand("copy");
+    document.execCommand('copy');
     document.body.removeChild(copyField);
+    setTooltip('copied')
   }
 
   return (
-    <TextCopy onClick={handleClick} {...restProps}>
-      {children}
-    </TextCopy>
+    <Tooltip tooltip={tooltip} side='right'>
+      <TextCopy ref={hoverRef} onClick={handleClick} {...restProps}>
+          {children}
+      </TextCopy>
+    </Tooltip>
   )
-
 }
 
 Header.Wrapper = function HeaderWrapper({ children, ...restProps }) {

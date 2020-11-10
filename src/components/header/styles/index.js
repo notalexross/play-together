@@ -30,6 +30,7 @@ export const Text = styled.p`
 
 export const TextCopy = styled.span`
   background: #1e1e1e;
+  border: solid 1px #e5e5e555;
   padding: 0.3em 0.6em;
   cursor: pointer;
   user-select: none;
