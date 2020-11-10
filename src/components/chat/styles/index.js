@@ -37,6 +37,7 @@ export const TextInput = styled.textarea`
   font-size: inherit;
   color: inherit;
   line-height: 1.5;
+  margin: 0 0.2em;
 
 
   // white-space: pre-wrap;
