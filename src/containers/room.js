@@ -9,9 +9,11 @@ export default function RoomContainer() {
   // TODO
   const players = [{id: 1111, name: 'barry', hand: [1,2], stats: {played: 5, wins: 2}}, {id: 2222, name: 'larry', hand: [3,4], stats: {played: 5, wins: 3}}]
   const messages = [
-    {id: 1, user: 'bob', color: '#d46d00', timestamp: '5:03', message: 'hello there friend'},
-    {id: 2, user: 'billy', color: '#1e90ff', timestamp: '5:05', message: 'hello to you too'},
-    {id: 3, user: 'bob', color: '#d46d00', timestamp: '5:08', message: 'This is a long message right here, quite a long message indeed'},
+    {id: 1, user: 'bob', color: '#d46d00', timestamp: '5:03', message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec ullamcorper lacus, id congue tellus.'},
+    {id: 2, user: 'billy', color: '#1e90ff', timestamp: '5:05', message: 'Nam et finibus odio. Vivamus ac elit ac nisi eleifend efficitur et a neque.'},
+    {id: 3, user: 'bob', color: '#d46d00', timestamp: '5:08', message: 'Nullam venenatis turpis ut enim tincidunt pharetra. Vestibulum at sem commodo nisi luctus eleifend.'},
+    {id: 4, user: 'bob', color: '#d46d00', timestamp: '5:10', message: 'Integer tincidunt justo eros, ut luctus est venenatis vel.'},
+    {id: 5, user: 'billy', color: '#1e90ff', timestamp: '5:15', message: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'},
   ]
 
   return (
@@ -42,7 +44,7 @@ export default function RoomContainer() {
         </Accordion>
       </Room.Panel>
       <Room.Panel>
-        <Table>
+        {/* <Table>
           <Table.Board></Table.Board>
           <Table.Seats>
             {players.map(player => (
@@ -66,7 +68,7 @@ export default function RoomContainer() {
           <Table.Actions>
             <Action>Draw</Action>
           </Table.Actions>
-        </Table>
+        </Table> */}
       </Room.Panel>
       <Room.Panel>
         <Chat>

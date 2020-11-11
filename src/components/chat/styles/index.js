@@ -38,10 +38,6 @@ export const TextInput = styled.textarea`
   color: inherit;
   line-height: 1.5;
   margin: 0 0.2em;
-
-
-  // white-space: pre-wrap;
-  // overflow-wrap: break-word;
 `
 
 export const Error = styled.p`
@@ -53,14 +49,18 @@ export const Error = styled.p`
 export const Log = styled.div`
   box-sizing: border-box;
   flex-grow: 1;
-  min-height: 100px;
+  overflow: auto;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  flex-direction: column-reverse; // can't just use "justify-content: flex-end" as no scrollbar will appear
+  height: 0;
+  min-height: 4em;
+`
+
+export const LogInner = styled.div`
+
 `
 
 export const Message = styled.div`
-  // background: blue;
   margin: 0.5em 1em 0;
   &:last-of-type {
     margin-bottom: 1em;
@@ -88,5 +88,4 @@ export const Form = styled.form`
   flex-direction: column;
   width: 100%;
   background: inherit;
-  // vertical-align: baseline;
 `

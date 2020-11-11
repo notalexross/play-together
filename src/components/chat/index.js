@@ -8,6 +8,7 @@ import {
   TextInput,
   Error,
   Log,
+  LogInner,
   Form,
   Message,
   Timestamp,
@@ -70,7 +71,13 @@ Chat.TextInput = function ChatTextInput({ ...restProps }) {
 }
 
 Chat.Log = function ChatLog({ children, ...restProps }) {
-  return <Log {...restProps}>{children}</Log>
+  return (
+    <Log {...restProps}>
+      <LogInner>
+        {children}
+      </LogInner>
+    </Log>
+  )
 }
 
 Chat.Message = function ChatMessage({ children, ...restProps }) {
