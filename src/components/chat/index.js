@@ -1,7 +1,19 @@
 // TODO
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Container, SendWrapper, Send, TextInput, Error, Log, Form } from './styles'
+import {
+  Container,
+  SendWrapper,
+  Send,
+  TextInput,
+  Error,
+  Log,
+  Form,
+  Message,
+  Timestamp,
+  Sender,
+  Text
+} from './styles'
 
 export default function Chat({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>
@@ -61,6 +73,22 @@ Chat.Log = function ChatLog({ children, ...restProps }) {
   return <Log {...restProps}>{children}</Log>
 }
 
+Chat.Message = function ChatMessage({ children, ...restProps }) {
+  return <Message {...restProps}>{children}</Message>
+}
+
+Chat.Timestamp = function ChatTimestamp({ children, ...restProps }) {
+  return <Timestamp {...restProps}>{children}</Timestamp>
+}
+
+Chat.Sender = function ChatSender({ children, color, ...restProps }) {
+  return <Sender color={color} {...restProps}>{children}</Sender>
+}
+
+Chat.Text = function ChatText({ children, ...restProps }) {
+  return <Text {...restProps}>{children}</Text>
+}
+
 Chat.Form = function ChatForm({ children, ...restProps }) {
 
   const handleSubmit = event => {
@@ -68,7 +96,6 @@ Chat.Form = function ChatForm({ children, ...restProps }) {
     postMessage()
   }
   
-
   return <Form onSubmit={handleSubmit} {...restProps}>{children}</Form>
 }
 

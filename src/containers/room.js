@@ -8,8 +8,12 @@ export default function RoomContainer() {
 
   // TODO
   const players = [{id: 1111, name: 'barry', hand: [1,2], stats: {played: 5, wins: 2}}, {id: 2222, name: 'larry', hand: [3,4], stats: {played: 5, wins: 3}}]
+  const messages = [
+    {id: 1, user: 'bob', color: '#d46d00', timestamp: '5:03', message: 'hello there friend'},
+    {id: 2, user: 'billy', color: '#1e90ff', timestamp: '5:05', message: 'hello to you too'},
+    {id: 3, user: 'bob', color: '#d46d00', timestamp: '5:08', message: 'This is a long message right here, quite a long message indeed'},
+  ]
 
-  // what about empty seats when you haven't sat down yet?
   return (
     <Room>
       <Room.Panel>
@@ -70,7 +74,15 @@ export default function RoomContainer() {
             <Chat.TextInput />
             <Chat.Send>Send</Chat.Send>
           </Chat.Form>
-          <Chat.Log></Chat.Log>
+          <Chat.Log>
+            {messages.map(message => (
+              <Chat.Message key={message.id}>
+                <Chat.Timestamp>{message.timestamp}</Chat.Timestamp>
+                <Chat.Sender color={message.color}>{message.user}</Chat.Sender>
+                <Chat.Text>{message.message}</Chat.Text>
+              </Chat.Message>
+            ))}
+          </Chat.Log>
         </Chat>
       </Room.Panel>
     </Room>

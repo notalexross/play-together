@@ -52,10 +52,36 @@ export const Error = styled.p`
 
 export const Log = styled.div`
   box-sizing: border-box;
-  // background: green;
   flex-grow: 1;
-  min-height: 300px;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 `
+
+export const Message = styled.div`
+  // background: blue;
+  margin: 0.5em 1em 0;
+  &:last-of-type {
+    margin-bottom: 1em;
+  }
+`
+
+export const Timestamp = styled.span`
+  margin-right: 0.4em;
+  color: #e5e5e555;
+`
+
+export const Sender = styled.span`
+  margin-right: 0.2em;
+  color: ${({ color }) => color};
+  &:after {
+    content: ': ';
+    color: #e5e5e5;
+  }
+`
+
+export const Text = styled.span``
 
 export const Form = styled.form`
   display: flex;
