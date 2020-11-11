@@ -23,7 +23,7 @@ export const Wrapper = styled.div`
   align-items: center;
 `
 
-export const Text = styled.p`
+export const Text = styled.span`
   margin-right: 0.2em;
   user-select: none;
 `

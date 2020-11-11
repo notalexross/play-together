@@ -1,6 +1,5 @@
 import React from 'react'
-import { Container, Tip, Arrow } from './styles'
-import useHover from '../../hooks/useHover.js'
+import { Container, Wrapper, Tip, Arrow } from './styles'
 
 export default function Tooltip({
   children,
@@ -9,33 +8,30 @@ export default function Tooltip({
   separation = '0.5em',
   arrowLength = '10px',
   arrowWidth = '6px',
-  maxWidth = '300px', // min-content
+  maxWidth = '300px',
   align = 'center', // center/flex-start/flex-end
   ...restProps
 }) {
-  const [ isHovered, hoverRef ] = useHover()
 
   return (
-    <Container ref={hoverRef} align={align} {...restProps}>
-      {children}
-      {
-        isHovered ?
-          <Tip
-            side={side}
-            separation={separation}
-            arrowLength={arrowLength}
-            maxWidth={maxWidth}
-            align={align}
-          >
-            <Arrow
-              side={side}
-              arrowLength={arrowLength}
-              arrowWidth={arrowWidth}
-            />
-            {tooltip}
-          </Tip> :
-          null
-      }
+    <Container align={align} {...restProps}>
+      <Wrapper>
+        {children}
+      </Wrapper>
+      <Tip
+        side={side}
+        separation={separation}
+        arrowLength={arrowLength}
+        maxWidth={maxWidth}
+        align={align}
+      >
+        <Arrow
+          side={side}
+          arrowLength={arrowLength}
+          arrowWidth={arrowWidth}
+        />
+        {tooltip}
+      </Tip>
     </Container>
   )
 }

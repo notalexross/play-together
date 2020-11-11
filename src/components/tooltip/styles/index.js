@@ -1,32 +1,28 @@
 import styled from 'styled-components'
 
+
 export const Container = styled.div`
   position: relative;
   display: flex;
-  ${({ align }) => (`
-    align-items: ${align};
-    justify-content: ${align};
-  `)}
+  justify-content: ${({ align }) => align};
+  align-items: ${({ align }) => align};
 `
 
-export const Tip = styled.p`
+export const Tip = styled.span`
   display: flex;
-  ${({ align }) => (`
-    align-items: ${align};
-    justify-content: ${align};
-  `)}
-
   position: absolute;
+  justify-content: ${({ align }) => align};
+  align-items: ${({ align }) => align};
   background: #1e1e1e;
   padding: 0.3em 0.6em;
   border-radius: 0.4em;
-  filter: drop-shadow(0 0 2px white);
+  filter: drop-shadow(0 0 1px #fff);
   user-select: none;
   width: max-content;
   max-width: ${({ maxWidth }) => maxWidth};
-  // opacity: 0.6;
-  // border: solid 1px;
-  // box-shadow: 0 0 0 1px;
+
+  opacity: 0;
+  transition: opacity 0.2s;
 
   ${({ side, separation, arrowLength }) => {
     let transform
@@ -54,6 +50,12 @@ export const Tip = styled.p`
       transform: ${transform};
     `
   }}
+`
+
+export const Wrapper = styled.div`
+  &:hover + ${Tip} {
+    opacity: 1;
+  }
 `
 
 export const Arrow = styled.div`

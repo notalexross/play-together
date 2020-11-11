@@ -22,12 +22,9 @@ Header.TextCopy = function HeaderTextCopy({ children, ...restProps }) {
   const [ isHovered, hoverRef ] = useHover()
 
   useEffect(() => {
-    if(!isHovered) {
-      setTooltip('click to copy')
-    }
+      isHovered && setTooltip('click to copy')
   }, [isHovered])
 
-  // TODO add tooltip when clicked to indicate copied (and when hovered over?)
   const handleClick = event => {
     const copyField = document.createElement('input');
     copyField.style = 'position: absolute; left: -1000px; top: -1000px';
