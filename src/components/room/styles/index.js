@@ -8,7 +8,3 @@ export const Container = styled.div`
   // overflow: hidden;
   flex-grow: 1;
 `
-
-export const Panel = styled.div`
-  // border: solid blue 10px;
-`

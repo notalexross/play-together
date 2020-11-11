@@ -6,9 +6,9 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column-reverse;
   box-sizing: border-box;
-  border-left: solid 1px #e5e5e533;
+  // border-left: solid 1px #e5e5e533;
   height: 100%;
-  width: 300px;
+  // width: 300px;
   // margin-right: -1000px;
 `
 

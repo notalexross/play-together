@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-import { Room, Table, Player, EmptySeat, Action, GameSelect, Chat, Accordion } from '../components'
+import { Room, Panel, Table, Player, EmptySeat, Action, GameSelect, Chat, Accordion } from '../components'
 import { gameContext } from '../context/game'
 
 export default function RoomContainer() {
@@ -18,75 +18,87 @@ export default function RoomContainer() {
 
   return (
     <Room>
-      <Room.Panel>
-        <Accordion>
-          <Accordion.Item>
-            <Accordion.Header>Game</Accordion.Header>
-            <Accordion.Body>
-              <GameSelect>
-                <GameSelect.Game>Uno</GameSelect.Game>
-                <GameSelect.Game>Chess</GameSelect.Game>
-              </GameSelect>
-            </Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item>
-            <Accordion.Header>Game Options</Accordion.Header>
-            <Accordion.Body>game options</Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item>
-            <Accordion.Header>Room Options</Accordion.Header>
-            <Accordion.Body>room options</Accordion.Body>
-          </Accordion.Item>
-          <Accordion.Item>
-            <Accordion.Header>Settings</Accordion.Header>
-            <Accordion.Body>settings</Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
-      </Room.Panel>
-      <Room.Panel>
-        {/* <Table>
-          <Table.Board></Table.Board>
-          <Table.Seats>
-            {players.map(player => (
-                <Player key={player.id}>
-                  <Player.ProfilePicture/>
-                  <Player.Stats>
-                    <Player.Wins>{player.stats.wins}</Player.Wins>
-                    <Player.Played>{player.stats.played}</Player.Played>
-                  </Player.Stats>
-                  <Player.Nickname>{player.name}</Player.Nickname>
-                  <Player.Hand>
-                    {player.hand.map(card => {
-                      <Player.Card>{card}</Player.Card>
-                    })}
-                  </Player.Hand>
-                  <Player.Playarea></Player.Playarea>
-                </Player>
-            ))}
-            <EmptySeat onClick={() => sitDown(1234,0)}/>
-          </Table.Seats>
-          <Table.Actions>
-            <Action>Draw</Action>
-          </Table.Actions>
-        </Table> */}
-      </Room.Panel>
-      <Room.Panel>
-        <Chat>
-          <Chat.Form>
-            <Chat.TextInput />
-            <Chat.Send>Send</Chat.Send>
-          </Chat.Form>
-          <Chat.Log>
-            {messages.map(message => (
-              <Chat.Message key={message.id}>
-                <Chat.Timestamp>{message.timestamp}</Chat.Timestamp>
-                <Chat.Sender color={message.color}>{message.user}</Chat.Sender>
-                <Chat.Text>{message.message}</Chat.Text>
-              </Chat.Message>
-            ))}
-          </Chat.Log>
-        </Chat>
-      </Room.Panel>
+      <Panel width='350px'>
+        <Panel.Header>
+          <Panel.Title>Settings</Panel.Title>
+        </Panel.Header>
+        <Panel.Body>
+          <Accordion>
+            <Accordion.Item>
+              <Accordion.Header>Game</Accordion.Header>
+              <Accordion.Body>
+                <GameSelect>
+                  <GameSelect.Game>Uno</GameSelect.Game>
+                  <GameSelect.Game>Chess</GameSelect.Game>
+                </GameSelect>
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item>
+              <Accordion.Header>Game Options</Accordion.Header>
+              <Accordion.Body>game options</Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item>
+              <Accordion.Header>Room Options</Accordion.Header>
+              <Accordion.Body>room options</Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item>
+              <Accordion.Header>Settings</Accordion.Header>
+              <Accordion.Body>settings</Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        </Panel.Body>
+      </Panel>
+      <Panel>
+        <Panel.Body>
+          {/* <Table>
+            <Table.Board></Table.Board>
+            <Table.Seats>
+              {players.map(player => (
+                  <Player key={player.id}>
+                    <Player.ProfilePicture/>
+                    <Player.Stats>
+                      <Player.Wins>{player.stats.wins}</Player.Wins>
+                      <Player.Played>{player.stats.played}</Player.Played>
+                    </Player.Stats>
+                    <Player.Nickname>{player.name}</Player.Nickname>
+                    <Player.Hand>
+                      {player.hand.map(card => {
+                        <Player.Card>{card}</Player.Card>
+                      })}
+                    </Player.Hand>
+                    <Player.Playarea></Player.Playarea>
+                  </Player>
+              ))}
+              <EmptySeat onClick={() => sitDown(1234,0)}/>
+            </Table.Seats>
+            <Table.Actions>
+              <Action>Draw</Action>
+            </Table.Actions>
+          </Table> */}
+        </Panel.Body>
+      </Panel>
+      <Panel width='350px'>
+        <Panel.Header>
+          <Panel.Title>Chat</Panel.Title>
+        </Panel.Header>
+        <Panel.Body>
+          <Chat>
+            <Chat.Form>
+              <Chat.TextInput />
+              <Chat.Send>Send</Chat.Send>
+            </Chat.Form>
+            <Chat.Log>
+              {messages.map(message => (
+                <Chat.Message key={message.id}>
+                  <Chat.Timestamp>{message.timestamp}</Chat.Timestamp>
+                  <Chat.Sender color={message.color}>{message.user}</Chat.Sender>
+                  <Chat.Text>{message.message}</Chat.Text>
+                </Chat.Message>
+              ))}
+            </Chat.Log>
+          </Chat>
+        </Panel.Body>
+      </Panel>
     </Room>
   )
 }

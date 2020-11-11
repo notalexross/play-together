@@ -5,9 +5,9 @@ export const Container = styled.section`
   flex-direction: column;
   background: #1e1e1e;
   box-sizing: border-box;
-  border-right: solid 1px #e5e5e533;
+  // border-right: solid 1px #e5e5e533;
   height: 100%;
-  width: 300px;
+  // width: 300px;
   // margin-left: -1000px;
 `;
 
