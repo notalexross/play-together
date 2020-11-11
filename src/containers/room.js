@@ -20,6 +20,7 @@ export default function RoomContainer() {
     <Room>
       <Panel width='350px'>
         <Panel.Header>
+          <Panel.Collapse direction={'left'} />
           <Panel.Title>Settings</Panel.Title>
         </Panel.Header>
         <Panel.Body>
@@ -79,6 +80,7 @@ export default function RoomContainer() {
       </Panel>
       <Panel width='350px'>
         <Panel.Header>
+          <Panel.Collapse direction={'right'} />
           <Panel.Title>Chat</Panel.Title>
         </Panel.Header>
         <Panel.Body>
