@@ -23,6 +23,7 @@ export const Tip = styled.span`
 
   opacity: 0;
   transition: opacity 0.2s;
+  transition-delay: 0.2s;
 
   ${({ side, separation, arrowLength }) => {
     let transform
