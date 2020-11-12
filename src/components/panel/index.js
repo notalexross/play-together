@@ -53,9 +53,9 @@ Panel.Collapse = function PanelCollapse({ direction = 'right', ...restProps }) {
   }
 
   return (
-      <Collapse direction={direction} collapsed={isCollapsed} onClick={handleClick} {...restProps}>
+      <Collapse direction={direction} collapsed={isCollapsed} {...restProps}>
         <Tooltip tooltip={tooltip} side={opposite}>
-          <CollapseInner>
+          <CollapseInner onClick={handleClick}>
             { ((direction === 'right' && !isCollapsed) || (direction === 'left' && isCollapsed)) && <CollapseRight/>}
             { ((direction === 'left' && !isCollapsed) || (direction === 'right' && isCollapsed)) && <CollapseLeft/>}
           </CollapseInner>
