@@ -27,6 +27,10 @@ export const Header = styled.div`
   cursor: pointer;
   user-select: none;
   background: #252525;
+
+  &:hover {
+    background: #ffffff55;
+  }
 `;
 
 export const Body = styled.div`
