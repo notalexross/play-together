@@ -2,9 +2,8 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-export const Container = styled.div`
+export const Container = styled.header`
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   background: #252525;
@@ -17,20 +16,18 @@ export const HomeLink = styled(Link)`
   user-select: none;
 `
 
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: row;
+export const Text = styled.div`
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-gap: 0.2em;
   align-items: center;
-`
-
-export const Text = styled.span`
-  margin-right: 0.2em;
   user-select: none;
 `
 
-export const TextCopy = styled.span`
+export const TextCopy = styled.p`
   background: #1e1e1e;
   border: solid 1px #e5e5e555;
+  padding: 0.3em 0.6em;
   padding: 0.3em 0.6em;
   cursor: pointer;
   user-select: none;

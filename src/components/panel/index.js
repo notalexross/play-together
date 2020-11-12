@@ -15,7 +15,7 @@ export default function Panel({ children, width, ...restProps }) { // resize = '
   return (
     <CollapseContext.Provider value={{ isCollapsed, setIsCollapsed, collapseDirection, setCollapseDirection }}>
       <Wrapper width={width} {...restProps}>
-        <Container width={width}  direction={collapseDirection} collapsed={isCollapsed}>
+        <Container width={width} direction={collapseDirection} collapsed={isCollapsed}>
           <Inner width={width}>
             {children}
           </Inner>

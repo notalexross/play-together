@@ -21,6 +21,7 @@ export const Tip = styled.span`
   width: max-content;
   max-width: ${({ maxWidth }) => maxWidth};
   line-height: initial;
+  pointer-events : none;
 
   opacity: 0;
   // transition: opacity 0.2s;

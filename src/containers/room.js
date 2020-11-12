@@ -17,8 +17,8 @@ export default function RoomContainer() {
   ]
 
   return (
-    <Room>
-      <Panel width='350px'>
+    <Room className='room'>
+      <Panel className='settings' width='350px'>
         <Panel.Header>
           <Panel.Collapse direction={'left'} />
           <Panel.Title>Settings</Panel.Title>
@@ -78,7 +78,7 @@ export default function RoomContainer() {
           </Table> */}
         </Panel.Body>
       </Panel>
-      <Panel width='350px'>
+      <Panel className='chat' width='350px'>
         <Panel.Header>
           <Panel.Collapse direction={'right'} />
           <Panel.Title>Chat</Panel.Title>

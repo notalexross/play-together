@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { GlobalStyles } from './global-styles';
+import { GlobalStyle } from './styles/global';
+import { ResponsiveStyle } from './styles/responsive';
 import * as ROUTES from './constants/routes'
 import { UserContextProvider } from './context/user'
 import Home from './pages/Home'
@@ -9,7 +10,8 @@ import GameRoom from './pages/GameRoom'
 export default function App() {
   return (
     <>
-      <GlobalStyles/>
+      <GlobalStyle/>
+      <ResponsiveStyle/>
       <Router>
         <UserContextProvider>
           <Switch>
