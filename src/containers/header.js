@@ -4,23 +4,31 @@ import { Copy as CopyFilled} from '@styled-icons/boxicons-solid/Copy'
 import { userContext } from '../context/user'
 import * as ROUTES from '../constants/routes'
 import ChangeNicknameButton from './change-nickname-button'
-import { Header, Tooltip, Hover } from '../components'
+import { Header, Tooltip } from '../components'
 import useHover from '../hooks/useHover.js'
+import useWindowSize from '../hooks/useWindowSize.js'
 
 export default function HeaderContainer() {
   const { nickname } = useContext(userContext)
   const [ tooltip, setTooltip ] = useState()
   const [ isHovered, hoverRef ] = useHover()
 
+  const { windowWidth } = useWindowSize()
+
+  const isLarge = windowWidth > 1000
+  const isSmall = windowWidth <= 800
+
   useEffect(() => {
-      isHovered && setTooltip('click to copy')
+      if (isHovered) {
+        setTooltip('click to copy')
+      }
   }, [isHovered])
 
-  const handleClick = event => {
+  const handleClick = () => {
     console.log('copying')
     const copyField = document.createElement('input')
     copyField.style = 'position: absolute; left: -1000px; top: -1000px'
-    copyField.value = event.target.textContent
+    copyField.value = window.location.href
     document.body.appendChild(copyField)
     copyField.select()
     document.execCommand('copy')
@@ -29,28 +37,24 @@ export default function HeaderContainer() {
   }
 
   return (
-    <Header>
+    <Header style={{flexDirection: isSmall ? 'column' : 'row'}}>
       <Header.HomeLink to={ROUTES.HOME}>Home</Header.HomeLink>
-      <Header.Text className='header-copy-link-text'>
-        Shareable Link:
-        <Tooltip tooltip={tooltip} side='right'>
-          <Header.TextCopy innerRef={hoverRef} onClick={handleClick}>
-            {window.location.href}
-          </Header.TextCopy>
-        </Tooltip>
+        <Header.Text style={{marginTop: isSmall ? '0.5em' : '0'}}>
+          Shareable Link:
+          <Tooltip tooltip={tooltip} side={isLarge ? 'right' : 'bottom'}>
+            <div ref={hoverRef} onClick={handleClick}>
+              {
+                isLarge ? 
+                  <Header.TextCopy>{window.location.href}</Header.TextCopy> :
+                  isHovered ? <CopyFilled style={{height: '20px', width: '20px'}}/> : <CopyEmpty style={{height: '20px', width: '20px'}}/> 
+              }
+            </div>
+          </Tooltip>
+        </Header.Text>
+      <Header.Text style={{marginTop: isSmall ? '0.5em' : '0'}}>
+        Nickname: {nickname}
+        <ChangeNicknameButton/>
       </Header.Text>
-      <Header.Text className='header-copy-link-symbol'>
-        Shareable Link:
-        <Tooltip tooltip={tooltip} side='bottom' align='flex-end'>
-          <div ref={hoverRef} onClick={handleClick}>
-            <Hover
-              DefaultComponent={CopyEmpty}
-              HoverComponent={CopyFilled}
-            />
-          </div>
-        </Tooltip>
-      </Header.Text>
-      <Header.Text>Nickname: {nickname} <ChangeNicknameButton/></Header.Text>
     </Header>
   )
 }

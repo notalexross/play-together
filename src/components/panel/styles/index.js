@@ -6,12 +6,17 @@ export const Wrapper = styled.div`
   ${({ width }) => !width && 'flex-grow: 1'}
 `
 
+// transition max-width instead of width, as max width wont change responsively.
+// if use width for transition then animation will play when change from small to large width.
 export const Container = styled.section`
   height: 100%;
   overflow: hidden;
-  transition: width 0.2s;
-
-  width: ${({ collapsed, width }) => collapsed ? '0' : width};
+  ${({ shouldTransition }) => shouldTransition && 'transition: max-width 0.2s;'}
+  // ${({ shouldTransition }) => shouldTransition && 'transition: width 0.2s;'}
+  // transition: width 0.2s;
+  max-width: ${({ collapsed, width }) => collapsed ? '0' : width};
+  // width: ${({ collapsed, width }) => collapsed ? '0' : width};
+  // max-width: 100%;
 
   ${({ direction }) => {
     switch(direction) {
@@ -32,8 +37,9 @@ export const Inner = styled.div`
   box-sizing: border-box;
   height: 100%;
   direction: ltr;
-
+  
   width: ${({ width }) => width ? width : '100%'};
+  // width: 100%;
 `
 
 export const Header = styled.div`

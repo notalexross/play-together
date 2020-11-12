@@ -2,9 +2,16 @@ import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import { Room, Panel, Table, Player, EmptySeat, Action, GameSelect, Chat, Accordion } from '../components'
 import { gameContext } from '../context/game'
+import useWindowSize from '../hooks/useWindowSize.js'
 
 export default function RoomContainer() {
   const { sitDown } = useContext(gameContext)
+  const { windowWidth } = useWindowSize()
+
+  const isLarger = windowWidth > 1200
+  const isLarge = windowWidth > 1000
+  const isSmall = windowWidth <= 800
+  // console.log(windowWidth)
 
   // TODO
   const players = [{id: 1111, name: 'barry', hand: [1,2], stats: {played: 5, wins: 2}}, {id: 2222, name: 'larry', hand: [3,4], stats: {played: 5, wins: 3}}]
@@ -16,11 +23,29 @@ export default function RoomContainer() {
     {id: 5, user: 'billy', color: '#1e90ff', timestamp: '5:15', message: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'},
   ]
 
+  // @media (max-width: 1200px) and (min-width: 801px) {
+  //   .settings {
+  //     height: min-content;
+  //     position: absolute;
+  //     z-index: 1;
+  //   }
+  // }
+
+  let settingsStyle
+  if (!isSmall && !isLarger) {
+    settingsStyle = {
+      height: 'min-content',
+      position: 'absolute',
+      zIndex: 1,
+    }
+  }
+  console.log(settingsStyle)
+
   return (
-    <Room className='room'>
-      <Panel className='settings' width='350px'>
+    <Room style={{flexDirection: isSmall ? 'column' : 'row'}}>
+      <Panel style={settingsStyle} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
         <Panel.Header>
-          <Panel.Collapse direction={'left'} />
+          {!isSmall && <Panel.Collapse direction={'left'} />}
           <Panel.Title>Settings</Panel.Title>
         </Panel.Header>
         <Panel.Body>
@@ -78,9 +103,9 @@ export default function RoomContainer() {
           </Table> */}
         </Panel.Body>
       </Panel>
-      <Panel className='chat' width='350px'>
+      <Panel watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
         <Panel.Header>
-          <Panel.Collapse direction={'right'} />
+          {!isSmall && <Panel.Collapse direction={'right'} />}
           <Panel.Title>Chat</Panel.Title>
         </Panel.Header>
         <Panel.Body>
