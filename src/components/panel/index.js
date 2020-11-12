@@ -1,9 +1,10 @@
 // TODO
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { CollapseRight } from '@styled-icons/open-iconic/CollapseRight'
 import { CollapseLeft } from '@styled-icons/open-iconic/CollapseLeft'
-import { Container, Inner, Header, Title, Body, Collapse, Wrapper } from './styles'
+import { Tooltip } from '..'
+import { Container, Inner, Header, Title, Body, Collapse, CollapseInner, Wrapper } from './styles'
 
 const CollapseContext = React.createContext()
 
@@ -37,21 +38,29 @@ Panel.Body = function PanelBody({ children, ...restProps }) {
 }
 
 Panel.Collapse = function PanelCollapse({ direction = 'right', ...restProps }) {
-  const { isCollapsed, setIsCollapsed, collapseDirection, setCollapseDirection } = useContext(CollapseContext)
+  const { isCollapsed, setIsCollapsed, setCollapseDirection } = useContext(CollapseContext)
+  const [ tooltip, setTooltip ] = useState()
+
+  const opposite = direction === 'left' ? 'right' : direction === 'right' ? 'left' : null
 
   useEffect(() => {
     setCollapseDirection(direction)
-  }, [])
+    isCollapsed ? setTooltip('expand') : setTooltip('collapse')
+  }, [isCollapsed])
 
   const handleClick = () => {
     setIsCollapsed(prev => !prev)
   }
 
   return (
-    <Collapse direction={collapseDirection} collapsed={isCollapsed} onClick={handleClick} {...restProps}>
-      { ((direction === 'right' && !isCollapsed) || (direction === 'left' && isCollapsed)) && <CollapseRight />}
-      { ((direction === 'left' && !isCollapsed) || (direction === 'right' && isCollapsed)) && <CollapseLeft />}
-    </Collapse>
-)
+      <Collapse direction={direction} collapsed={isCollapsed} onClick={handleClick} {...restProps}>
+        <Tooltip tooltip={tooltip} side={opposite}>
+          <CollapseInner>
+            { ((direction === 'right' && !isCollapsed) || (direction === 'left' && isCollapsed)) && <CollapseRight/>}
+            { ((direction === 'left' && !isCollapsed) || (direction === 'right' && isCollapsed)) && <CollapseLeft/>}
+          </CollapseInner>
+        </Tooltip>
+      </Collapse>
+  )
 }
 

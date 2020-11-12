@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
 export const Container = styled.section`
   height: 100%;
   overflow: hidden;
-  transition: width 0.5s;
+  transition: width 0.2s;
 
   width: ${({ collapsed, width }) => collapsed ? '0' : width};
 
@@ -57,11 +57,11 @@ export const Body = styled.div`
 export const Collapse = styled.div`
   z-index: 1;
   position: absolute;
-  width: 20px;
-  line-height: 0;
-  padding: 0.5em;
-  border-radius: 4px;
-  transition: transform 0.5s;
+  // width: 20px;
+  // line-height: 0;
+  // padding: 0.5em;
+  // border-radius: 4px;
+  transition: transform 0.2s;
 
   ${({ direction, collapsed }) => {
     let opposite, offset;
@@ -82,8 +82,16 @@ export const Collapse = styled.div`
       transform: translateX(${collapsed ? offset : '0'});
     `
   }}
+`
+
+export const CollapseInner = styled.div`
+  width: 20px;
+  line-height: 0;
+  padding: 0.5em;
+  border-radius: 4px;
 
   &:hover {
+    cursor: pointer;
     background: #ffffff55;
   }
 `

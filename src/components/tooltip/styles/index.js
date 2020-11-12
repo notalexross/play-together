@@ -20,10 +20,11 @@ export const Tip = styled.span`
   user-select: none;
   width: max-content;
   max-width: ${({ maxWidth }) => maxWidth};
+  line-height: initial;
 
   opacity: 0;
-  transition: opacity 0.2s;
-  transition-delay: 0.2s;
+  // transition: opacity 0.2s;
+  // transition-delay: 0.2s;
 
   ${({ side, separation, arrowLength }) => {
     let transform
@@ -56,6 +57,8 @@ export const Tip = styled.span`
 export const Wrapper = styled.div`
   &:hover + ${Tip} {
     opacity: 1;
+    transition: opacity 0.2s;
+    transition-delay: 0.2s;
   }
 `
 

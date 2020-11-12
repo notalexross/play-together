@@ -18,7 +18,7 @@ Header.Text = function HeaderText({ children, ...restProps }) {
 }
 
 Header.TextCopy = function HeaderTextCopy({ children, ...restProps }) {
-  const [ tooltip, setTooltip ] = useState('')
+  const [ tooltip, setTooltip ] = useState()
   const [ isHovered, hoverRef ] = useHover()
 
   useEffect(() => {

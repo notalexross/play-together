@@ -3,7 +3,7 @@ import { Container, Wrapper, Tip, Arrow } from './styles'
 
 export default function Tooltip({
   children,
-  tooltip = 'no tooltip set',
+  tooltip = 'no tooltip found...',
   side = 'top',
   separation = '0.5em',
   arrowLength = '10px',
