@@ -37,22 +37,25 @@ export default function HeaderContainer() {
   }
 
   return (
-    <Header style={{flexDirection: isSmall ? 'column' : 'row'}}>
-      <Header.HomeLink to={ROUTES.HOME}>Home</Header.HomeLink>
-        <Header.Text style={{marginTop: isSmall ? '0.5em' : '0'}}>
-          Shareable Link:
-          <Tooltip tooltip={tooltip} side={isLarge ? 'right' : 'bottom'}>
-            <div ref={hoverRef} onClick={handleClick}>
-              {
-                isLarge ? 
-                  <Header.TextCopy>{window.location.href}</Header.TextCopy> :
-                  isHovered ? <CopyFilled style={{height: '20px', width: '20px'}}/> : <CopyEmpty style={{height: '20px', width: '20px'}}/> 
-              }
-            </div>
-          </Tooltip>
-        </Header.Text>
-      <Header.Text style={{marginTop: isSmall ? '0.5em' : '0'}}>
-        Nickname: {nickname}
+    // <Header style={{flexDirection: isSmall ? 'column' : 'row'}}>
+    <Header>
+      <Header.HomeLink to={ROUTES.HOME}>
+        Home
+      </Header.HomeLink>
+      <Header.Text style={{order: isSmall ? '1' : '0'}}>
+        {isSmall ? null : 'Shareable Link:'}
+        <Tooltip tooltip={tooltip} side={isLarge ? 'right' : isSmall ? 'left' : 'bottom'}>
+          <div ref={hoverRef} onClick={handleClick}>
+            {
+              isLarge ? 
+                <Header.TextCopy>{window.location.href}</Header.TextCopy> :
+                isHovered ? <CopyFilled style={{height: '20px', width: '20px'}}/> : <CopyEmpty style={{height: '20px', width: '20px'}}/> 
+            }
+          </div>
+        </Tooltip>
+      </Header.Text>
+      <Header.Text>
+        {isSmall ? null : 'Nickname:'} {nickname}
         <ChangeNicknameButton/>
       </Header.Text>
     </Header>

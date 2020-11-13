@@ -23,14 +23,6 @@ export default function RoomContainer() {
     {id: 5, user: 'billy', color: '#1e90ff', timestamp: '5:15', message: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'},
   ]
 
-  // @media (max-width: 1200px) and (min-width: 801px) {
-  //   .settings {
-  //     height: min-content;
-  //     position: absolute;
-  //     z-index: 1;
-  //   }
-  // }
-
   let settingsStyle
   if (!isSmall && !isLarger) {
     settingsStyle = {
@@ -39,7 +31,6 @@ export default function RoomContainer() {
       zIndex: 1,
     }
   }
-  console.log(settingsStyle)
 
   return (
     <Room style={{flexDirection: isSmall ? 'column' : 'row'}}>

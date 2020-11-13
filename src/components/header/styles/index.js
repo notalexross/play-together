@@ -3,9 +3,14 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 export const Container = styled.header`
-  display: flex;
+  // display: flex;
   justify-content: space-between;
   align-items: center;
+  tex-align: center;
+  justify-items: center;
+
+  display: flex;
+
   background: #252525;
   border: solid 1px #e5e5e555;
   padding: 1em;
