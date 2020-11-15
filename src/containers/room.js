@@ -28,13 +28,12 @@ export default function RoomContainer() {
     settingsStyle = {
       height: 'min-content',
       position: 'absolute',
-      zIndex: 1,
     }
   }
 
   return (
     <Room style={{flexDirection: isSmall ? 'column' : 'row'}}>
-      <Panel style={settingsStyle} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
+      <Panel style={{ zIndex: 10, boxShadow: '0 0 10px #000', ...settingsStyle }} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
         <Panel.Header>
           {!isSmall && <Panel.Collapse direction={'left'} />}
           <Panel.Title>Settings</Panel.Title>
@@ -67,7 +66,48 @@ export default function RoomContainer() {
       </Panel>
       <Panel>
         <Panel.Body>
-          <Playarea height='100px' width='100px' perspective='1000px' ></Playarea>
+          <Playarea>
+            <Playarea.Area>
+              <Playarea.PlayersContainer gap='2%'>
+                <Playarea.PlayerWrapper>
+                  <Playarea.Player></Playarea.Player>
+                </Playarea.PlayerWrapper>
+                <Playarea.PlayerWrapper>
+                  <Playarea.Player></Playarea.Player>
+                </Playarea.PlayerWrapper>
+              </Playarea.PlayersContainer>
+              <Playarea.TableContainer>
+                <Playarea.Table>
+                  <div style={{width: '150px', height: '50px', background: 'black', textAlign: 'center'}}></div>
+                </Playarea.Table>
+                <Playarea.PlayersContainer gap='35%'>
+                  <Playarea.PlayerWrapper>
+                    <Playarea.Player></Playarea.Player>
+                  </Playarea.PlayerWrapper>
+                  <Playarea.PlayerWrapper>
+                    <Playarea.Player></Playarea.Player>
+                  </Playarea.PlayerWrapper>
+                </Playarea.PlayersContainer>
+                <Playarea.PlayersContainer gap='40%'>
+                  <Playarea.PlayerWrapper>
+                    <Playarea.Player></Playarea.Player>
+                  </Playarea.PlayerWrapper>
+                  <Playarea.PlayerWrapper>
+                    <Playarea.Player></Playarea.Player>
+                  </Playarea.PlayerWrapper>
+                </Playarea.PlayersContainer>
+                <Playarea.PlayersContainer gap='45%'>
+                  <Playarea.PlayerWrapper>
+                    <Playarea.Player></Playarea.Player>
+                  </Playarea.PlayerWrapper>
+                  <Playarea.PlayerWrapper>
+                    <Playarea.Player></Playarea.Player>
+                  </Playarea.PlayerWrapper>
+                </Playarea.PlayersContainer>
+              </Playarea.TableContainer>
+            </Playarea.Area>
+            <Playarea.Main></Playarea.Main>
+          </Playarea>
           {/* <Table>
             <Table.Board></Table.Board>
             <Table.Seats>
@@ -95,7 +135,7 @@ export default function RoomContainer() {
           </Table> */}
         </Panel.Body>
       </Panel>
-      <Panel watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
+      <Panel style={{ zIndex: 10, boxShadow: '0 0 10px #000'}} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
         <Panel.Header>
           {!isSmall && <Panel.Collapse direction={'right'} />}
           <Panel.Title>Chat</Panel.Title>

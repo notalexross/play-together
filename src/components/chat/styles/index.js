@@ -6,7 +6,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column-reverse;
   box-sizing: border-box;
-  // border-left: solid 1px #e5e5e533;
+  // border-left: solid 1px #444;
   height: 100%;
   // width: 300px;
   // margin-right: -1000px;
@@ -69,7 +69,7 @@ export const Message = styled.div`
 
 export const Timestamp = styled.span`
   margin-right: 0.4em;
-  color: #e5e5e555;
+  color: #444;
 `
 
 export const Sender = styled.span`

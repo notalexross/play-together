@@ -12,7 +12,7 @@ export const Container = styled.header`
   display: flex;
 
   background: #252525;
-  border: solid 1px #e5e5e555;
+  border: solid 1px #444;
   padding: 1em;
 `
 
@@ -31,7 +31,7 @@ export const Text = styled.div`
 
 export const TextCopy = styled.p`
   background: #1e1e1e;
-  border: solid 1px #e5e5e555;
+  border: solid 1px #444;
   padding: 0.3em 0.6em;
   padding: 0.3em 0.6em;
   cursor: pointer;

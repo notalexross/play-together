@@ -38,7 +38,7 @@ export default function HeaderContainer() {
 
   return (
     // <Header style={{flexDirection: isSmall ? 'column' : 'row'}}>
-    <Header>
+    <Header style={{ zIndex: 20 }}>
       <Header.HomeLink to={ROUTES.HOME}>
         Home
       </Header.HomeLink>

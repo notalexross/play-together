@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 export const Wrapper = styled.div`
   position: relative;
-  ${({ width }) => !width && 'flex-grow: 1'}
+  ${({ width }) => !width && 'flex-grow: 1;'}
 `
 
 // transition max-width instead of width, as max width wont change responsively.
@@ -31,7 +31,7 @@ export const Container = styled.section`
 `
 
 export const Inner = styled.div`
-  border: solid 1px #e5e5e533;
+  // border: solid 1px #444;
   display: Flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -43,7 +43,7 @@ export const Inner = styled.div`
 `
 
 export const Header = styled.div`
-  border-bottom: solid 1px #e5e5e533;
+  border-bottom: solid 1px #444;
   display: flex;
   justify-content: center;
   align-items: center;
