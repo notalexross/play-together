@@ -47,6 +47,7 @@ export const Header = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: #1e1e1e;
 `
 
 export const Title = styled.h1`

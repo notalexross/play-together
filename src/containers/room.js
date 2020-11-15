@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-import { Room, Panel, Table, Player, EmptySeat, Action, GameSelect, Chat, Accordion } from '../components'
+import { Room, Panel, Table, Player, EmptySeat, Action, GameSelect, Chat, Accordion, Playarea } from '../components'
 import { gameContext } from '../context/game'
 import useWindowSize from '../hooks/useWindowSize.js'
 
@@ -67,6 +67,7 @@ export default function RoomContainer() {
       </Panel>
       <Panel>
         <Panel.Body>
+          <Playarea height='100px' width='100px' perspective='1000px' ></Playarea>
           {/* <Table>
             <Table.Board></Table.Board>
             <Table.Seats>
