@@ -42,6 +42,8 @@ export const TableContainer = styled.div`
   align-items: center;
   position: relative;
   justify-content: space-evenly;
+
+  margin-bottom: 1em;
 `
 
 export const TableWrapper = styled.div`
@@ -52,7 +54,7 @@ export const TableWrapper = styled.div`
 
   height: 100%;
   position: absolute;
-  overflow: hidden;
+  // overflow: hidden;
 
   filter: drop-shadow(0 0 5px #000);
 `
@@ -64,7 +66,7 @@ export const Table = styled.div`
   height: ${({ height }) => height ? `${height}px` : '0'};
   width: 30%;
   transform-origin: top;
-  transform: perspective(400px) rotateX(20deg);
+  transform: ${({ angle, perspective }) => angle && perspective ? `perspective(${perspective}px) rotateX(${angle}deg)` : null};
 
   display: flex;
   justify-content: center;

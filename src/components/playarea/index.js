@@ -1,6 +1,8 @@
 import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Container, Area, Main, TableContainer, TableWrapper, Table, PlayersContainer, PlayerWrapper, Player } from './styles'
+import { getPreRotatedHeight } from '../../utils'
+import { Letterboxd } from 'styled-icons/simple-icons'
 
 export default function Playarea({ children, ...restProps }) {
   return (
@@ -35,19 +37,25 @@ Playarea.TableContainer = function PlayareaTableContainer({ children, ...restPro
 }
 
 Playarea.Table = function PlayareaTable({ children, ...restProps }) {
-  // TODO the table height needs to be calculated from a helper function based on the height of the tableWrapper
   const wrapperRef = useRef()
+  const tableRef = useRef()
 
-  let tableHeight
+  const angle0Height = 1200
+  const maxAngle = 45
+  const minAngle = 11
+  const perspective = 400
+
+  let tableHeight, angle
   if(wrapperRef && wrapperRef.current) {
     const wrapperHeight = wrapperRef.current.offsetHeight
-    console.log(wrapperHeight)
-    tableHeight = 0.75 * wrapperHeight // TODO this is not such a simple calculation, add a helper
+
+    angle = Math.max(Math.min((angle0Height - wrapperHeight) / angle0Height * maxAngle, maxAngle), minAngle)
+    tableHeight = getPreRotatedHeight(wrapperHeight, -angle, perspective)
   }
 
   return (
     <TableWrapper ref={wrapperRef}>
-      <Table height={tableHeight} {...restProps}>
+      <Table ref={tableRef} height={tableHeight} angle={angle} perspective={perspective} {...restProps}>
         {children}
       </Table>
     </TableWrapper>
