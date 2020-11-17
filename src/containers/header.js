@@ -8,7 +8,7 @@ import { Header, Tooltip } from '../components'
 import useHover from '../hooks/useHover.js'
 import useWindowSize from '../hooks/useWindowSize.js'
 
-export default function HeaderContainer() {
+export default function HeaderContainer({ innerRef }) {
   const { nickname } = useContext(userContext)
   const [ tooltip, setTooltip ] = useState()
   const [ isHovered, hoverRef ] = useHover()
@@ -38,7 +38,7 @@ export default function HeaderContainer() {
 
   return (
     // <Header style={{flexDirection: isSmall ? 'column' : 'row'}}>
-    <Header style={{ zIndex: 20 }}>
+    <Header innerRef={innerRef} style={{ zIndex: 20 }}>
       <Header.HomeLink to={ROUTES.HOME}>
         Home
       </Header.HomeLink>

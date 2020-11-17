@@ -1,10 +1,10 @@
-import React, { useContext, useState, useRef } from 'react'
+import React, { useContext, useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Room, Panel, Table, Player, EmptySeat, Action, GameSelect, Chat, Accordion, Playarea } from '../components'
 import { gameContext } from '../context/game'
 import useWindowSize from '../hooks/useWindowSize.js'
 
-export default function RoomContainer() {
+export default function RoomContainer({ pageHeaderRef }) {
   const [ chatIsExpanded, setChatIsExpanded ] = useState(false)
   const [ settingsIsExpanded, setSettingsIsExpanded ] = useState(false)
   const { sitDown } = useContext(gameContext)
@@ -27,7 +27,8 @@ export default function RoomContainer() {
     {id: 5, user: 'billy', color: '#1e90ff', timestamp: '5:15', message: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'},
   ]
 
-  let settingsStyle, settingsExpandHeight, settingsHeaderBottom, settingsBodyStyle
+  const appAbsBottom = document.body.getBoundingClientRect().bottom
+  let settingsStyle, settingsExpandHeight, settingsHeaderBottom, settingsBodyStyle, chatExpandedStyle, chatExpandHeight
 
   if (!isSmall && !isLarger) {
     settingsStyle = {
@@ -37,17 +38,30 @@ export default function RoomContainer() {
   }
 
   if (settingsHeaderContainerRef && settingsHeaderContainerRef.current) {
-    const chatTop = chatContainerRef.current.getBoundingClientRect().top
+    const settingsHeaderAbsBottom = settingsHeaderContainerRef.current.getBoundingClientRect().bottom
     settingsHeaderBottom = parseInt(window.getComputedStyle(settingsHeaderContainerRef.current).height)
-    settingsExpandHeight = chatTop - settingsHeaderBottom
+    settingsExpandHeight = appAbsBottom - settingsHeaderAbsBottom - 110 // minus chat height, set based on input plus chat header manually...
   }
 
-  if (isSmall ) {
+  if (pageHeaderRef && pageHeaderRef.current) {
+    const pageHeaderAbsBottom = pageHeaderRef.current.getBoundingClientRect().bottom
+    chatExpandHeight = appAbsBottom - pageHeaderAbsBottom
+  }
+
+  if (isSmall) {
     settingsBodyStyle = {
       position: 'absolute',
       width: '100%',
       height: settingsExpandHeight,
       top: settingsHeaderBottom
+    }
+  }
+
+  if (isSmall && chatIsExpanded) {
+    chatExpandedStyle = {
+      position: 'absolute',
+      height: chatExpandHeight,
+      width: '100%'
     }
   }
 
@@ -169,7 +183,7 @@ export default function RoomContainer() {
           </Table> */}
         </Panel.Body>
       </Panel>
-      <Panel innerRef={chatContainerRef} style={{ zIndex: 11, boxShadow: '0 0 10px #000'}} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
+      <Panel innerRef={chatContainerRef} style={{ ...chatExpandedStyle, zIndex: 11, boxShadow: '0 0 10px #000'}} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
         <Panel.Header onClick={() => handleChatExpand()}>
           {!isSmall && <Panel.Collapse direction={'right'} />}
           <Panel.Title>Chat</Panel.Title>
@@ -180,8 +194,8 @@ export default function RoomContainer() {
               <Chat.TextInput style={isSmall ? {padding: '0.6rem 1rem'} : null} onFocus={() => handleChatExpand(false)} />
               <Chat.Send style={isSmall ? {margin: '0 0 0 0.5em' } : null}>Send</Chat.Send>
             </Chat.Form>
-            {!isSmall && 
-              <Chat.Log>
+            {(!isSmall || chatIsExpanded) && 
+              <Chat.Log style={isSmall ? {fontSize: '20px'} : null}>
                 {messages.map(message => (
                   <Chat.Message key={message.id}>
                     <Chat.Timestamp>{message.timestamp}</Chat.Timestamp>
