@@ -67,6 +67,7 @@ export const Message = styled.div`
   &:last-of-type {
     margin-bottom: 1em;
   }
+  border-radius: 10px;
 `
 
 export const Timestamp = styled.span`

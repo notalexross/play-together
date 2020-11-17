@@ -195,9 +195,9 @@ export default function RoomContainer({ pageHeaderRef }) {
               <Chat.Send style={isSmall ? {margin: '0 0 0 0.5em' } : null}>Send</Chat.Send>
             </Chat.Form>
             {(!isSmall || chatIsExpanded) && 
-              <Chat.Log style={isSmall ? {fontSize: '20px'} : null}>
+              <Chat.Log>
                 {messages.map(message => (
-                  <Chat.Message key={message.id}>
+                  <Chat.Message style={isSmall ? {fontSize: '20px', background: '#111', padding: '1em'} : null} key={message.id}>
                     <Chat.Timestamp>{message.timestamp}</Chat.Timestamp>
                     <Chat.Sender color={message.color}>{message.user}</Chat.Sender>
                     <Chat.Text>{message.message}</Chat.Text>
