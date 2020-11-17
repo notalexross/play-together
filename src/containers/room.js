@@ -11,6 +11,7 @@ export default function RoomContainer({ pageHeaderRef }) {
   const { windowWidth } = useWindowSize()
   const settingsHeaderContainerRef = useRef()
   const chatContainerRef = useRef()
+  const mainPanelRef = useRef()
 
   const isLarger = windowWidth > 1200
   const isLarge = windowWidth > 1000
@@ -27,7 +28,7 @@ export default function RoomContainer({ pageHeaderRef }) {
     {id: 5, user: 'billy', color: '#1e90ff', timestamp: '5:15', message: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'},
   ]
 
-  const appAbsBottom = document.body.getBoundingClientRect().bottom
+  const appHeight = document.body.scrollHeight
   let settingsStyle, settingsExpandHeight, settingsHeaderBottom, settingsBodyStyle, chatExpandedStyle, chatExpandHeight
 
   if (!isSmall && !isLarger) {
@@ -39,13 +40,14 @@ export default function RoomContainer({ pageHeaderRef }) {
 
   if (settingsHeaderContainerRef && settingsHeaderContainerRef.current) {
     const settingsHeaderAbsBottom = settingsHeaderContainerRef.current.getBoundingClientRect().bottom
+    const mainPanelAbsBottom = mainPanelRef.current.getBoundingClientRect().bottom
     settingsHeaderBottom = parseInt(window.getComputedStyle(settingsHeaderContainerRef.current).height)
-    settingsExpandHeight = appAbsBottom - settingsHeaderAbsBottom - 110 // minus chat height, set based on input plus chat header manually...
+    settingsExpandHeight = mainPanelAbsBottom - settingsHeaderAbsBottom
   }
 
   if (pageHeaderRef && pageHeaderRef.current) {
     const pageHeaderAbsBottom = pageHeaderRef.current.getBoundingClientRect().bottom
-    chatExpandHeight = appAbsBottom - pageHeaderAbsBottom
+    chatExpandHeight = appHeight - pageHeaderAbsBottom
   }
 
   if (isSmall) {
@@ -112,7 +114,7 @@ export default function RoomContainer({ pageHeaderRef }) {
           </Panel.Body>
         }
       </Panel>
-      <Panel>
+      <Panel innerRef={mainPanelRef}>
         <Panel.Body>
           <Playarea>
             <Playarea.Area>
