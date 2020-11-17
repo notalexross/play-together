@@ -27,18 +27,16 @@ export default function RoomContainer({ pageHeaderRef }) {
   ]
 
   const appHeight = document.body.scrollHeight
-  let settingsStyle, settingsExpandHeight, settingsHeaderBottom, settingsBodyStyle, chatExpandedStyle, chatExpandHeight
+  let settingsStyle, settingsExpandHeight, settingsHeaderBottom, settingsBodyStyle, chatExpandedStyle, chatExpandHeight, settingsHeaderAbsBottom
 
   if (!isSmall && !isLarger) {
     settingsStyle = {
       position: 'absolute',
-      maxHeight: '100%',
-      overflow: 'auto',
     }
   }
 
   if (settingsHeaderContainerRef && settingsHeaderContainerRef.current) {
-    const settingsHeaderAbsBottom = settingsHeaderContainerRef.current.getBoundingClientRect().bottom
+    settingsHeaderAbsBottom = settingsHeaderContainerRef.current.getBoundingClientRect().bottom
     settingsHeaderBottom = parseInt(window.getComputedStyle(settingsHeaderContainerRef.current).height)
     settingsExpandHeight = appHeight - settingsHeaderAbsBottom - 112 // number from trial and error.. can't use main panel bottom, as changes when chat opens (whilst settings open)
   }
@@ -55,6 +53,12 @@ export default function RoomContainer({ pageHeaderRef }) {
       left: 0,
       height: settingsExpandHeight,
       top: settingsHeaderBottom
+    }
+  }
+
+  if (!isSmall && !isLarger) {
+    settingsBodyStyle = {
+      maxHeight: appHeight - settingsHeaderAbsBottom
     }
   }
 

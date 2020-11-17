@@ -8,23 +8,28 @@ export const Panels = styled.div`
   overflow: auto;
   position: relative;
   height: 100%;
+
+
 `
 
 export const Wrapper = styled.div`
-  position: relative;
+  // position: relative;
   ${({ width }) => !width && 'flex-grow: 1;'}
+
+  // position: absolute;
+  // height: 80%;
+  // max-height: 100%;
+  // height: fit-content;
+
 `
 
 // transition max-width instead of width, as max width wont change responsively.
 // if use width for transition then animation will play when change from small to large width.
 export const Container = styled.section`
+  position: relative;
   height: 100%;
   ${({ shouldTransition }) => shouldTransition && 'transition: max-width 0.2s;'}
-  // ${({ shouldTransition }) => shouldTransition && 'transition: width 0.2s;'}
-  // transition: width 0.2s;
   max-width: ${({ collapsed, width }) => collapsed ? '0' : width};
-  // width: ${({ collapsed, width }) => collapsed ? '0' : width};
-  // max-width: 100%;
 
   ${({ direction }) => {
     switch(direction) {
@@ -36,19 +41,27 @@ export const Container = styled.section`
       }
     }
   }}
+`
 
+export const Test = styled.div`
+// position: relative;
+  // height: 100%;
 `
 
 export const Inner = styled.div`
+position: relative;
   // border: solid 1px #444;
   display: Flex;
   flex-direction: column;
   box-sizing: border-box;
   height: 100%;
+  // max-height: 100%;
   direction: ltr;
   
   width: ${({ width }) => width ? width : '100%'};
   // width: 100%;
+
+
 `
 
 export const Header = styled.div`
@@ -69,6 +82,13 @@ export const Title = styled.h1`
 
 export const Body = styled.div`
   flex-grow: 1;
+  height: 100%;
+  // height: 500px;
+  // max-height: 100%;
+  // max-height: 500px; // doesn't work if set to percentage
+
+  // height: 10%;
+
   overflow: auto;
 `
 

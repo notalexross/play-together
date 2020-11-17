@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { Container, Wrapper, Tip, Arrow } from './styles'
 
 export default function Tooltip({
@@ -12,6 +13,22 @@ export default function Tooltip({
   align = 'center', // center/flex-start/flex-end
   ...restProps
 }) {
+
+
+
+  // return (
+  //   <>
+  //     <Wrapper>
+  //       {children}
+  //     </Wrapper>
+  //     {ReactDOM.createPortal(
+  //       <>
+  //         hi
+  //       </>
+  //       , document.getElementById('root')
+  //     )}
+  //   </>
+  // )
 
   return (
     <Container align={align} {...restProps}>
