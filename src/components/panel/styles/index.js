@@ -1,6 +1,15 @@
 // TODO
 import styled from 'styled-components'
 
+export const Panels = styled.div`
+  display: flex;
+  // background: #1e1e1e;
+  flex-grow: 1;
+  overflow: auto;
+  position: relative;
+  height: 100%;
+`
+
 export const Wrapper = styled.div`
   position: relative;
   ${({ width }) => !width && 'flex-grow: 1;'}
@@ -10,7 +19,6 @@ export const Wrapper = styled.div`
 // if use width for transition then animation will play when change from small to large width.
 export const Container = styled.section`
   height: 100%;
-  overflow: hidden;
   ${({ shouldTransition }) => shouldTransition && 'transition: max-width 0.2s;'}
   // ${({ shouldTransition }) => shouldTransition && 'transition: width 0.2s;'}
   // transition: width 0.2s;
@@ -28,6 +36,7 @@ export const Container = styled.section`
       }
     }
   }}
+
 `
 
 export const Inner = styled.div`
@@ -44,6 +53,7 @@ export const Inner = styled.div`
 
 export const Header = styled.div`
   border-bottom: solid 1px #444;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,6 +69,7 @@ export const Title = styled.h1`
 
 export const Body = styled.div`
   flex-grow: 1;
+  overflow: auto;
 `
 
 export const Collapse = styled.div`

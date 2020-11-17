@@ -1,13 +1,13 @@
-import React, { useContext, useState, useRef, useEffect } from 'react'
+import React, { useContext, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { Room, Panel, Table, Player, EmptySeat, Action, GameSelect, Chat, Accordion, Playarea } from '../components'
-import { gameContext } from '../context/game'
+import { Panel, Chat } from '../components'
+import SettingsContainer from './settings'
+import GameContainer from './game'
 import useWindowSize from '../hooks/useWindowSize.js'
 
 export default function RoomContainer({ pageHeaderRef }) {
   const [ chatIsExpanded, setChatIsExpanded ] = useState(false)
   const [ settingsIsExpanded, setSettingsIsExpanded ] = useState(false)
-  const { sitDown } = useContext(gameContext)
   const { windowWidth } = useWindowSize()
   const settingsHeaderContainerRef = useRef()
   const chatContainerRef = useRef()
@@ -16,10 +16,8 @@ export default function RoomContainer({ pageHeaderRef }) {
   const isLarger = windowWidth > 1200
   const isLarge = windowWidth > 1000
   const isSmall = windowWidth <= 800
-  // console.log(windowWidth)
 
   // TODO
-  const players = [{id: 1111, name: 'barry', hand: [1,2], stats: {played: 5, wins: 2}}, {id: 2222, name: 'larry', hand: [3,4], stats: {played: 5, wins: 3}}]
   const messages = [
     {id: 1, user: 'bob', color: '#d46d00', timestamp: '5:03', message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec ullamcorper lacus, id congue tellus.'},
     {id: 2, user: 'billy', color: '#1e90ff', timestamp: '5:05', message: 'Nam et finibus odio. Vivamus ac elit ac nisi eleifend efficitur et a neque.'},
@@ -33,16 +31,16 @@ export default function RoomContainer({ pageHeaderRef }) {
 
   if (!isSmall && !isLarger) {
     settingsStyle = {
-      height: 'min-content',
       position: 'absolute',
+      maxHeight: '100%',
+      overflow: 'auto',
     }
   }
 
   if (settingsHeaderContainerRef && settingsHeaderContainerRef.current) {
     const settingsHeaderAbsBottom = settingsHeaderContainerRef.current.getBoundingClientRect().bottom
-    const mainPanelAbsBottom = mainPanelRef.current.getBoundingClientRect().bottom
     settingsHeaderBottom = parseInt(window.getComputedStyle(settingsHeaderContainerRef.current).height)
-    settingsExpandHeight = mainPanelAbsBottom - settingsHeaderAbsBottom
+    settingsExpandHeight = appHeight - settingsHeaderAbsBottom - 112 // number from trial and error.. can't use main panel bottom, as changes when chat opens (whilst settings open)
   }
 
   if (pageHeaderRef && pageHeaderRef.current) {
@@ -64,7 +62,7 @@ export default function RoomContainer({ pageHeaderRef }) {
     chatExpandedStyle = {
       position: 'absolute',
       height: chatExpandHeight,
-      width: '100%',
+      width: '100%'
     }
   }
 
@@ -75,135 +73,60 @@ export default function RoomContainer({ pageHeaderRef }) {
   const handleChatExpand = (toggle = true) => {
     if (!isSmall) return
     toggle ? setChatIsExpanded(prev => !prev) : setChatIsExpanded(true)
-    console.log('set')
   }
 
   return (
-    <Room style={{flexDirection: isSmall ? 'column' : 'row'}}>
+    <Panel.Container style={{flexDirection: isSmall ? 'column' : 'row'}}>
       <Panel style={{ zIndex: 10, boxShadow: '0 0 10px #000', ...settingsStyle }} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `100%` : '350px'}>
-        <div ref={settingsHeaderContainerRef}>
-          <Panel.Header onClick={handleSettingsHeaderClick}>
-            {!isSmall && <Panel.Collapse direction={'left'} />}
-            <Panel.Title>Settings</Panel.Title>
-          </Panel.Header>
-        </div>
+        <Panel.Header innerRef={settingsHeaderContainerRef} onClick={handleSettingsHeaderClick}>
+          {!isSmall &&
+            <Panel.Collapse direction={'left'} />
+          }
+          <Panel.Title>
+            Settings
+          </Panel.Title>
+        </Panel.Header>
         {(!isSmall || settingsIsExpanded) &&
           <Panel.Body style={settingsBodyStyle}>
-            <Accordion>
-              <Accordion.Item>
-                <Accordion.Header>Game</Accordion.Header>
-                <Accordion.Body>
-                  <GameSelect>
-                    <GameSelect.Game>Uno</GameSelect.Game>
-                    <GameSelect.Game>Chess</GameSelect.Game>
-                  </GameSelect>
-                </Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item>
-                <Accordion.Header>Game Options</Accordion.Header>
-                <Accordion.Body>game options</Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item>
-                <Accordion.Header>Room Options</Accordion.Header>
-                <Accordion.Body>room options</Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item>
-                <Accordion.Header>Settings</Accordion.Header>
-                <Accordion.Body>settings</Accordion.Body>
-              </Accordion.Item>
-            </Accordion>
+            <SettingsContainer />
           </Panel.Body>
         }
       </Panel>
       <Panel innerRef={mainPanelRef}>
         <Panel.Body>
-          <Playarea>
-            <Playarea.Area>
-              <Playarea.PlayersContainer gap='2%'>
-                <Playarea.PlayerWrapper>
-                  <Playarea.Player></Playarea.Player>
-                </Playarea.PlayerWrapper>
-                <Playarea.PlayerWrapper>
-                  <Playarea.Player></Playarea.Player>
-                </Playarea.PlayerWrapper>
-              </Playarea.PlayersContainer>
-              <Playarea.TableContainer>
-                <Playarea.Table>
-                  <div style={{width: '150px', height: '50px', background: 'black', textAlign: 'center'}}></div>
-                </Playarea.Table>
-                <Playarea.PlayersContainer gap='35%'>
-                  <Playarea.PlayerWrapper>
-                    <Playarea.Player></Playarea.Player>
-                  </Playarea.PlayerWrapper>
-                  <Playarea.PlayerWrapper>
-                    <Playarea.Player></Playarea.Player>
-                  </Playarea.PlayerWrapper>
-                </Playarea.PlayersContainer>
-                <Playarea.PlayersContainer gap='40%'>
-                  <Playarea.PlayerWrapper>
-                    <Playarea.Player></Playarea.Player>
-                  </Playarea.PlayerWrapper>
-                  <Playarea.PlayerWrapper>
-                    <Playarea.Player></Playarea.Player>
-                  </Playarea.PlayerWrapper>
-                </Playarea.PlayersContainer>
-                <Playarea.PlayersContainer gap='45%'>
-                  <Playarea.PlayerWrapper>
-                    <Playarea.Player></Playarea.Player>
-                  </Playarea.PlayerWrapper>
-                  <Playarea.PlayerWrapper>
-                    <Playarea.Player></Playarea.Player>
-                  </Playarea.PlayerWrapper>
-                </Playarea.PlayersContainer>
-              </Playarea.TableContainer>
-            </Playarea.Area>
-            <Playarea.Main></Playarea.Main>
-          </Playarea>
-          {/* <Table>
-            <Table.Board></Table.Board>
-            <Table.Seats>
-              {players.map(player => (
-                  <Player key={player.id}>
-                    <Player.ProfilePicture/>
-                    <Player.Stats>
-                      <Player.Wins>{player.stats.wins}</Player.Wins>
-                      <Player.Played>{player.stats.played}</Player.Played>
-                    </Player.Stats>
-                    <Player.Nickname>{player.name}</Player.Nickname>
-                    <Player.Hand>
-                      {player.hand.map(card => {
-                        <Player.Card>{card}</Player.Card>
-                      })}
-                    </Player.Hand>
-                    <Player.Playarea></Player.Playarea>
-                  </Player>
-              ))}
-              <EmptySeat onClick={() => sitDown(1234,0)}/>
-            </Table.Seats>
-            <Table.Actions>
-              <Action>Draw</Action>
-            </Table.Actions>
-          </Table> */}
+          <GameContainer />
         </Panel.Body>
       </Panel>
       <Panel innerRef={chatContainerRef} style={{ ...chatExpandedStyle, zIndex: 11, boxShadow: '0 0 10px #000'}} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `100%` : '350px'}>
         <Panel.Header onClick={() => handleChatExpand()}>
-          {!isSmall && <Panel.Collapse direction={'right'} />}
-          <Panel.Title>Chat</Panel.Title>
+          {!isSmall &&
+            <Panel.Collapse direction={'right'} />
+          }
+          <Panel.Title>
+            Chat
+          </Panel.Title>
         </Panel.Header>
         <Panel.Body>
           <Chat>
             <Chat.Form style={isSmall ? {flexDirection: 'row'} : null}>
               <Chat.TextInput style={isSmall ? {padding: '0.6rem 1rem'} : null} onFocus={() => handleChatExpand(false)} />
-              <Chat.Send style={isSmall ? {margin: '0 0 0 0.5em' } : null}>Send</Chat.Send>
+              <Chat.Send style={isSmall ? {margin: '0 0 0 0.5em' } : null}>
+                Send
+              </Chat.Send>
             </Chat.Form>
             {(!isSmall || chatIsExpanded) && 
               <Chat.Log>
                 {messages.map(message => (
                   <Chat.Message style={isSmall ? {fontSize: '20px', background: '#111', padding: '1em'} : null} key={message.id}>
-                    <Chat.Timestamp>{message.timestamp}</Chat.Timestamp>
-                    <Chat.Sender color={message.color}>{message.user}</Chat.Sender>
-                    <Chat.Text>{message.message}</Chat.Text>
+                    <Chat.Timestamp>
+                      {message.timestamp}
+                    </Chat.Timestamp>
+                    <Chat.Sender color={message.color}>
+                      {message.user}
+                    </Chat.Sender>
+                    <Chat.Text>
+                      {message.message}
+                    </Chat.Text>
                   </Chat.Message>
                 ))}
               </Chat.Log>
@@ -211,6 +134,6 @@ export default function RoomContainer({ pageHeaderRef }) {
           </Chat>
         </Panel.Body>
       </Panel>
-    </Room>
+    </Panel.Container>
   )
 }

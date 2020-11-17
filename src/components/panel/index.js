@@ -1,10 +1,10 @@
 // TODO
-import React, { useContext, useState, useEffect, useRef } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { CollapseRight } from '@styled-icons/open-iconic/CollapseRight'
 import { CollapseLeft } from '@styled-icons/open-iconic/CollapseLeft'
 import { Tooltip } from '..'
-import { Container, Inner, Header, Title, Body, Collapse, CollapseInner, Wrapper } from './styles'
+import { Panels, Container, Inner, Header, Title, Body, Collapse, CollapseInner, Wrapper } from './styles'
 
 const CollapseContext = React.createContext()
 
@@ -17,20 +17,24 @@ export default function Panel({ children, innerRef, width, watchProp, shouldTran
   }, [watchProp])
 
   return (
-    <CollapseContext.Provider value={{ isCollapsed, setIsCollapsed, collapseDirection, setCollapseDirection }}>
       <Wrapper ref={innerRef} width={width} {...restProps}>
-        <Container width={width} direction={collapseDirection} collapsed={isCollapsed} shouldTransition={shouldTransition}>
-          <Inner width={width}>
-            {children}
-          </Inner>
-        </Container>
+        <CollapseContext.Provider value={{ isCollapsed, setIsCollapsed, collapseDirection, setCollapseDirection }}>
+          <Container width={width} direction={collapseDirection} collapsed={isCollapsed} shouldTransition={shouldTransition}>
+            <Inner width={width}>
+              {children}
+            </Inner>
+          </Container>
+        </CollapseContext.Provider>
       </Wrapper>
-    </CollapseContext.Provider>
   )
 }
 
-Panel.Header = function PanelHeader({ children, ...restProps }) {
-  return <Header {...restProps}>{children}</Header>
+Panel.Container = function PanelContainer({ children, ...restProps }) {
+  return <Panels {...restProps}>{children}</Panels>
+}
+
+Panel.Header = function PanelHeader({ children, innerRef, ...restProps }) {
+  return <Header ref={innerRef} {...restProps}>{children}</Header>
 }
 
 Panel.Title = function PanelTitle({ children, ...restProps }) {

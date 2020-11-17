@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #1e1e1e;
+  // background: #1e1e1e;
 `
 
 export const Area = styled.div`
