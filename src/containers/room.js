@@ -54,6 +54,7 @@ export default function RoomContainer({ pageHeaderRef }) {
     settingsBodyStyle = {
       position: 'absolute',
       width: '100%',
+      left: 0,
       height: settingsExpandHeight,
       top: settingsHeaderBottom
     }
@@ -63,7 +64,7 @@ export default function RoomContainer({ pageHeaderRef }) {
     chatExpandedStyle = {
       position: 'absolute',
       height: chatExpandHeight,
-      width: '100%'
+      width: '100%',
     }
   }
 
@@ -79,7 +80,7 @@ export default function RoomContainer({ pageHeaderRef }) {
 
   return (
     <Room style={{flexDirection: isSmall ? 'column' : 'row'}}>
-      <Panel style={{ zIndex: 10, boxShadow: '0 0 10px #000', ...settingsStyle }} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
+      <Panel style={{ zIndex: 10, boxShadow: '0 0 10px #000', ...settingsStyle }} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `100%` : '350px'}>
         <div ref={settingsHeaderContainerRef}>
           <Panel.Header onClick={handleSettingsHeaderClick}>
             {!isSmall && <Panel.Collapse direction={'left'} />}
@@ -185,7 +186,7 @@ export default function RoomContainer({ pageHeaderRef }) {
           </Table> */}
         </Panel.Body>
       </Panel>
-      <Panel innerRef={chatContainerRef} style={{ ...chatExpandedStyle, zIndex: 11, boxShadow: '0 0 10px #000'}} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
+      <Panel innerRef={chatContainerRef} style={{ ...chatExpandedStyle, zIndex: 11, boxShadow: '0 0 10px #000'}} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `100%` : '350px'}>
         <Panel.Header onClick={() => handleChatExpand()}>
           {!isSmall && <Panel.Collapse direction={'right'} />}
           <Panel.Title>Chat</Panel.Title>
