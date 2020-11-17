@@ -29,7 +29,7 @@ export const Header = styled.div`
   background: #252525;
 
   &:hover {
-    background: #ffffff55;
+    background: #555;
   }
 `;
 

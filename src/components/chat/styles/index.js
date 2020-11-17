@@ -19,10 +19,10 @@ export const SendWrapper = styled.div`
 `
 
 export const Send = styled.button`
-  margin: 1em 2em;
+  margin: 1em 2em 0.5em;
   padding: 0.5em 1.25em;
   border: none;
-  border-radius: 0.4em;
+  border-radius: 6px;
   background: #1e1e1e;
   color: inherit;
 `
@@ -37,7 +37,9 @@ export const TextInput = styled.textarea`
   font-size: inherit;
   color: inherit;
   line-height: 1.5;
-  margin: 0 0.2em;
+  border-radius: 6px;
+
+  flex-grow: 1;
 `
 
 export const Error = styled.p`
@@ -86,6 +88,8 @@ export const Text = styled.span``
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
   background: inherit;
+  margin: 0.5em 0.2em;
+
+  justify-content: flex-end;
 `

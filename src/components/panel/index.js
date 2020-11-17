@@ -8,7 +8,7 @@ import { Container, Inner, Header, Title, Body, Collapse, CollapseInner, Wrapper
 
 const CollapseContext = React.createContext()
 
-export default function Panel({ children, width, watchProp, shouldTransition = true, ...restProps }) { // resize = 'left' or 'right'
+export default function Panel({ children, innerRef, width, watchProp, shouldTransition = true, ...restProps }) { // resize = 'left' or 'right'
   const [ isCollapsed, setIsCollapsed ] = useState(false)
   const [ collapseDirection, setCollapseDirection ] = useState('')
 
@@ -18,7 +18,7 @@ export default function Panel({ children, width, watchProp, shouldTransition = t
 
   return (
     <CollapseContext.Provider value={{ isCollapsed, setIsCollapsed, collapseDirection, setCollapseDirection }}>
-      <Wrapper width={width} {...restProps}>
+      <Wrapper ref={innerRef} width={width} {...restProps}>
         <Container width={width} direction={collapseDirection} collapsed={isCollapsed} shouldTransition={shouldTransition}>
           <Inner width={width}>
             {children}

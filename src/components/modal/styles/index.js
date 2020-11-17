@@ -17,6 +17,7 @@ const fadeIn = keyframes`
 `;
 
 export const Overlay = styled.div`
+  z-index: 100;
   display: flex;
   position: fixed;
   align-items: center;

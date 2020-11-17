@@ -30,13 +30,21 @@ Chat.Send = function ChatSend({ children, ...restProps }) {
   )
 }
 
-Chat.TextInput = function ChatTextInput({ ...restProps }) {
+Chat.TextInput = function ChatTextInput({ onFocus = () => {}, padding, ...restProps }) {
   const [ text, setText ] = useState('')
   const [ error, setError ] = useState('')
   const prevScrollHeight = useRef()
   const rowCount = useRef(1)
   const messageRef = useRef()
   const maxLength = 200
+
+  useEffect(() => {
+    const ref = messageRef.current
+    ref.addEventListener('focus', onFocus)
+    return () => {
+      ref.removeEventListener('focus', onFocus)
+    }
+  }, [onFocus])
 
   useEffect(() => {
     !error && text.length === maxLength ?
@@ -64,6 +72,7 @@ Chat.TextInput = function ChatTextInput({ ...restProps }) {
         ariaLabel="Send a message"
         placeholder="Send a message"
         maxLength={maxLength}
+        padding={padding}
         {...restProps}
       />
     </>

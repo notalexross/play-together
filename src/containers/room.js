@@ -1,12 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Room, Panel, Table, Player, EmptySeat, Action, GameSelect, Chat, Accordion, Playarea } from '../components'
 import { gameContext } from '../context/game'
 import useWindowSize from '../hooks/useWindowSize.js'
 
 export default function RoomContainer() {
+  const [ chatIsExpanded, setChatIsExpanded ] = useState(false)
+  const [ settingsIsExpanded, setSettingsIsExpanded ] = useState(false)
   const { sitDown } = useContext(gameContext)
   const { windowWidth } = useWindowSize()
+  const settingsHeaderContainerRef = useRef()
+  const chatContainerRef = useRef()
 
   const isLarger = windowWidth > 1200
   const isLarge = windowWidth > 1000
@@ -23,7 +27,8 @@ export default function RoomContainer() {
     {id: 5, user: 'billy', color: '#1e90ff', timestamp: '5:15', message: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.'},
   ]
 
-  let settingsStyle
+  let settingsStyle, settingsExpandHeight, settingsHeaderBottom, settingsBodyStyle
+
   if (!isSmall && !isLarger) {
     settingsStyle = {
       height: 'min-content',
@@ -31,38 +36,67 @@ export default function RoomContainer() {
     }
   }
 
+  if (settingsHeaderContainerRef && settingsHeaderContainerRef.current) {
+    const chatTop = chatContainerRef.current.getBoundingClientRect().top
+    settingsHeaderBottom = parseInt(window.getComputedStyle(settingsHeaderContainerRef.current).height)
+    settingsExpandHeight = chatTop - settingsHeaderBottom
+  }
+
+  if (isSmall ) {
+    settingsBodyStyle = {
+      position: 'absolute',
+      width: '100%',
+      height: settingsExpandHeight,
+      top: settingsHeaderBottom
+    }
+  }
+
+  const handleSettingsHeaderClick = () => {
+    isSmall && setSettingsIsExpanded(prev => !prev)
+  }
+
+  const handleChatExpand = (toggle = true) => {
+    if (!isSmall) return
+    toggle ? setChatIsExpanded(prev => !prev) : setChatIsExpanded(true)
+    console.log('set')
+  }
+
   return (
     <Room style={{flexDirection: isSmall ? 'column' : 'row'}}>
       <Panel style={{ zIndex: 10, boxShadow: '0 0 10px #000', ...settingsStyle }} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
-        <Panel.Header>
-          {!isSmall && <Panel.Collapse direction={'left'} />}
-          <Panel.Title>Settings</Panel.Title>
-        </Panel.Header>
-        <Panel.Body>
-          <Accordion>
-            <Accordion.Item>
-              <Accordion.Header>Game</Accordion.Header>
-              <Accordion.Body>
-                <GameSelect>
-                  <GameSelect.Game>Uno</GameSelect.Game>
-                  <GameSelect.Game>Chess</GameSelect.Game>
-                </GameSelect>
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item>
-              <Accordion.Header>Game Options</Accordion.Header>
-              <Accordion.Body>game options</Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item>
-              <Accordion.Header>Room Options</Accordion.Header>
-              <Accordion.Body>room options</Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item>
-              <Accordion.Header>Settings</Accordion.Header>
-              <Accordion.Body>settings</Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-        </Panel.Body>
+        <div ref={settingsHeaderContainerRef}>
+          <Panel.Header onClick={handleSettingsHeaderClick}>
+            {!isSmall && <Panel.Collapse direction={'left'} />}
+            <Panel.Title>Settings</Panel.Title>
+          </Panel.Header>
+        </div>
+        {(!isSmall || settingsIsExpanded) &&
+          <Panel.Body style={settingsBodyStyle}>
+            <Accordion>
+              <Accordion.Item>
+                <Accordion.Header>Game</Accordion.Header>
+                <Accordion.Body>
+                  <GameSelect>
+                    <GameSelect.Game>Uno</GameSelect.Game>
+                    <GameSelect.Game>Chess</GameSelect.Game>
+                  </GameSelect>
+                </Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item>
+                <Accordion.Header>Game Options</Accordion.Header>
+                <Accordion.Body>game options</Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item>
+                <Accordion.Header>Room Options</Accordion.Header>
+                <Accordion.Body>room options</Accordion.Body>
+              </Accordion.Item>
+              <Accordion.Item>
+                <Accordion.Header>Settings</Accordion.Header>
+                <Accordion.Body>settings</Accordion.Body>
+              </Accordion.Item>
+            </Accordion>
+          </Panel.Body>
+        }
       </Panel>
       <Panel>
         <Panel.Body>
@@ -135,26 +169,28 @@ export default function RoomContainer() {
           </Table> */}
         </Panel.Body>
       </Panel>
-      <Panel style={{ zIndex: 10, boxShadow: '0 0 10px #000'}} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
-        <Panel.Header>
+      <Panel innerRef={chatContainerRef} style={{ zIndex: 11, boxShadow: '0 0 10px #000'}} watchProp={isSmall} shouldTransition={!isSmall} width={isSmall ? `${windowWidth}px` : '350px'}>
+        <Panel.Header onClick={() => handleChatExpand()}>
           {!isSmall && <Panel.Collapse direction={'right'} />}
           <Panel.Title>Chat</Panel.Title>
         </Panel.Header>
         <Panel.Body>
           <Chat>
-            <Chat.Form>
-              <Chat.TextInput />
-              <Chat.Send>Send</Chat.Send>
+            <Chat.Form style={isSmall ? {flexDirection: 'row'} : null}>
+              <Chat.TextInput style={isSmall ? {padding: '0.6rem 1rem'} : null} onFocus={() => handleChatExpand(false)} />
+              <Chat.Send style={isSmall ? {margin: '0 0 0 0.5em' } : null}>Send</Chat.Send>
             </Chat.Form>
-            <Chat.Log>
-              {messages.map(message => (
-                <Chat.Message key={message.id}>
-                  <Chat.Timestamp>{message.timestamp}</Chat.Timestamp>
-                  <Chat.Sender color={message.color}>{message.user}</Chat.Sender>
-                  <Chat.Text>{message.message}</Chat.Text>
-                </Chat.Message>
-              ))}
-            </Chat.Log>
+            {!isSmall && 
+              <Chat.Log>
+                {messages.map(message => (
+                  <Chat.Message key={message.id}>
+                    <Chat.Timestamp>{message.timestamp}</Chat.Timestamp>
+                    <Chat.Sender color={message.color}>{message.user}</Chat.Sender>
+                    <Chat.Text>{message.message}</Chat.Text>
+                  </Chat.Message>
+                ))}
+              </Chat.Log>
+            }
           </Chat>
         </Panel.Body>
       </Panel>

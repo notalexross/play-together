@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Container, Area, Main, TableContainer, TableWrapper, Table, PlayersContainer, PlayerWrapper, Player } from './styles'
 import { getPreRotatedHeight } from '../../utils'
@@ -36,26 +36,21 @@ Playarea.TableContainer = function PlayareaTableContainer({ children, ...restPro
   )
 }
 
-Playarea.Table = function PlayareaTable({ children, ...restProps }) {
+Playarea.Table = function PlayareaTable({ children, perspective = 400, angle0Height = 1200, maxAngle = 45, minAngle = 11, ...restProps }) {
+  const [ tableHeight, setTableHeight ] = useState()
+  const [ angle, setAngle ] = useState()
   const wrapperRef = useRef()
-  const tableRef = useRef()
+  
+  const wrapperHeight = wrapperRef && wrapperRef.current && wrapperRef.current.offsetHeight
 
-  const angle0Height = 1200
-  const maxAngle = 45
-  const minAngle = 11
-  const perspective = 400
-
-  let tableHeight, angle
-  if(wrapperRef && wrapperRef.current) {
-    const wrapperHeight = wrapperRef.current.offsetHeight
-
-    angle = Math.max(Math.min((angle0Height - wrapperHeight) / angle0Height * maxAngle, maxAngle), minAngle)
-    tableHeight = getPreRotatedHeight(wrapperHeight, -angle, perspective)
-  }
+  useEffect(() => {
+    setAngle(Math.max(Math.min((angle0Height - wrapperHeight) / angle0Height * maxAngle, maxAngle), minAngle))
+    angle && setTableHeight(getPreRotatedHeight(wrapperHeight, -angle, perspective))
+  }, [wrapperHeight])
 
   return (
     <TableWrapper ref={wrapperRef}>
-      <Table ref={tableRef} height={tableHeight} angle={angle} perspective={perspective} {...restProps}>
+      <Table height={tableHeight} angle={angle} perspective={perspective} {...restProps}>
         {children}
       </Table>
     </TableWrapper>
