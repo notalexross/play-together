@@ -3,8 +3,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Container, HomeLink, Text, TextCopy } from './styles'
 
-export default function Header({ children, innerRef, ...restProps }) {
-  return <Container ref={innerRef} {...restProps}>{children}</Container>
+export default function Header({ children, ...restProps }) {
+  return <Container {...restProps}>{children}</Container>
 }
 
 Header.HomeLink = function HeaderUserHomeLink({ children, ...restProps }) {

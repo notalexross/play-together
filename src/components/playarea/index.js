@@ -12,7 +12,7 @@ export default function Playarea({ children, ...restProps }) {
 
   return (
     <FlexContainer ref={containerRef} {...restProps}>
-      <WidthContainer maxWidth={maxWidth}>
+      <WidthContainer style={{maxWidth: `${maxWidth}px`}}>
         <AspectRatioContainer>
           <PlayContainer>
             {children}
@@ -20,12 +20,6 @@ export default function Playarea({ children, ...restProps }) {
         </AspectRatioContainer>
       </WidthContainer>
     </FlexContainer>
-    // <div>
-    //   <div style={{height: '550px', width: '550px', background: 'blue'}}>
-    //   </div>
-    //   <div style={{height: '250px', width: '250px', background: 'orange'}}>
-    //   </div>
-    // </div>
   )
 }
 

@@ -12,8 +12,8 @@ export default function GameRoom() {
     <RoomRedirect>
       <GameContextProvider>
         <Container direction="column">
-          <HeaderContainer innerRef={pageHeaderRef} />
-          <RoomContainer pageHeaderRef={pageHeaderRef}/>
+          <HeaderContainer />
+          <RoomContainer />
         </Container>
       </GameContextProvider>
     </RoomRedirect>

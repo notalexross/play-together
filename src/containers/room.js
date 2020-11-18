@@ -6,13 +6,14 @@ import GameContainer from './game'
 import ChatContainer from './chat'
 import useWindowSize from '../hooks/useWindowSize.js'
 
-export default function RoomContainer({ pageHeaderRef }) {
+export default function RoomContainer() {
   const [ chatIsExpanded, setChatIsExpanded ] = useState(false)
   const [ settingsIsExpanded, setSettingsIsExpanded ] = useState(false)
   const { windowWidth } = useWindowSize()
   const settingsHeaderContainerRef = useRef()
   const chatContainerRef = useRef()
   const mainPanelRef = useRef()
+  const panelContainerRef = useRef()
 
   const isLargest = windowWidth > 1200
   // const isLarge = windowWidth > 1000
@@ -27,9 +28,8 @@ export default function RoomContainer({ pageHeaderRef }) {
     settingsExpandHeight = appHeight - settingsHeaderAbsBottom - 112 // number from trial and error.. can't use main panel bottom, as changes when chat opens (whilst settings open)
   }
 
-  if (pageHeaderRef && pageHeaderRef.current) {
-    const pageHeaderAbsBottom = pageHeaderRef.current.getBoundingClientRect().bottom
-    chatExpandHeight = appHeight - pageHeaderAbsBottom
+  if (panelContainerRef && panelContainerRef.current) {
+    chatExpandHeight = panelContainerRef.current.clientHeight
   }
 
   if (isSmall) {
@@ -66,7 +66,7 @@ export default function RoomContainer({ pageHeaderRef }) {
   }
 
   return (
-    <Panel.Container>
+    <Panel.Container ref={panelContainerRef}>
       <Panel style={!isSmall && !isLargest ? { position: 'absolute' } : null} width={isSmall ? `100%` : '350px'}>
         <Panel.Header innerRef={settingsHeaderContainerRef} onClick={handleSettingsHeaderClick}>
           <Panel.Collapse direction={'left'} />

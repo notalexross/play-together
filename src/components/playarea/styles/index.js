@@ -11,7 +11,6 @@ export const FlexContainer = styled.div`
 
 export const WidthContainer = styled.div`
   width: 100%;
-  max-width: ${({ maxWidth }) => `${maxWidth}px`};
 `
 
 export const AspectRatioContainer = styled.div`

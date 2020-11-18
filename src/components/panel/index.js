@@ -33,9 +33,9 @@ export default function Panel({ children, innerRef, width, ...restProps }) { // 
   )
 }
 
-Panel.Container = function PanelContainer({ children, ...restProps }) {
-  return <Panels {...restProps}>{children}</Panels>
-}
+Panel.Container = React.forwardRef(({ children, ...restProps }, ref) => {
+  return <Panels ref={ref} {...restProps}>{children}</Panels>
+})
 
 Panel.Header = function PanelHeader({ children, innerRef, ...restProps }) {
   return <Header ref={innerRef} {...restProps}>{children}</Header>
