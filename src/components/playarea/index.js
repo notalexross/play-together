@@ -1,83 +1,34 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
-import { Container, Area, Main, TableContainer, TableWrapper, Table, PlayersContainer, PlayerWrapper, Player } from './styles'
-import { getPreRotatedHeight } from '../../utils'
+import { FlexContainer, WidthContainer, AspectRatioContainer, PlayContainer, Image } from './styles'
 
 export default function Playarea({ children, ...restProps }) {
+  const containerRef = useRef()
+
+  let maxWidth
+  if (containerRef && containerRef.current) {
+    maxWidth = containerRef.current.parentElement.clientHeight
+  }
+
   return (
-    <Container {...restProps}>
-      {children}
-    </Container>
+    <FlexContainer ref={containerRef} {...restProps}>
+      <WidthContainer maxWidth={maxWidth}>
+        <AspectRatioContainer>
+          <PlayContainer>
+            {children}
+          </PlayContainer>
+        </AspectRatioContainer>
+      </WidthContainer>
+    </FlexContainer>
+    // <div>
+    //   <div style={{height: '550px', width: '550px', background: 'blue'}}>
+    //   </div>
+    //   <div style={{height: '250px', width: '250px', background: 'orange'}}>
+    //   </div>
+    // </div>
   )
 }
 
-Playarea.Area = function PlayareaArea({ children, ...restProps }) {
-  return (
-    <Area {...restProps}>
-      {children}
-    </Area>
-  )
-}
-
-Playarea.Main = function PlayareaMain({ children, ...restProps }) {
-  return (
-    <Main {...restProps}>
-      {children}
-    </Main>
-  )
-}
-
-Playarea.TableContainer = function PlayareaTableContainer({ children, ...restProps }) {
-  return (
-    <TableContainer {...restProps}>
-      {children}
-    </TableContainer>
-  )
-}
-
-Playarea.Table = function PlayareaTable({ children, perspective = 400, angle0Height = 1200, maxAngle = 45, minAngle = 11, ...restProps }) {
-  const [ tableHeight, setTableHeight ] = useState()
-  const [ angle, setAngle ] = useState()
-  const wrapperRef = useRef()
-  
-  const wrapperHeight = wrapperRef && wrapperRef.current && wrapperRef.current.offsetHeight
-
-  useEffect(() => {
-    setAngle(Math.max(Math.min((angle0Height - wrapperHeight) / angle0Height * maxAngle, maxAngle), minAngle))
-    angle && setTableHeight(getPreRotatedHeight(wrapperHeight, -angle, perspective))
-  }, [wrapperHeight])
-
-  return (
-    <TableWrapper ref={wrapperRef}>
-      <Table height={tableHeight} angle={angle} perspective={perspective} {...restProps}>
-        {children}
-      </Table>
-    </TableWrapper>
-  )
-}
-
-Playarea.PlayersContainer = function PlayareaPlayersContainer({ children, gap = 0, ...restProps }) {
-  // TODO make gap a function of containers position vertically
-  
-  return (
-    <PlayersContainer gap={gap} {...restProps}>
-      {children}
-    </PlayersContainer>
-  )
-}
-
-Playarea.PlayerWrapper = function PlayareaPlayerWrapper({ children, ...restProps }) {
-  return (
-    <PlayerWrapper {...restProps}>
-      {children}
-    </PlayerWrapper>
-  )
-}
-
-Playarea.Player = function PlayareaPlayer({ children, ...restProps }) {
-  return (
-    <Player {...restProps}>
-      {children}
-    </Player>
-  )
+Playarea.Image = function PlayareaImage({ src, ...restProps }) {
+  return <Image src={src} { ...restProps }/>
 }

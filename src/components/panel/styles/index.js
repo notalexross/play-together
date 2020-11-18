@@ -6,7 +6,7 @@ export const Panels = styled.div`
   flex-direction: row;
   // background: #1e1e1e;
   flex-grow: 1;
-  overflow: auto;
+  overflow: hidden;
 
   @media (max-width: 800px) {
     flex-direction: column;
@@ -16,6 +16,7 @@ export const Panels = styled.div`
 export const Wrapper = styled.div`
   ${({ width }) => !width && 'flex-grow: 1;'}
   box-shadow: 0 0 10px #000;
+  z-index: 1;
 `
 
 // transition max-width instead of width, as max width wont change responsively.

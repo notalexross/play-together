@@ -67,7 +67,7 @@ export default function RoomContainer({ pageHeaderRef }) {
 
   return (
     <Panel.Container>
-      <Panel style={!isSmall && !isLargest ? {position: 'absolute'} : null} width={isSmall ? `100%` : '350px'}>
+      <Panel style={!isSmall && !isLargest ? { position: 'absolute' } : null} width={isSmall ? `100%` : '350px'}>
         <Panel.Header innerRef={settingsHeaderContainerRef} onClick={handleSettingsHeaderClick}>
           <Panel.Collapse direction={'left'} />
           <Panel.Title>Settings</Panel.Title>
@@ -78,12 +78,12 @@ export default function RoomContainer({ pageHeaderRef }) {
           </Panel.Body>
         }
       </Panel>
-      <Panel innerRef={mainPanelRef} style={{ zIndex: -1}}>
+      <Panel innerRef={mainPanelRef} style={{ zIndex: 0, overflow: 'hidden' }}>
         <Panel.Body>
           <GameContainer />
         </Panel.Body>
       </Panel>
-      <Panel innerRef={chatContainerRef} style={{ zIndex: 1, ...chatExpandedStyle}} width={isSmall ? `100%` : '350px'}>
+      <Panel innerRef={chatContainerRef} style={chatExpandedStyle} width={isSmall ? `100%` : '350px'}>
         <Panel.Header onClick={() => handleChatExpand()}>
           <Panel.Collapse direction={'right'} />
           <Panel.Title>Chat</Panel.Title>
