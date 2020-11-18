@@ -38,7 +38,7 @@ export default function HeaderContainer({ innerRef }) {
 
   return (
     // <Header style={{flexDirection: isSmall ? 'column' : 'row'}}>
-    <Header innerRef={innerRef} style={{ zIndex: 20 }}>
+    <Header innerRef={innerRef}>
       <Header.HomeLink to={ROUTES.HOME}>
         Home
       </Header.HomeLink>

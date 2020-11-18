@@ -4,32 +4,32 @@ import PropTypes from 'prop-types'
 import { CollapseRight } from '@styled-icons/open-iconic/CollapseRight'
 import { CollapseLeft } from '@styled-icons/open-iconic/CollapseLeft'
 import { Tooltip } from '..'
-import { Panels, Container, Inner, Header, Title, Body, Collapse, CollapseInner, Wrapper, Test } from './styles'
+import { Panels, Container, Inner, Header, Title, Body, Collapse, CollapseInner, Wrapper } from './styles'
+import useWindowSize from '../../hooks/useWindowSize.js'
 
 const CollapseContext = React.createContext()
 
-export default function Panel({ children, innerRef, width, watchProp, shouldTransition = true, ...restProps }) { // resize = 'left' or 'right'
+export default function Panel({ children, innerRef, width, ...restProps }) { // resize = 'left' or 'right'
   const [ isCollapsed, setIsCollapsed ] = useState(false)
   const [ collapseDirection, setCollapseDirection ] = useState('')
+  const { windowWidth } = useWindowSize()
+
+  const isSmall = windowWidth <= 800
 
   useEffect(() => {
-    setIsCollapsed(false)
-  }, [watchProp])
+    isSmall && setIsCollapsed(false)
+  }, [isSmall])
 
   return (
-    // <Test>
-      <Wrapper ref={innerRef} width={width} {...restProps}>
-        <CollapseContext.Provider value={{ isCollapsed, setIsCollapsed, collapseDirection, setCollapseDirection }}>
-          <Container width={width} direction={collapseDirection} collapsed={isCollapsed} shouldTransition={shouldTransition}>
-            
-              <Inner width={width}>
-                {children}
-              </Inner>
-            
-          </Container>
-        </CollapseContext.Provider>
-      </Wrapper>
-    // </Test>
+    <Wrapper ref={innerRef} width={width} {...restProps}>
+      <CollapseContext.Provider value={{ isCollapsed, setIsCollapsed, collapseDirection, setCollapseDirection }}>
+        <Container width={width} direction={collapseDirection} collapsed={isCollapsed}>
+          <Inner width={width}>
+            {children}
+          </Inner>
+        </Container>
+      </CollapseContext.Provider>
+    </Wrapper>
   )
 }
 

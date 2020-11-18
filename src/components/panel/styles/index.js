@@ -3,24 +3,19 @@ import styled from 'styled-components'
 
 export const Panels = styled.div`
   display: flex;
+  flex-direction: row;
   // background: #1e1e1e;
   flex-grow: 1;
   overflow: auto;
-  position: relative;
-  height: 100%;
 
-
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `
 
 export const Wrapper = styled.div`
-  // position: relative;
   ${({ width }) => !width && 'flex-grow: 1;'}
-
-  // position: absolute;
-  // height: 80%;
-  // max-height: 100%;
-  // height: fit-content;
-
+  box-shadow: 0 0 10px #000;
 `
 
 // transition max-width instead of width, as max width wont change responsively.
@@ -28,7 +23,7 @@ export const Wrapper = styled.div`
 export const Container = styled.section`
   position: relative;
   height: 100%;
-  ${({ shouldTransition }) => shouldTransition && 'transition: max-width 0.2s;'}
+  transition: max-width 0.2s;
   max-width: ${({ collapsed, width }) => collapsed ? '0' : width};
 
   ${({ direction }) => {
@@ -41,27 +36,23 @@ export const Container = styled.section`
       }
     }
   }}
+
+  @media (max-width: 800px) {
+    transition: none;
+  }
 `
 
 export const Test = styled.div`
-// position: relative;
-  // height: 100%;
+
 `
 
 export const Inner = styled.div`
-position: relative;
-  // border: solid 1px #444;
   display: Flex;
   flex-direction: column;
   box-sizing: border-box;
   height: 100%;
-  // max-height: 100%;
   direction: ltr;
-  
   width: ${({ width }) => width ? width : '100%'};
-  // width: 100%;
-
-
 `
 
 export const Header = styled.div`
@@ -83,22 +74,12 @@ export const Title = styled.h1`
 export const Body = styled.div`
   flex-grow: 1;
   height: 100%;
-  // height: 500px;
-  // max-height: 100%;
-  // max-height: 500px; // doesn't work if set to percentage
-
-  // height: 10%;
-
   overflow: auto;
 `
 
 export const Collapse = styled.div`
   z-index: 1;
   position: absolute;
-  // width: 20px;
-  // line-height: 0;
-  // padding: 0.5em;
-  // border-radius: 4px;
   transition: transform 0.2s;
 
   ${({ direction, collapsed }) => {
@@ -131,5 +112,9 @@ export const CollapseInner = styled.div`
   &:hover {
     cursor: pointer;
     background: #ffffff55;
+  }
+
+  @media (max-width: 800px) {
+    display: none;
   }
 `

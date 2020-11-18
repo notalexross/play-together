@@ -14,6 +14,13 @@ export const Container = styled.header`
   background: #252525;
   border: solid 1px #444;
   padding: 1em;
+
+  box-shadow: 0 0 10px #000;
+
+  @media (max-width: 800px) {
+    z-index: 2;
+    box-shadow: none;
+  }
 `
 
 export const HomeLink = styled(Link)`

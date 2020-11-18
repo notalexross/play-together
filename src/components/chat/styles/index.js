@@ -8,8 +8,6 @@ export const Container = styled.div`
   box-sizing: border-box;
   // border-left: solid 1px #444;
   height: 100%;
-  // width: 300px;
-  // margin-right: -1000px;
 `
 
 export const SendWrapper = styled.div`
@@ -25,6 +23,10 @@ export const Send = styled.button`
   border-radius: 6px;
   background: #1e1e1e;
   color: inherit;
+
+  @media (max-width: 800px) {
+    margin: 0 0 0 0.5em;
+  }
 `
 
 export const TextInput = styled.textarea`
@@ -38,8 +40,11 @@ export const TextInput = styled.textarea`
   color: inherit;
   line-height: 1.5;
   border-radius: 6px;
-
   flex-grow: 1;
+
+  @media (max-width: 800px) {
+    padding: 0.6rem 1rem;
+  }
 `
 
 export const Error = styled.p`
@@ -54,8 +59,11 @@ export const Log = styled.div`
   overflow: auto;
   display: flex;
   flex-direction: column-reverse; // can't just use "justify-content: flex-end" as no scrollbar will appear
-  height: 0;
   min-height: 4em;
+
+  @media (max-width: 800px) {
+    ${({ isExpanded }) => !isExpanded && 'display: none;'}
+  }
 `
 
 export const LogInner = styled.div`
@@ -68,6 +76,12 @@ export const Message = styled.div`
     margin-bottom: 1em;
   }
   border-radius: 10px;
+
+  @media (max-width: 800px) {
+    font-size: 20px;
+    background: #111;
+    padding: 1em;
+  }
 `
 
 export const Timestamp = styled.span`
@@ -91,6 +105,9 @@ export const Form = styled.form`
   flex-direction: column;
   background: inherit;
   margin: 0.5em 0.2em;
-
   justify-content: flex-end;
+
+  @media (max-width: 800px) {
+    flex-direction: row;
+  }
 `
