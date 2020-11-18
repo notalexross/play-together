@@ -46,6 +46,7 @@ export const Tip = styled.span`
         transform = `translateX(calc(-100% - ${separation} - ${arrowLength}))`
         break
       }
+      default: break
     }
 
     return `
@@ -91,6 +92,7 @@ export const Arrow = styled.div`
         oppositeSide = 'right'
         break
       }
+      default: break
     }
 
     return `

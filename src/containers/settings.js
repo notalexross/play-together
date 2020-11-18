@@ -1,5 +1,5 @@
 import React from 'react'
-import { Accordion, GameSelect } from '../components'
+import { Accordion } from '../components'
 
 export default function SettingsContainer() {
   return (

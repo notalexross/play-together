@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Container, Area, Main, TableContainer, TableWrapper, Table, PlayersContainer, PlayerWrapper, Player } from './styles'
 import { getPreRotatedHeight } from '../../utils'
-import { Letterboxd } from 'styled-icons/simple-icons'
 
 export default function Playarea({ children, ...restProps }) {
   return (

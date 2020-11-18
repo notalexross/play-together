@@ -34,6 +34,7 @@ export const Container = styled.section`
       case 'right': {
         return 'direction: ltr;'
       }
+      default: break
     }
   }}
 
@@ -95,6 +96,7 @@ export const Collapse = styled.div`
         offset = '-3em'
         break
       }
+      default: break
     }
     return `
       ${opposite}: 0.5em;
