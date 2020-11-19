@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
-export default function useWindowSize() {
+const context = React.createContext()
+const { Provider } = context
+
+function ContextProvider({ children }) {
   const [ width, setWidth ] = useState()
   const [ height, setHeight ] = useState()
 
@@ -18,6 +21,13 @@ export default function useWindowSize() {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
-
-  return { windowWidth: width, windowHeight: height }
+    
+  return (
+    <Provider value={{ windowWidth: width, windowHeight: height }} >
+      {children}
+    </Provider>
+  )
 }
+
+
+export { context as windowContext, ContextProvider as WindowContextProvider }

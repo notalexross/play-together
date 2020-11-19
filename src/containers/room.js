@@ -1,17 +1,17 @@
 // TODO some of this can possibly be rewritten to use useEffect
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { Panel } from '../components'
 import SettingsContainer from './settings'
 import GameContainer from './game'
 import ChatContainer from './chat'
-import useWindowSize from '../hooks/useWindowSize.js'
+import { windowContext } from '../context/window'
 import useForceRender from '../hooks/useForceRender.js'
 
 export default function RoomContainer() {
   const [ chatIsExpanded, setChatIsExpanded ] = useState(false)
   const [ settingsIsExpanded, setSettingsIsExpanded ] = useState(false)
-  const { windowWidth } = useWindowSize()
+  const { windowWidth } = useContext(windowContext)
   const settingsHeaderContainerRef = useRef()
   const chatContainerRef = useRef()
   const mainPanelRef = useRef()

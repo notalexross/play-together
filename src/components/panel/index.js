@@ -5,14 +5,14 @@ import { CollapseRight } from '@styled-icons/open-iconic/CollapseRight'
 import { CollapseLeft } from '@styled-icons/open-iconic/CollapseLeft'
 import { Tooltip } from '..'
 import { Panels, Container, Inner, Header, Title, Body, Collapse, CollapseInner, Wrapper } from './styles'
-import useWindowSize from '../../hooks/useWindowSize.js'
+import { windowContext } from '../../context/window'
 
 const CollapseContext = React.createContext()
 
 export default function Panel({ children, startCollapsed = false, innerRef, width, ...restProps }) { // resize = 'left' or 'right'
   const [ isCollapsed, setIsCollapsed ] = useState(startCollapsed)
   const [ collapseDirection, setCollapseDirection ] = useState('')
-  const { windowWidth } = useWindowSize()
+  const { windowWidth } = useContext(windowContext)
 
   const isSmall = windowWidth <= 800
 

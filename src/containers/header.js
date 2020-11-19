@@ -6,14 +6,14 @@ import * as ROUTES from '../constants/routes'
 import ChangeNicknameButton from './change-nickname-button'
 import { Header, Tooltip } from '../components'
 import useHover from '../hooks/useHover.js'
-import useWindowSize from '../hooks/useWindowSize.js'
+import { windowContext } from '../context/window'
 
 export default function HeaderContainer({ innerRef }) {
   const { nickname } = useContext(userContext)
   const [ tooltip, setTooltip ] = useState()
   const [ isHovered, hoverRef ] = useHover()
 
-  const { windowWidth } = useWindowSize()
+  const { windowWidth } = useContext(windowContext)
 
   const isLarge = windowWidth > 1000
   const isSmall = windowWidth <= 800
