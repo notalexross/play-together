@@ -1,13 +1,15 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useContext } from 'react'
 import PropTypes from 'prop-types'
-import { FlexContainer, WidthContainer, AspectRatioContainer, PlayContainer, Board, Image, Pieces } from './styles'
+import { FlexContainer, WidthContainer, AspectRatioContainer, AspectRatioInner, PlayContainer, Board, Image, PiecesContainer, Pieces } from './styles'
+
+const OrientationContext = React.createContext()
 
 export default function Playarea({ children, ...restProps }) {
   const [ maxWidth, setMaxWidth ] = useState(0)
-  const [ isSmall, setIsSmall ] = useState(false)
+  const [ isVertical, setIsVertical ] = useState(false)
   const containerRef = useRef()
 
-  const ratio = 1.5 // TODO
+  const ratio = isVertical ? 1.33 : 0.75 // TODO
   const smallWidth = 800 // TODO
 
   let parentHeight, parentWidth, parent
@@ -18,23 +20,24 @@ export default function Playarea({ children, ...restProps }) {
   }
 
   useEffect(() => {
+    setIsVertical(parentWidth <= parentHeight)
     setMaxWidth(parentHeight / ratio)
-  }, [parentHeight])
-
-  useEffect(() => {
-    setIsSmall(parentWidth <= smallWidth)
-  }, [parentWidth])
+  }, [parentHeight, parentWidth, ratio])
 
   return (
-    <FlexContainer ref={containerRef} {...restProps}>
-      <WidthContainer style={{maxWidth: `${maxWidth}px`}}>
-        <AspectRatioContainer ratio={ratio}>
-          <PlayContainer direction='column'>
-            {children}
-          </PlayContainer>
-        </AspectRatioContainer>
-      </WidthContainer>
-    </FlexContainer>
+    <OrientationContext.Provider value={{ isVertical }}>
+      <FlexContainer ref={containerRef} {...restProps}>
+        <WidthContainer style={{maxWidth: `${maxWidth}px`}}>
+          <AspectRatioContainer ratio={ratio}>
+            <AspectRatioInner>
+              <PlayContainer direction={isVertical ? 'column' : 'row'}>
+                {children}
+              </PlayContainer>
+            </AspectRatioInner>
+          </AspectRatioContainer>
+        </WidthContainer>
+      </FlexContainer>
+    </OrientationContext.Provider>
   )
 }
 
@@ -45,5 +48,13 @@ Playarea.Board = function PlayareaBoard({ game = 'chess', ...restProps }) {
 }
 
 Playarea.Pieces = function PlayareaPieces({ game = 'chess', ...restProps }) {
-  return <Pieces {...restProps}></Pieces>
+  const { isVertical } = useContext(OrientationContext)
+
+  return (
+    <PiecesContainer isVertical={isVertical}>
+      <Pieces {...restProps}>
+        
+      </Pieces>
+    </PiecesContainer>
+  )
 }
