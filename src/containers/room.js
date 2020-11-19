@@ -1,5 +1,5 @@
 // TODO some of this can possibly be rewritten to use useEffect
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Panel } from '../components'
 import SettingsContainer from './settings'
@@ -60,13 +60,20 @@ export default function RoomContainer() {
   }
 
   const handleSettingsHeaderClick = () => {
-    isSmall && setSettingsIsExpanded(prev => !prev)
+    if (!isSmall) return
+    setSettingsIsExpanded(prev => !prev)
+    // forceRender()
   }
 
   const handleChatExpand = (toggle = true) => {
     if (!isSmall) return
     toggle ? setChatIsExpanded(prev => !prev) : setChatIsExpanded(true)
   }
+
+  useEffect(() => {
+    // without this, the playarea renders before the chat panel and so the playarea parent height used is out of date.
+    forceRender()
+  }, [chatIsExpanded, settingsIsExpanded])
 
   return (
     <Panel.Container ref={panelContainerRef}>

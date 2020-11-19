@@ -79,9 +79,9 @@ Chat.TextInput = function ChatTextInput({ onFocus = () => {}, padding, ...restPr
   )
 }
 
-Chat.Log = function ChatLog({ children, ...restProps }) {
+Chat.Log = function ChatLog({ children, isExpanded, ...restProps }) {
   return (
-    <Log {...restProps}>
+    <Log isExpanded={isExpanded} {...restProps}>
       <LogInner>
         {children}
       </LogInner>

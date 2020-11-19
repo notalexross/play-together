@@ -24,6 +24,13 @@ export default function Playarea({ children, ...restProps }) {
     setMaxWidth(parentHeight / ratio)
   }, [parentHeight, parentWidth, ratio])
 
+  console.log('-------')
+  console.log(parentHeight)
+  console.log(parentWidth)
+  console.log(maxWidth)
+  console.log(parent)
+  console.dir(parent)
+
   return (
     <OrientationContext.Provider value={{ isVertical }}>
       <FlexContainer ref={containerRef} {...restProps}>
