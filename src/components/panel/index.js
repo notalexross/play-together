@@ -9,15 +9,15 @@ import useWindowSize from '../../hooks/useWindowSize.js'
 
 const CollapseContext = React.createContext()
 
-export default function Panel({ children, innerRef, width, ...restProps }) { // resize = 'left' or 'right'
-  const [ isCollapsed, setIsCollapsed ] = useState(false)
+export default function Panel({ children, startCollapsed = false, innerRef, width, ...restProps }) { // resize = 'left' or 'right'
+  const [ isCollapsed, setIsCollapsed ] = useState(startCollapsed)
   const [ collapseDirection, setCollapseDirection ] = useState('')
   const { windowWidth } = useWindowSize()
 
   const isSmall = windowWidth <= 800
 
   useEffect(() => {
-    isSmall && setIsCollapsed(false)
+    isSmall ? setIsCollapsed(false) : setIsCollapsed(startCollapsed)
   }, [isSmall])
 
   return (

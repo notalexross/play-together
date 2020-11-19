@@ -70,7 +70,7 @@ export default function RoomContainer() {
 
   return (
     <Panel.Container ref={panelContainerRef}>
-      <Panel style={!isSmall && !isLargest ? { position: 'absolute' } : null} width={isSmall ? `100%` : '350px'}>
+      <Panel style={!isSmall && !isLargest ? { position: 'absolute' } : null} width={isSmall ? `100%` : '350px'} startCollapsed>
         <Panel.Header innerRef={settingsHeaderContainerRef} onClick={handleSettingsHeaderClick}>
           <Panel.Collapse direction={'left'} onTransitionEnd={forceRender}/>
           <Panel.Title>Settings</Panel.Title>

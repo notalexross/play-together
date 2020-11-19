@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { GlobalStyle } from './styles/global';
 import { ResponsiveStyle } from './styles/responsive';
+import { PreventTransitionsOnResize } from './components'
 import * as ROUTES from './constants/routes'
 import { UserContextProvider } from './context/user'
 import Home from './pages/Home'
@@ -12,6 +13,7 @@ export default function App() {
     <>
       <GlobalStyle/>
       <ResponsiveStyle/>
+      <PreventTransitionsOnResize/>
       <Router>
         <UserContextProvider>
           <Switch>
