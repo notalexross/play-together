@@ -1,3 +1,4 @@
+// TODO some of this can possibly be rewritten to use useEffect
 import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Panel } from '../components'
@@ -5,6 +6,7 @@ import SettingsContainer from './settings'
 import GameContainer from './game'
 import ChatContainer from './chat'
 import useWindowSize from '../hooks/useWindowSize.js'
+import useForceRender from '../hooks/useForceRender.js'
 
 export default function RoomContainer() {
   const [ chatIsExpanded, setChatIsExpanded ] = useState(false)
@@ -14,6 +16,7 @@ export default function RoomContainer() {
   const chatContainerRef = useRef()
   const mainPanelRef = useRef()
   const panelContainerRef = useRef()
+  const forceRender = useForceRender() // added to onTransitionEnd event of collapse button, so playarea panel gets updated parent width
 
   const isLargest = windowWidth > 1200
   // const isLarge = windowWidth > 1000
@@ -69,7 +72,7 @@ export default function RoomContainer() {
     <Panel.Container ref={panelContainerRef}>
       <Panel style={!isSmall && !isLargest ? { position: 'absolute' } : null} width={isSmall ? `100%` : '350px'}>
         <Panel.Header innerRef={settingsHeaderContainerRef} onClick={handleSettingsHeaderClick}>
-          <Panel.Collapse direction={'left'} />
+          <Panel.Collapse direction={'left'} onTransitionEnd={forceRender}/>
           <Panel.Title>Settings</Panel.Title>
         </Panel.Header>
         {(!isSmall || settingsIsExpanded) &&
@@ -85,7 +88,7 @@ export default function RoomContainer() {
       </Panel>
       <Panel innerRef={chatContainerRef} style={chatExpandedStyle} width={isSmall ? `100%` : '350px'}>
         <Panel.Header onClick={() => handleChatExpand()}>
-          <Panel.Collapse direction={'right'} />
+          <Panel.Collapse direction={'right'} onTransitionEnd={forceRender}/>
           <Panel.Title>Chat</Panel.Title>
         </Panel.Header>
         <Panel.Body>
