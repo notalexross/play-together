@@ -8,24 +8,9 @@ export const FlexContainer = styled.div`
   min-height: 100%;
 `
 
-export const WidthContainer = styled.div`
-  width: 100%;
-`
-
 export const AspectRatioContainer = styled.div`
-  background: #252525;
-  position: relative;
-  width: 100%;
-  padding-top: ${({ ratio }) => ratio * 100}%;
-`
-
-export const AspectRatioInner = styled.div`
   background: black;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  box-sizing: border-box;
 `
 
 export const PlayContainer = styled.div`
@@ -99,9 +84,9 @@ export const PiecesInner = styled.div`
   // // grid-auto-columns: 1fr;
 `
 
-export const Piece = styled.div`
+export const Piece = styled.img`
 // border: solid 1px orange;
-  border-radius: 50%;
+  // border-radius: 50%;
 
   // margin: 5%;
   // height: 50px;
