@@ -1,4 +1,3 @@
-// TODO
 import styled from 'styled-components'
 
 export const FlexContainer = styled.div`
@@ -22,20 +21,16 @@ export const AspectRatioContainer = styled.div`
 
 export const AspectRatioInner = styled.div`
   background: black;
-  // background: blue;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-
-  padding: 3%;
 `
 
 export const PlayContainer = styled.div`
   background: #252525;
   box-sizing: border-box;
-  padding: 3%;
   height: 100%;
   width: 100%;
 
@@ -44,32 +39,15 @@ export const PlayContainer = styled.div`
 `
 
 export const Board = styled.div`
-  padding: 3%;
+  box-sizing: border-box;
   background: #1e1e1e;
   box-shadow: inset 0 0 5px black;
-  flex-grow: 1;
 
   display: flex;
   justify-content: center;
   align-items: center;
-`
 
-export const PiecesContainer = styled.div`
-  background: #252525;
-  // background: red;
-  min-width: 20%;
-  min-height: 20%;
-  padding-${({ isVertical }) => isVertical ? 'top' : 'left'}: 3%;
-  // box-sizing: border-box;
-`
-
-export const Pieces = styled.div`
-  background: #1e1e1e;
-  box-shadow: inset 0 0 5px black;
-  width: 100%;
-  height: 100%;
-
-  // display: grid;
+  // position: relative;
 `
 
 export const Image = styled.img`
@@ -77,4 +55,55 @@ export const Image = styled.img`
   width: 100%;
   object-fit: contain;
   filter: drop-shadow(0 0 5px black);
+`
+
+export const PiecesContainer = styled.div`
+  background: #252525;
+  flex-grow: 1;
+`
+
+export const PiecesWrapper = styled.div`
+  background: #1e1e1e;
+  box-shadow: inset 0 0 5px black;
+  width: 100%;
+  height: 100%;
+  // padding: 10%;
+  box-sizing: border-box;
+
+  position: relative;
+  // border: solid 1px red;
+  overflow: auto;
+`
+
+export const PiecesInner = styled.div`
+  position: absolute;
+  // top: 0;
+  // left: 0;
+  // border: solid 1px green;
+  box-sizing: border-box;
+  width: 100%;
+  // height: 100%;
+
+  display: flex;
+  flex-wrap: wrap;
+
+
+  // display: grid;
+  // // grid-template-columns: repeat(auto-fill, 10%);
+  
+  // // grid-template-columns: repeat( auto-fit, minmax(30px, 1fr) );
+  // grid-template-columns: repeat( auto-fit, minmax(30px, 1fr) );
+
+  // justify-items: center;
+  // // grid-gap: 10%;
+  // // grid-auto-columns: 1fr;
+`
+
+export const Piece = styled.div`
+// border: solid 1px orange;
+  border-radius: 50%;
+
+  // margin: 5%;
+  // height: 50px;
+  // width: 50px;
 `
