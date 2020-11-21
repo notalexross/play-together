@@ -32,14 +32,28 @@ export const Board = styled.div`
   justify-content: center;
   align-items: center;
 
-  // position: relative;
+  position: relative;
+`
+
+export const BoardPiecesOuter = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+`
+
+export const BoardPiecesContainer = styled.div`
+  height: 100%;
+  width: 100%;
 `
 
 export const Image = styled.img`
   height: 100%;
   width: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 5px black);
+  // filter: drop-shadow(0 0 5px black);
+  user-select: none;
 `
 
 export const PiecesContainer = styled.div`
@@ -66,10 +80,13 @@ export const PiecesInner = styled.div`
   // left: 0;
   // border: solid 1px green;
   box-sizing: border-box;
-  width: 100%;
+  // width: 100%;
+  max-width: 100%;
   // height: 100%;
+  max-height: 100%;
 
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
 
 
@@ -85,10 +102,11 @@ export const PiecesInner = styled.div`
 `
 
 export const Piece = styled.img`
-// border: solid 1px orange;
-  // border-radius: 50%;
+  user-select: none;
 
-  // margin: 5%;
-  // height: 50px;
-  // width: 50px;
+  &:hover {
+    cursor: pointer;
+  }
+
+  pointer-events: stroke;
 `

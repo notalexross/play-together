@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useContext } from 'react'
 import PropTypes from 'prop-types'
-import { FlexContainer, AspectRatioContainer, PlayContainer, Board, Image, PiecesContainer, PiecesWrapper, PiecesInner, Piece } from './styles'
+import { FlexContainer, AspectRatioContainer, PlayContainer, Board, BoardPiecesOuter, BoardPiecesContainer, Image, PiecesContainer, PiecesWrapper, PiecesInner, Piece } from './styles'
 
 const PlayareaContext = React.createContext()
 
@@ -39,7 +39,7 @@ export default function Playarea({ children, aspectRatio = 0.75, paddingFraction
     <PlayareaContext.Provider value={{ isVertical, basis, padding }}>
       <FlexContainer ref={containerRef} {...restProps}>
         <AspectRatioContainer style={{width: `${playWidth}px`, height: `${playHeight}px`, padding: `${padding}px`}}>
-          <PlayContainer style={{padding: `${padding}px`}} direction={isVertical ? 'column' : 'row'}>
+          <PlayContainer style={{padding: `${padding}px`}} direction={isVertical ? 'column' : 'row'} onContextMenu={e => e.preventDefault()} onDragStart={e => e.preventDefault()}>
             {children}
           </PlayContainer>
         </AspectRatioContainer>
@@ -48,7 +48,7 @@ export default function Playarea({ children, aspectRatio = 0.75, paddingFraction
   )
 }
 
-Playarea.Board = function PlayareaBoard({ game = 'chess', paddingFraction = 0.06, ...restProps }) {
+Playarea.Board = function PlayareaBoard({ children, game = 'chess', paddingFraction = 0.06, ...restProps }) {
   // paddingFraction is relative to aspect ratio container, not board container
   const { basis, padding } = useContext(PlayareaContext)
 
@@ -61,10 +61,21 @@ Playarea.Board = function PlayareaBoard({ game = 'chess', paddingFraction = 0.06
     width: `${boardSize}px`
   }
 
-  return <Board style={boardStyle} {...restProps}>
-    <Image src={`/images/boards/${game}.png`}/>
-  </Board>
+  return (
+    <Board style={boardStyle} {...restProps}>
+      <Image src={`/images/boards/${game}.svg`} style={{filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`}}/>
+      {children}
+    </Board>
+  )
 }
+
+Playarea.BoardPiecesContainer = React.forwardRef(({ ...restProps }, ref) => {
+  return (
+    <BoardPiecesOuter>
+      <BoardPiecesContainer ref={ref} {...restProps} />
+    </BoardPiecesOuter>
+  )
+})
 
 Playarea.Pieces = function PlayareaPieces({ children, ...restProps }) {
   const { isVertical, padding } = useContext(PlayareaContext)
@@ -78,7 +89,7 @@ Playarea.Pieces = function PlayareaPieces({ children, ...restProps }) {
   return (
     <PiecesContainer style={containerStyle}>
       <PiecesWrapper {...restProps}>
-        <PiecesInner style={{padding: `${padding}px`, gridGap: `${padding / 2}px`}}>
+        <PiecesInner style={{padding: `${padding}px`, gridGap: `${padding / 2}px`, flexDirection: isVertical ? 'column' : 'row'}}>
           {children}
         </PiecesInner>
       </PiecesWrapper>
@@ -86,7 +97,7 @@ Playarea.Pieces = function PlayareaPieces({ children, ...restProps }) {
   )
 }
 
-Playarea.Piece = function PlayareaPiece({ children, game, filename, sizeFraction = 0.1, ...restProps }) {
+Playarea.Piece = function PlayareaPiece({ dragStyle, game, filename, sizeFraction = 0.1, ...restProps }) {
   const { basis } = useContext(PlayareaContext)
 
   const pieceSize = basis * sizeFraction
@@ -94,9 +105,9 @@ Playarea.Piece = function PlayareaPiece({ children, game, filename, sizeFraction
   const pieceStyle = {
     height: `${pieceSize}px`,
     width: `${pieceSize}px`,
-    filter: `drop-shadow(0 0 ${basis * 0.005}px black)`,
+    filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
+    ...dragStyle
   }
 
-  // return <Piece style={pieceStyle} {...restProps}></Piece>
-  return <Piece src={`/images/pieces/${game}/${filename}`} style={pieceStyle} {...restProps} />
+  return <Piece src={`/images/pieces/${game}/${filename}`} style={pieceStyle} {...restProps}/>
 }
