@@ -28,11 +28,20 @@ export const Board = styled.div`
   background: #1e1e1e;
   box-shadow: inset 0 0 5px black;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  // border: solid green 1px;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
 
   position: relative;
+`
+
+export const Image = styled.img`
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  // filter: drop-shadow(0 0 5px black);
+  user-select: none;
 `
 
 export const BoardPiecesOuter = styled.div`
@@ -46,14 +55,6 @@ export const BoardPiecesOuter = styled.div`
 export const BoardPiecesContainer = styled.div`
   height: 100%;
   width: 100%;
-`
-
-export const Image = styled.img`
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-  // filter: drop-shadow(0 0 5px black);
-  user-select: none;
 `
 
 export const PiecesContainer = styled.div`
@@ -99,14 +100,4 @@ export const PiecesInner = styled.div`
   // justify-items: center;
   // // grid-gap: 10%;
   // // grid-auto-columns: 1fr;
-`
-
-export const Piece = styled.img`
-  user-select: none;
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  pointer-events: stroke;
 `

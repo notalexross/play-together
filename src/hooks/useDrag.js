@@ -27,12 +27,12 @@ export default function useDrag(parentRef, { restrictToParent = true } = {}) {
 
   const drag = (item, mouseX, mouseY) => {
     const [positionX, positionY] = getRelativePosition(mouseX, mouseY)
-    let movingItem = { ...item, positionX, positionY }
+    let movingItem = { ...item, positionX, positionY, isBeingDragged: true }
     updateItem(movingItem)
 
     const handleMouseMove = event => {
       const [positionX, positionY] = getRelativePosition(event.clientX, event.clientY)
-      movingItem = { ...item, positionX, positionY }
+      movingItem = { ...movingItem, positionX, positionY, isBeingDragged: true }
       updateItem(movingItem)
     }
 
@@ -42,18 +42,23 @@ export default function useDrag(parentRef, { restrictToParent = true } = {}) {
       window.removeEventListener('mousemove', handleMouseMove)
       if (restrictToParent && (movingItem.positionX > 100 || movingItem.positionX < 0 || movingItem.positionY > 100 || movingItem.positionY < 0)) {
         removeDragItem(movingItem)
+      } else {
+        movingItem = { ...movingItem, isBeingDragged: false}
+        // console.log(movingItem)
+        updateItem(movingItem)
       }
     }, { once: true})
 
   }
 
-  const addDragItem = (componentData, startX, startY) => {
+  const addDragItem = (item, startX, startY) => {
     const [startRelativeX, startRelativeY] = getRelativePosition(startX, startY)
-    const newComponentData = { ...componentData, dragId: count, positionX: startRelativeX, positionY: startRelativeY }
+    // const newItem = { ...item, dragId: count, positionX: startRelativeX, positionY: startRelativeY }
+    const newItem = { ...item, dragId: Math.random(), positionX: startRelativeX, positionY: startRelativeY } // TODO change back to use non random number id
     setCount(count => count + 1)
-    setItems(prev => [ ...prev, newComponentData ])
+    setItems(prev => [ ...prev, newItem ])
 
-    drag(newComponentData, startX, startY)
+    drag(newItem, startX, startY)
   }
 
   const removeDragItem = componentData => {

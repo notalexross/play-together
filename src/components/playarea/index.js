@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useContext } from 'react'
 import PropTypes from 'prop-types'
-import { FlexContainer, AspectRatioContainer, PlayContainer, Board, BoardPiecesOuter, BoardPiecesContainer, Image, PiecesContainer, PiecesWrapper, PiecesInner, Piece } from './styles'
+import { FlexContainer, AspectRatioContainer, PlayContainer, Board, BoardPiecesOuter, BoardPiecesContainer, Image, PiecesContainer, PiecesWrapper, PiecesInner } from './styles'
+import Svg from '../../svgs'
 
 const PlayareaContext = React.createContext()
 
@@ -48,7 +49,7 @@ export default function Playarea({ children, aspectRatio = 0.75, paddingFraction
   )
 }
 
-Playarea.Board = function PlayareaBoard({ children, game = 'chess', paddingFraction = 0.06, ...restProps }) {
+Playarea.Board = function PlayareaBoard({ children, game = 'chess', color = 'white', paddingFraction = 0.06, ...restProps }) {
   // paddingFraction is relative to aspect ratio container, not board container
   const { basis, padding } = useContext(PlayareaContext)
 
@@ -63,7 +64,7 @@ Playarea.Board = function PlayareaBoard({ children, game = 'chess', paddingFract
 
   return (
     <Board style={boardStyle} {...restProps}>
-      <Image src={`/images/boards/${game}.svg`} style={{filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`}}/>
+      <Svg type="board" game={game} color={color} style={{height: '100%', width: '100%', filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`}}/>
       {children}
     </Board>
   )
@@ -97,8 +98,9 @@ Playarea.Pieces = function PlayareaPieces({ children, ...restProps }) {
   )
 }
 
-Playarea.Piece = function PlayareaPiece({ dragStyle, game, filename, sizeFraction = 0.1, ...restProps }) {
+Playarea.Piece = function PlayareaPiece({ dragStyle, game, name, color, sizeFraction = 0.1, ...restProps }) {
   const { basis } = useContext(PlayareaContext)
+  const svgRef = useRef()
 
   const pieceSize = basis * sizeFraction
 
@@ -106,8 +108,17 @@ Playarea.Piece = function PlayareaPiece({ dragStyle, game, filename, sizeFractio
     height: `${pieceSize}px`,
     width: `${pieceSize}px`,
     filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
-    ...dragStyle
+    cursor: 'grab',
+    pointerEvents: 'none'
   }
 
-  return <Piece src={`/images/pieces/${game}/${filename}`} style={pieceStyle} {...restProps}/>
+  useEffect(() => {
+    const innerSvg = svgRef.current.querySelector('g') || svgRef.current.querySelector('path')
+    innerSvg.style.pointerEvents = 'all'
+  }, [])
+
+
+  return (
+    <Svg type="piece" game={game} name={name} color={color} style={{...pieceStyle, ...dragStyle}} ref={svgRef} {...restProps}/>
+  )
 }
