@@ -1,20 +1,19 @@
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
 import { userContext } from '../context/user'
-import useModal from '../hooks/useModal'
 import NicknameModal from '../containers/nickname-modal'
 import { Feature } from '../components'
 
 export default function Home() {
   const history = useHistory()
   const { nickname } = useContext(userContext)
-  const [ Modal, openModal ] = useModal(NicknameModal)
+  const [ isModalOpen, setIsModalOpen ] = useState(false)
   const buttonRef = useRef()
 
   const handleClick = event => {
     event.preventDefault()
-    nickname ? enterGameRoom() : openModal()
+    nickname ? enterGameRoom() : setIsModalOpen(true)
   }
 
   const enterGameRoom = () => {
@@ -39,7 +38,7 @@ export default function Home() {
         <Feature.Text>Just give your friends the link and play</Feature.Text>
         <Feature.Button onClick={handleClick} ref={buttonRef}>create game room</Feature.Button>
       </Feature>
-      <Modal onComplete={enterGameRoom}/>
+      <NicknameModal onComplete={enterGameRoom} isOpen={isModalOpen} setIsOpen={setIsModalOpen}/>
     </>
   )
 }

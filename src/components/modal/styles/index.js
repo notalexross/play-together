@@ -4,7 +4,7 @@ const drop = keyframes`
   from {
     transform: translateY(-20px);
   }
-`;
+`
 
 const fadeIn = keyframes`
   from {
@@ -14,7 +14,7 @@ const fadeIn = keyframes`
   to {
     opacity: 1;
   }
-`;
+`
 
 export const Overlay = styled.div`
   z-index: 100;

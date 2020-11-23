@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { userContext } from '../context/user'
 import { Modal } from '../components'
 
-export default function NicknameModal({ onComplete = () => {} }) {
+export default function NicknameModal({ isOpen = false, setIsOpen = () => {}, onComplete = () => {} }) {
   const { setNickname } = useContext(userContext)
   const [ userInput, setUserInput ] = useState('')
   const inputRef = useRef(null)
@@ -18,11 +18,11 @@ export default function NicknameModal({ onComplete = () => {} }) {
   }
 
   useEffect(() => {
-    inputRef && inputRef.current && inputRef.current.focus()
-  }, [inputRef])
+    isOpen && inputRef.current.focus()
+  }, [isOpen])
 
   return (
-    <Modal>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Modal.Close/>
       <Modal.Text>Enter your nickname below</Modal.Text>
       <Modal.Form onSubmit={handleSubmit}>

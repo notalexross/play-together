@@ -1,37 +1,33 @@
 import React, { useEffect, useContext, useRef } from 'react'
+import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { Container, Overlay, Close, Title, Text, Form, Submit, InputText } from './styles'
 import { CloseCircle as CloseCircleEmpty } from '@styled-icons/remix-line'
 import { CloseCircle as CloseCircleFilled } from '@styled-icons/remix-fill'
 import useHover from '../../hooks/useHover'
-import { ModalContext } from '../../context/modal'
 
-export default function Modal({ children, ...restProps }) {
-  const { closeModal } = useContext(ModalContext)
-  const overlayRef = useRef()
+const ModalContext = React.createContext()
 
-  useEffect(() => {
-    const ref = overlayRef.current
+export default function Modal({ children, isOpen, setIsOpen, ...restProps }) {
 
-    const handleClick = function(event) {
-      if (event.target !== this) return
-      closeModal()
-    }
+  const closeModal = () => setIsOpen(false)
 
-    ref.addEventListener('click', handleClick)
-  
-    return () => {
-      ref.removeEventListener('click', handleClick)
-    }
-  }, [])
+  const handleClick = event => {
+    if (event.target !== event.currentTarget) return
+    setIsOpen(false)
+  }
 
-  return (
-      <Overlay ref={overlayRef}  {...restProps}>
-        <Container>
-          {children}
-        </Container>
-      </Overlay>
+  return isOpen ?
+    ReactDOM.createPortal(
+      <ModalContext.Provider value={{ closeModal }}>
+        <Overlay onClick={handleClick} {...restProps}>
+          <Container>
+            {children}
+          </Container>
+        </Overlay>
+      </ModalContext.Provider>, document.getElementById('root')
     )
+  : null
 }
 
 Modal.Title = function ModalTitle({ children, ...restProps }) {

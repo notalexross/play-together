@@ -1,21 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { EditBox as EditBoxEmpty } from '@styled-icons/remix-line'
 import { EditBox as EditBoxFilled } from '@styled-icons/remix-fill'
 import { Hover } from '../components'
 import NicknameModal from './nickname-modal'
-import useModal from '../hooks/useModal'
 
 export default function ChangeNicknameButton() {
-  const [ Modal, openModal ] = useModal(NicknameModal)
+  const [ isOpen, setIsOpen ] = useState(false)
 
   return (
     <>
       <Hover
         DefaultComponent={EditBoxEmpty}
         HoverComponent={EditBoxFilled}
-        onClick={() => openModal()}
+        onClick={() => setIsOpen(true)}
       />
-      <Modal/>
+      <NicknameModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   )
 }
