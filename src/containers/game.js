@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Playarea } from '../components'
 import useDrag from '../hooks/useDrag'
+import { windowContext } from '../context/window'
 
 export default function GameContainer() {
   const { parentRef, addDragItem, items, drag, removeDragItem } = useDrag()
+  const { windowWidth } = useContext(windowContext)
+
+  const isSmall = windowWidth <= 800
 
   // TODO
   const pieces = [
@@ -51,13 +55,12 @@ export default function GameContainer() {
   // TODO add mouseover effect on pieces, where scrollwheel enlarges them individually.
   // TODO resize all pieces in settings (will reset all sizes to new settings)
   // TODO scale all pieces in settings (will scale current sizing up or down)
-  // TODO make non transparent image the only clickable part if possible
   // TODO add clear button (to settings menu?)
   // TODO add a "snap to grid" option in settings, define grid separation based on game board.
 
   return (
-    <Playarea aspectRatio='0.75' paddingFraction='0.03'>
-      <Playarea.Board game='chess' color='white' paddingFraction='0.06'>
+    <Playarea aspectRatio={isSmall ? 0.81 : 0.75} paddingFraction={isSmall ? 0.005 : 0.03}>
+      <Playarea.Board game='chess' color='white' paddingFraction={isSmall ? 0 : 0.06}>
         <Playarea.BoardPiecesContainer ref={parentRef}>
           {items.map(piece => (
             <Playarea.Piece

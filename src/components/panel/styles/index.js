@@ -67,10 +67,11 @@ export const Header = styled.div`
 `
 
 export const Title = styled.h1`
-  padding: 0.5em;
+  padding: 1em;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   user-select: none;
+  font-size: 1.3rem;
 `
 
 export const Body = styled.div`

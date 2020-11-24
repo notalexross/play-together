@@ -78,7 +78,7 @@ export const Message = styled.div`
   border-radius: 10px;
 
   @media (max-width: 800px) {
-    font-size: 20px;
+    // font-size: 1.3rem;
     background: #111;
     padding: 1em;
   }

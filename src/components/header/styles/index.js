@@ -3,16 +3,18 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
 export const Container = styled.header`
-  // display: flex;
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  tex-align: center;
-  justify-items: center;
+  // text-align: center;
+  // justify-items: center;
 
-  display: flex;
 
   background: #252525;
   border-bottom: solid 1px #444;
+
+  font-size: 1.3rem;
+  font-weight: 700;
   padding: 1em;
 
   box-shadow: 0 0 10px #000;
@@ -26,6 +28,7 @@ export const Container = styled.header`
 export const HomeLink = styled(Link)`
   color: inherit;
   user-select: none;
+  text-transform: uppercase;
 `
 
 export const Text = styled.div`

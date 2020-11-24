@@ -28,7 +28,8 @@ export default function RoomContainer() {
   if (settingsHeaderContainerRef && settingsHeaderContainerRef.current) {
     settingsHeaderAbsBottom = settingsHeaderContainerRef.current.getBoundingClientRect().bottom
     settingsHeaderBottom = parseInt(window.getComputedStyle(settingsHeaderContainerRef.current).height)
-    settingsExpandHeight = appHeight - settingsHeaderAbsBottom - 112 // number from trial and error.. can't use main panel bottom, as changes when chat opens (whilst settings open)
+    settingsExpandHeight = appHeight - settingsHeaderAbsBottom - 87 // number from trial and error.. can't use main panel bottom, as changes when chat opens (whilst settings open)
+    // consider adding padding to bottom of accordion instead and having settings fill to max height.
   }
 
   if (panelContainerRef && panelContainerRef.current) {
