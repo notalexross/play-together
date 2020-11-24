@@ -25,40 +25,68 @@ export default function useDrag(parentRef, { restrictToParent = true } = {}) {
     ]))
   }
 
-  const drag = (item, mouseX, mouseY) => {
+  let movingItem
+  
+  const handleMouseMove = event => {
+    event.preventDefault()
+    const mouseX = event.clientX || event.touches[0].clientX
+    const mouseY = event.clientY || event.touches[0].clientY
     const [positionX, positionY] = getRelativePosition(mouseX, mouseY)
-    let movingItem = { ...item, positionX, positionY, isBeingDragged: true }
+    movingItem = { ...movingItem, positionX, positionY, isBeingDragged: true }
     updateItem(movingItem)
-
-    const handleMouseMove = event => {
-      const [positionX, positionY] = getRelativePosition(event.clientX, event.clientY)
-      movingItem = { ...movingItem, positionX, positionY, isBeingDragged: true }
-      updateItem(movingItem)
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-
-    window.addEventListener('mouseup', () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      if (restrictToParent && (movingItem.positionX > 100 || movingItem.positionX < 0 || movingItem.positionY > 100 || movingItem.positionY < 0)) {
-        removeDragItem(movingItem)
-      } else {
-        movingItem = { ...movingItem, isBeingDragged: false}
-        // console.log(movingItem)
-        updateItem(movingItem)
-      }
-    }, { once: true})
-
   }
 
-  const addDragItem = (item, startX, startY) => {
+  const handleMouseUp = (event) => {
+    console.log('mouse up')
+    event.preventDefault()
+    window.removeEventListener('mousemove', handleMouseMove)
+    window.removeEventListener('touchmove', handleMouseMove)
+
+    if (restrictToParent && (movingItem.positionX > 100 || movingItem.positionX < 0 || movingItem.positionY > 100 || movingItem.positionY < 0)) {
+      removeDragItem(movingItem)
+    } else {
+      movingItem = { ...movingItem, isBeingDragged: false}
+      updateItem(movingItem)
+    }
+  }
+
+  const drag = (item, mouseX, mouseY, isTouch) => {
+    const [positionX, positionY] = getRelativePosition(mouseX, mouseY)
+    movingItem = { ...item, positionX, positionY, isBeingDragged: true }
+    updateItem(movingItem)
+
+    console.log('adding event listeners')
+    // TODO the touchstart event triggers before hold down menu (right click) triggers... so these listeners are here after the delete happens
+
+    if (isTouch) {
+      window.addEventListener('touchmove', handleMouseMove)
+      window.addEventListener('touchend', handleMouseUp, { once: true})
+    } else {
+      window.addEventListener('mousemove', handleMouseMove)
+      window.addEventListener('mouseup', handleMouseUp, { once: true})
+    }
+  }
+
+  const cancelTracking = () => {
+    // TODO this doesn't work?? for either up end or move
+    // is it because of "let movingItem" defined outside?
+    // or could be because handleMouseMove no longer defined at same point in memory since useDrag called again.
+    // add a contextmenu listener within drag instead?
+    // just switch to context...
+    console.log('removing event listener')
+    window.removeEventListener('mousemove', handleMouseMove)
+    window.removeEventListener('touchmove', handleMouseMove)
+    window.removeEventListener('mouseup', handleMouseUp, { once: true})
+    window.removeEventListener('touchend', handleMouseUp, { once: true})
+  }
+
+  const addDragItem = (item, startX, startY, isTouch) => {
     const [startRelativeX, startRelativeY] = getRelativePosition(startX, startY)
-    // const newItem = { ...item, dragId: count, positionX: startRelativeX, positionY: startRelativeY }
-    const newItem = { ...item, dragId: Math.random(), positionX: startRelativeX, positionY: startRelativeY } // TODO change back to use non random number id
+    const newItem = { ...item, dragId: count, positionX: startRelativeX, positionY: startRelativeY }
     setCount(count => count + 1)
     setItems(prev => [ ...prev, newItem ])
 
-    drag(newItem, startX, startY)
+    drag(newItem, startX, startY, isTouch)
   }
 
   const removeDragItem = componentData => {
@@ -69,6 +97,6 @@ export default function useDrag(parentRef, { restrictToParent = true } = {}) {
     setItems([])
   }
 
-  return { parentRef, items, addDragItem, drag, removeDragItem, clearDragItems }
+  return { parentRef, items, addDragItem, drag, removeDragItem, clearDragItems, cancelTracking }
 
 }

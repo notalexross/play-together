@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Playarea } from '../components'
 import useDrag from '../hooks/useDrag'
 
 export default function GameContainer() {
-  const { parentRef, addDragItem, items, drag, removeDragItem } = useDrag()
+  const { parentRef, addDragItem, items, drag, removeDragItem, cancelTracking } = useDrag()
 
   // TODO
   const pieces = [
@@ -27,21 +27,26 @@ export default function GameContainer() {
   ]
 
   const handleMouseDown = event => {
-    event.preventDefault()
+    // event.preventDefault()
+    const mouseX = event.clientX || event.touches[0].clientX
+    const mouseY = event.clientY || event.touches[0].clientY
+    const mouseButton = event.button
 
-    if (event.button !== 0) return
+    if (mouseButton && mouseButton !== 0) return
     const piece = JSON.parse(event.currentTarget.dataset.piece)
     if (piece.dragId !== undefined) {
-      drag(piece, event.clientX, event.clientY)
+      drag(piece, mouseX, mouseY, !!event.touches)
     } else {
-      addDragItem(piece, event.clientX, event.clientY)
+      addDragItem(piece, mouseX, mouseY, !!event.touches)
     }   
   }
 
   const handleRightClick = event => {
     event.preventDefault()
+    console.log('right click')
     const piece = JSON.parse(event.currentTarget.dataset.piece)
     removeDragItem(piece)
+    cancelTracking()
   }
 
   // TODO add mouseover effect on pieces, where scrollwheel enlarges them individually.
@@ -64,6 +69,7 @@ export default function GameContainer() {
               sizeFraction={piece.size}
               data-piece={JSON.stringify(piece)}
               onMouseDown={handleMouseDown}
+              onTouchStart={handleMouseDown}
               onContextMenu={handleRightClick}
               dragStyle={{
                 position: 'absolute',
@@ -87,6 +93,7 @@ export default function GameContainer() {
             sizeFraction={piece.size}
             data-piece={JSON.stringify(piece)}
             onMouseDown={handleMouseDown}
+            onTouchStart={handleMouseDown}
           />
         ))}
       </Playarea.Pieces>

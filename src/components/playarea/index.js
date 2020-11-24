@@ -109,7 +109,8 @@ Playarea.Piece = function PlayareaPiece({ dragStyle, game, name, color, sizeFrac
     width: `${pieceSize}px`,
     filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
     cursor: 'grab',
-    pointerEvents: 'none'
+    pointerEvents: 'none',
+    touchAction: 'none' // prevents screen scroll whilst dragging pieces
   }
 
   useEffect(() => {

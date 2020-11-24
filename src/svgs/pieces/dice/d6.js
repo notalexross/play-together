@@ -76,7 +76,7 @@ function SvgComponent({ animate = true, ...restProps }, svgRef) {
       ref={svgRef}
       {...restProps}
     >
-      <g onMouseUp={handleMouseUp}>
+      <g onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp}>
         <rect
           x={4}
           y={4}
