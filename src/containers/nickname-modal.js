@@ -14,6 +14,7 @@ export default function NicknameModal({ isOpen = false, setIsOpen = () => {}, on
       setNickname(userInput)
       setUserInput('')
       onComplete()
+      setIsOpen(false)
     }
   }
 

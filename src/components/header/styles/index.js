@@ -12,7 +12,7 @@ export const Container = styled.header`
   display: flex;
 
   background: #252525;
-  border: solid 1px #444;
+  border-bottom: solid 1px #444;
   padding: 1em;
 
   box-shadow: 0 0 10px #000;
