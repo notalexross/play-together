@@ -3,7 +3,7 @@ import { Playarea } from '../components'
 import useDrag from '../hooks/useDrag'
 
 export default function GameContainer() {
-  const { parentRef, addDragItem, items, drag, removeDragItem, cancelTracking } = useDrag()
+  const { parentRef, addDragItem, items, drag, removeDragItem } = useDrag()
 
   // TODO
   const pieces = [
@@ -23,7 +23,7 @@ export default function GameContainer() {
     {game: "ludo", name: "pawn", color: "red", size: "0.045"},
     {game: "ludo", name: "pawn", color: "cyan", size: "0.045"},
     {game: "ludo", name: "pawn", color: "yellow", size: "0.045"},
-    {game: "dice", name: "d6", color: "blue", size: "0.045"}
+    {game: "dice", name: "d6", color: "blue", size: "0.07"}
   ]
 
   const handleMouseDown = event => {
@@ -46,7 +46,6 @@ export default function GameContainer() {
     console.log('right click')
     const piece = JSON.parse(event.currentTarget.dataset.piece)
     removeDragItem(piece)
-    cancelTracking()
   }
 
   // TODO add mouseover effect on pieces, where scrollwheel enlarges them individually.

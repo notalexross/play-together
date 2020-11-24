@@ -25,6 +25,14 @@ export default function useDrag(parentRef, { restrictToParent = true } = {}) {
     ]))
   }
 
+  const handleLongPress = () => {
+    // console.log('removing event listener')
+    window.removeEventListener('mousemove', handleMouseMove)
+    window.removeEventListener('touchmove', handleMouseMove)
+    window.removeEventListener('mouseup', handleMouseUp, { once: true})
+    window.removeEventListener('touchend', handleMouseUp, { once: true})
+  }
+
   let movingItem
   
   const handleMouseMove = event => {
@@ -37,10 +45,11 @@ export default function useDrag(parentRef, { restrictToParent = true } = {}) {
   }
 
   const handleMouseUp = (event) => {
-    console.log('mouse up')
+    // console.log('mouse up')
     event.preventDefault()
     window.removeEventListener('mousemove', handleMouseMove)
     window.removeEventListener('touchmove', handleMouseMove)
+    window.removeEventListener('contextmenu', handleLongPress)
 
     if (restrictToParent && (movingItem.positionX > 100 || movingItem.positionX < 0 || movingItem.positionY > 100 || movingItem.positionY < 0)) {
       removeDragItem(movingItem)
@@ -55,29 +64,15 @@ export default function useDrag(parentRef, { restrictToParent = true } = {}) {
     movingItem = { ...item, positionX, positionY, isBeingDragged: true }
     updateItem(movingItem)
 
-    console.log('adding event listeners')
-    // TODO the touchstart event triggers before hold down menu (right click) triggers... so these listeners are here after the delete happens
-
+    // console.log('adding event listeners')
     if (isTouch) {
       window.addEventListener('touchmove', handleMouseMove)
-      window.addEventListener('touchend', handleMouseUp, { once: true})
+      window.addEventListener('touchend', handleMouseUp, { once: true })
+      window.addEventListener('contextmenu', handleLongPress, { once: true })
     } else {
       window.addEventListener('mousemove', handleMouseMove)
-      window.addEventListener('mouseup', handleMouseUp, { once: true})
+      window.addEventListener('mouseup', handleMouseUp, { once: true })
     }
-  }
-
-  const cancelTracking = () => {
-    // TODO this doesn't work?? for either up end or move
-    // is it because of "let movingItem" defined outside?
-    // or could be because handleMouseMove no longer defined at same point in memory since useDrag called again.
-    // add a contextmenu listener within drag instead?
-    // just switch to context...
-    console.log('removing event listener')
-    window.removeEventListener('mousemove', handleMouseMove)
-    window.removeEventListener('touchmove', handleMouseMove)
-    window.removeEventListener('mouseup', handleMouseUp, { once: true})
-    window.removeEventListener('touchend', handleMouseUp, { once: true})
   }
 
   const addDragItem = (item, startX, startY, isTouch) => {
@@ -97,6 +92,6 @@ export default function useDrag(parentRef, { restrictToParent = true } = {}) {
     setItems([])
   }
 
-  return { parentRef, items, addDragItem, drag, removeDragItem, clearDragItems, cancelTracking }
+  return { parentRef, items, addDragItem, drag, removeDragItem, clearDragItems }
 
 }
