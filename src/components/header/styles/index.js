@@ -32,10 +32,10 @@ export const HomeLink = styled(Link)`
 `
 
 export const Text = styled.div`
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-gap: 0.2em;
+  display: flex;
   align-items: center;
+  grid-gap: 0.2em;
+
   user-select: none;
 `
 

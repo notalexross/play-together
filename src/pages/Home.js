@@ -2,18 +2,18 @@ import React, { useContext, useRef, useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
 import { firebaseContext } from '../context/firebase'
-import NicknameModal from '../containers/nickname-modal'
+import NicknameModal from '../modals/nickname-modal'
 import { Feature } from '../components'
 
 export default function Home() {
   const history = useHistory()
   const { user, createRoom } = useContext(firebaseContext)
-  const [ isModalOpen, setIsModalOpen ] = useState(false)
+  const [ isNicknameModalOpen, setIsNicknameModalOpen ] = useState(false)
   const buttonRef = useRef()
 
   const handleClick = event => {
     event && event.preventDefault()
-    user.displayName ? enterGameRoom() : setIsModalOpen(true)
+    user.displayName ? enterGameRoom() : setIsNicknameModalOpen(true)
   }
 
   const enterGameRoom = () => {
@@ -35,7 +35,7 @@ export default function Home() {
         <Feature.Text>Just give your friends the link and play</Feature.Text>
         <Feature.Button onClick={handleClick} ref={buttonRef}>create game room</Feature.Button>
       </Feature>
-      <NicknameModal onComplete={handleClick} isOpen={isModalOpen} setIsOpen={setIsModalOpen}/>
+      <NicknameModal onComplete={handleClick} isOpen={isNicknameModalOpen} setIsOpen={setIsNicknameModalOpen}/>
     </>
   )
 }

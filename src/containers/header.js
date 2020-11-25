@@ -1,16 +1,21 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Copy as CopyEmpty } from '@styled-icons/boxicons-regular/Copy'
 import { Copy as CopyFilled} from '@styled-icons/boxicons-solid/Copy'
-import { firebaseContext } from '../context/firebase'
+import { EditBox as EditBoxEmpty } from '@styled-icons/remix-line'
+import { EditBox as EditBoxFilled } from '@styled-icons/remix-fill'
 import * as ROUTES from '../constants/routes'
-import ChangeNicknameButton from './change-nickname-button'
-import { Header, Tooltip } from '../components'
+import { Hover } from '../components'
+import NicknameModal from '../modals/nickname-modal'
+import { Header, Tooltip, ColorPicker } from '../components'
 import useHover from '../hooks/useHover.js'
 import { windowContext } from '../context/window'
+import { firebaseContext } from '../context/firebase'
 
 export default function HeaderContainer({ innerRef }) {
-  const { user } = useContext(firebaseContext)
+  const { user, userColor, setColor } = useContext(firebaseContext)
+  const [ currentColor, setCurrentColor ] = useState(userColor)
   const [ tooltip, setTooltip ] = useState()
+  const [ isNicknameModalOpen, setIsNicknameModalOpen ] = useState(false)
   const [ isHovered, hoverRef ] = useHover()
 
   const { windowWidth } = useContext(windowContext)
@@ -36,6 +41,11 @@ export default function HeaderContainer({ innerRef }) {
     setTooltip('copied')
   }
 
+  const handleCloseColorPicker = () => {
+    if (currentColor === userColor) return
+    setColor(currentColor)
+  }
+
   return (
     // <Header style={{flexDirection: isSmall ? 'column' : 'row'}}>
     <Header innerRef={innerRef}>
@@ -55,9 +65,15 @@ export default function HeaderContainer({ innerRef }) {
         </Tooltip>
       </Header.Text>
       <Header.Text>
-        {isSmall ? null : 'Nickname:'} {user.displayName}
-        <ChangeNicknameButton/>
+        {isSmall ? null : 'Nickname:'} <span style={{color: currentColor}}>{user.displayName}</span>
+        <Hover
+          DefaultComponent={EditBoxEmpty}
+          HoverComponent={EditBoxFilled}
+          onClick={() => setIsNicknameModalOpen(true)}
+        />
+        <ColorPicker value={currentColor} onChange={event => setCurrentColor(event.target.value)} onBlur={handleCloseColorPicker}/>
       </Header.Text>
+      <NicknameModal isOpen={isNicknameModalOpen} setIsOpen={setIsNicknameModalOpen} />
     </Header>
   )
 }

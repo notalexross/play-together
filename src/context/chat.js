@@ -6,7 +6,7 @@ const context = React.createContext()
 const { Provider } = context
 
 function ContextProvider({ children }) {
-  const { user, firebase } = useContext(firebaseContext)
+  const { user, firebase, userColor } = useContext(firebaseContext)
   const { roomId } = useParams()
   const [ messages, setMessages ] = useState()
   const [ timeJoined, setTimeJoined ] = useState(firebase.firestore.Timestamp.fromDate(new Date()))
@@ -36,11 +36,13 @@ function ContextProvider({ children }) {
         const time = doc.data().createdAt.toDate()
         const hours = time.getHours().toString().padStart(2,'0').slice(0,2)
         const minutes = time.getMinutes().toString().padStart(2,'0').slice(0,2)
+        // TODO this wont use new values for local user userColor, since this is setup on mount only
+        // it only works for displayName because the memory address never changes... but only on rerender
         return {
           id: doc.id,
-          color: '#d46d00',
+          color: doc.data().uid === user.uid ? userColor : '#d46d00',
           user: doc.data().uid === user.uid ? user.displayName : 'temp',
-          timestamp: `${hours}:${minutes}`, //doc.data().createdAt,
+          timestamp: `${hours}:${minutes}`,
           message: doc.data().content
         }
       }))
