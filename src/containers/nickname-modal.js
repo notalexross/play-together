@@ -1,10 +1,10 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { userContext } from '../context/user'
+import { firebaseContext } from '../context/firebase'
 import { Modal } from '../components'
 
 export default function NicknameModal({ isOpen = false, setIsOpen = () => {}, onComplete = () => {} }) {
-  const { setNickname } = useContext(userContext)
+  const { setNickname } = useContext(firebaseContext)
   const [ userInput, setUserInput ] = useState('')
   const inputRef = useRef(null)
 

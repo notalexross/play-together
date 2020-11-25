@@ -1,27 +1,21 @@
-import React from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Redirect, useParams } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
+import { firebaseContext } from '../context/firebase'
 import { Loading } from '../components'
-import SERVER_URL from '../constants/serverUrl'
-import useFetch from '../hooks/useFetch'
 
 export default function RoomRedirect({ children }) {
+  const { doesRoomExist } = useContext(firebaseContext)
   const { roomId } = useParams()
+  const [ roomExists, setRoomExists ] = useState(false)
+  const [ isLoading, setIsLoading ] = useState(true)
 
-  // TODO
-  // const [ response, isLoading, error ] = useFetch(`${SERVER_URL}/games/${roomId}`) 
-  const response = true
-  const isLoading = false
-  const error = false
+  useEffect(() => {
+    doesRoomExist(roomId).then(exists => {
+      setRoomExists(exists)
+      setIsLoading(false)
+    })
+  }, [])
 
-  // two requests going out to game room... one from here and one to sync game state (from useGame)... should here not just call syncGameState then?
-  // and only once if can?
-
-  console.log('===')
-  console.log(roomId)
-  console.log(response)
-  console.log(isLoading)
-  console.log(error)
-
-  return isLoading ? <><Loading />room data</> : (response ? children : <Redirect to={ROUTES.HOME} />)
+  return isLoading ? <><Loading />room data</> : (roomExists ? children : <Redirect to={ROUTES.HOME} />)
 }

@@ -6,6 +6,7 @@ import SettingsContainer from './settings'
 import GameContainer from './game'
 import ChatContainer from './chat'
 import { windowContext } from '../context/window'
+import { ChatContextProvider } from '../context/chat'
 import useForceRender from '../hooks/useForceRender.js'
 
 export default function RoomContainer() {
@@ -100,7 +101,9 @@ export default function RoomContainer() {
           <Panel.Title>Chat</Panel.Title>
         </Panel.Header>
         <Panel.Body>
-          <ChatContainer onFocus={() => handleChatExpand(false)} isExpanded={chatIsExpanded}/>
+          <ChatContextProvider>
+            <ChatContainer onFocus={() => handleChatExpand(false)} isExpanded={chatIsExpanded}/>
+          </ChatContextProvider>
         </Panel.Body>
       </Panel>
     </Panel.Container>

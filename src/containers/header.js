@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Copy as CopyEmpty } from '@styled-icons/boxicons-regular/Copy'
 import { Copy as CopyFilled} from '@styled-icons/boxicons-solid/Copy'
-import { userContext } from '../context/user'
+import { firebaseContext } from '../context/firebase'
 import * as ROUTES from '../constants/routes'
 import ChangeNicknameButton from './change-nickname-button'
 import { Header, Tooltip } from '../components'
@@ -9,7 +9,7 @@ import useHover from '../hooks/useHover.js'
 import { windowContext } from '../context/window'
 
 export default function HeaderContainer({ innerRef }) {
-  const { nickname } = useContext(userContext)
+  const { user } = useContext(firebaseContext)
   const [ tooltip, setTooltip ] = useState()
   const [ isHovered, hoverRef ] = useHover()
 
@@ -55,7 +55,7 @@ export default function HeaderContainer({ innerRef }) {
         </Tooltip>
       </Header.Text>
       <Header.Text>
-        {isSmall ? null : 'Nickname:'} {nickname}
+        {isSmall ? null : 'Nickname:'} {user.displayName}
         <ChangeNicknameButton/>
       </Header.Text>
     </Header>

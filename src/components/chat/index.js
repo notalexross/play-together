@@ -30,44 +30,32 @@ Chat.Send = function ChatSend({ children, ...restProps }) {
   )
 }
 
-Chat.TextInput = function ChatTextInput({ onFocus = () => {}, padding, ...restProps }) {
-  const [ text, setText ] = useState('')
+Chat.TextInput = React.forwardRef(({ padding, value, ...restProps }, ref) => {
   const [ error, setError ] = useState('')
   const prevScrollHeight = useRef()
   const rowCount = useRef(1)
-  const messageRef = useRef()
   const maxLength = 200
 
   useEffect(() => {
-    const ref = messageRef.current
-    ref.addEventListener('focus', onFocus)
-    return () => {
-      ref.removeEventListener('focus', onFocus)
-    }
-  }, [onFocus])
-
-  useEffect(() => {
-    !error && text.length === maxLength ?
+    !error && value.length === maxLength ?
       setError(`Reached ${maxLength} Character Limit`) :
       setError('')
-  }, [text])
+  }, [value])
 
-  if (text.length === 0) {
+  if (value.length === 0) {
     rowCount.current = 1
   } else {
-    messageRef.current && rowCount.current < 3 && messageRef.current.scrollHeight > prevScrollHeight.current && rowCount.current++
+    ref.current && rowCount.current < 3 && ref.current.scrollHeight > prevScrollHeight.current && rowCount.current++
   }
 
-  prevScrollHeight.current = messageRef.current && messageRef.current.scrollHeight
+  prevScrollHeight.current = ref.current && ref.current.scrollHeight
 
   return (
     <>
       {error ? <Error>{error}</Error> : null}
       <TextInput 
-        ref={messageRef}
-        value={text}
-        onChange={event => setText(event.target.value)}
-        onKeyPress={onKeyPress}
+        ref={ref}
+        value={value}
         rows={rowCount.current}
         ariaLabel="Send a message"
         placeholder="Send a message"
@@ -77,17 +65,17 @@ Chat.TextInput = function ChatTextInput({ onFocus = () => {}, padding, ...restPr
       />
     </>
   )
-}
+})
 
-Chat.Log = function ChatLog({ children, isExpanded, ...restProps }) {
+Chat.Log = React.forwardRef(({ children, isExpanded, ...restProps }, ref) => {
   return (
-    <Log isExpanded={isExpanded} {...restProps}>
-      <LogInner>
+    <Log isExpanded={isExpanded}>
+      <LogInner ref={ref} {...restProps}>
         {children}
       </LogInner>
     </Log>
   )
-}
+})
 
 Chat.Message = function ChatMessage({ children, ...restProps }) {
   return <Message {...restProps}>{children}</Message>
@@ -106,22 +94,5 @@ Chat.Text = function ChatText({ children, ...restProps }) {
 }
 
 Chat.Form = function ChatForm({ children, ...restProps }) {
-
-  const handleSubmit = event => {
-    event.preventDefault()
-    postMessage()
-  }
-  
-  return <Form onSubmit={handleSubmit} {...restProps}>{children}</Form>
-}
-
-function onKeyPress(event) {
-  if (event.key === 'Enter') {
-    event.preventDefault()
-    postMessage()
-  }
-}
-
-function postMessage() {
-  console.log('submitted message for sending')
+  return <Form {...restProps}>{children}</Form>
 }

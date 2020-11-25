@@ -4,20 +4,20 @@ import { GlobalStyle } from './styles/global';
 import { ResponsiveStyle } from './styles/responsive';
 import { PreventTransitionsOnResize } from './components'
 import * as ROUTES from './constants/routes'
-import { UserContextProvider } from './context/user'
 import { WindowContextProvider } from './context/window'
+import { FirebaseContextProvider } from './context/firebase';
 import Home from './pages/Home'
 import GameRoom from './pages/GameRoom'
 
 export default function App() {
   return (
     <>
-      <GlobalStyle/>
-      <ResponsiveStyle/>
-      <PreventTransitionsOnResize/>
-      <Router>
-        <WindowContextProvider>
-          <UserContextProvider>
+      <FirebaseContextProvider>
+        <GlobalStyle/>
+        <ResponsiveStyle/>
+        <PreventTransitionsOnResize/>
+        <Router>
+          <WindowContextProvider>
             <Switch>
               <Route exact path={ROUTES.HOME}>
                 <Home/>
@@ -26,9 +26,9 @@ export default function App() {
                 <GameRoom/>
               </Route>
             </Switch>
-          </UserContextProvider>
-        </WindowContextProvider>
-      </Router>
+          </WindowContextProvider>
+        </Router>
+      </FirebaseContextProvider>
     </>
   )
 }
