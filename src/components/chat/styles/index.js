@@ -38,9 +38,10 @@ export const TextInput = styled.textarea`
   font-family: inherit;
   font-size: inherit;
   color: inherit;
-  line-height: 1.5;
   border-radius: 6px;
   flex-grow: 1;
+  line-height: 1.5;
+  overflow-x: hidden; // required in order to override firefox extra height
 
   @media (max-width: 800px) {
     padding: 0.6rem 1rem;
