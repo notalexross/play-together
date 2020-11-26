@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { firebaseContext } from '../context/firebase'
 
@@ -6,11 +6,14 @@ const context = React.createContext()
 const { Provider } = context
 
 function ContextProvider({ children }) {
-  const { user, firebase, userColor } = useContext(firebaseContext)
+  const { user, firebase } = useContext(firebaseContext)
   const { roomId } = useParams()
-  const [ messages, setMessages ] = useState()
-  const [ timeJoined, setTimeJoined ] = useState(firebase.firestore.Timestamp.fromDate(new Date()))
-  
+  const [ messages, setMessages ] = useState([])
+  const [ storedUsers, setStoredUsers ] = useState([])
+  // TODO this uses client local time, so susceptible to user just setting system clock backwards.
+  // if client clock is slow by more than 5 seconds then it won't see messages initially at all.
+  const timeJoined = useRef(firebase.firestore.Timestamp.fromDate(new Date(Date.now() - 5000)))
+
   const sendMessage = message => {
     console.log('sending message')
     console.log(roomId)
@@ -24,41 +27,69 @@ function ContextProvider({ children }) {
   }
 
   const initMessaging = () => {
+    const listeners = []
+
+
+    // TODO This is very dodgy stuff...
+    const updateStoredUsers = data => {
+      setStoredUsers(storedUsers => {
+        if (!storedUsers.some(storedUser => storedUser.uid === data.uid)) {
+          const usersRef = firebase.firestore().collection('users')
+          const query = usersRef.doc(data.uid)
+          console.log('adding new user listener')
+          const newListener = query.onSnapshot(snapshot => {
+            if (snapshot.metadata.hasPendingWrites) return
+            // if (!snapshot.exists) return
+            const updatedUser = {
+              uid: data.uid,
+              displayName: snapshot.data().displayName,
+              color: snapshot.data().color
+            }
+            setStoredUsers(storedUsers => ([
+              ...storedUsers.filter(storedUser => storedUser.uid !== updatedUser.uid),
+              updatedUser
+            ]))
+          })
+          listeners.push(newListener)
+        }
+        return storedUsers
+      })
+    }
+
     console.log('initialising messaging')
     const roomRef = firebase.firestore().collection('rooms').doc(roomId)
     const messagesRef = roomRef.collection('messages')
-    const query = messagesRef.where('createdAt', '>', timeJoined).orderBy('createdAt', 'desc') //.limit(100)
-    const listener = query.onSnapshot(snapshot => {
-      if(snapshot.docs.some(doc => doc.metadata.hasPendingWrites)) return // this should prevent triggering twice locally
+    const query = messagesRef.where('createdAt', '>', timeJoined.current).orderBy('createdAt', 'desc').limit(100)
+    listeners[0] = query.onSnapshot(snapshot => {
+      if (snapshot.docs.some(doc => doc.metadata.hasPendingWrites)) return // this should prevent triggering twice locally
       console.log('updating messages')
-      // TODO get displayNames, and color, (only if don't already have them, update on change)
       setMessages(snapshot.docs.reverse().map(doc => {
+        updateStoredUsers(doc.data())
         const time = doc.data().createdAt.toDate()
         const hours = time.getHours().toString().padStart(2,'0').slice(0,2)
         const minutes = time.getMinutes().toString().padStart(2,'0').slice(0,2)
-        // TODO this wont use new values for local user userColor, since this is setup on mount only
-        // it only works for displayName because the memory address never changes... but only on rerender
         return {
           id: doc.id,
-          color: doc.data().uid === user.uid ? userColor : '#d46d00',
-          user: doc.data().uid === user.uid ? user.displayName : 'temp',
+          uid: doc.data().uid,
           timestamp: `${hours}:${minutes}`,
           message: doc.data().content
         }
       }))
     })
 
-    return listener
+    return listeners
   }
 
   useEffect(() => {
-    return initMessaging()
+    const listeners = initMessaging()
+    return () => {
+      listeners.forEach(listener => listener())
+      console.log(listeners)
+    }
   }, [])
 
-  // currentRoom && sendMessage('hi')
-
   return (
-    <Provider value={{ sendMessage, messages }} >
+    <Provider value={{ sendMessage, messages, storedUsers }} >
       {children}
     </Provider>
   )

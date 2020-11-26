@@ -71,6 +71,7 @@ export const LogInner = styled.div`
 `
 
 export const Message = styled.div`
+  word-wrap: break-word;
   margin: 0.5em 1em 0;
   &:last-of-type {
     margin-bottom: 1em;

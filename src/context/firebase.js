@@ -95,7 +95,7 @@ function ContextProvider({ children }) {
   const initApp = () => {
     firebase.initializeApp(FIREBASE_CONFIG)
 
-    const listener = firebase.auth().onAuthStateChanged(user => {
+    const listener =  firebase.auth().onAuthStateChanged(user => {
       setCurrentUser(user)
       if (user) {
         console.log('signed in')
@@ -103,13 +103,18 @@ function ContextProvider({ children }) {
         console.log('signed out')
         signIn()
       }
-    });
+    })
 
     return listener
   }
 
   useEffect(() => {
+    return initApp()
+  }, [])
+
+  useEffect(() => {
     if (!currentUser) return
+
     if (currentUser.displayName) {
       setIsLoading(false)
     } else {
@@ -117,11 +122,20 @@ function ContextProvider({ children }) {
         setIsLoading(false)
       })
     }
-  }, [currentUser])
 
-  useEffect(() => {
-    return initApp()
-  }, [])
+    const usersRef = firebase.firestore().collection('users')
+    const query = usersRef.doc(currentUser.uid)
+    const listener = query.onSnapshot(snapshot => {
+      if (snapshot.metadata.hasPendingWrites) return
+      if (!snapshot.exists) return
+      setUserColor(snapshot.data().color)
+      currentUser.reload().then(() => { // update displayName
+        forceRender()
+      })
+    })
+
+    return listener
+  }, [currentUser])
 
   return (
     <Provider value={{ user: currentUser, firebase, setNickname, userColor, setColor, doesRoomExist, createRoom }} >

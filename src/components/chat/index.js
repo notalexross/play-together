@@ -30,11 +30,10 @@ Chat.Send = function ChatSend({ children, ...restProps }) {
   )
 }
 
-Chat.TextInput = React.forwardRef(({ padding, value, ...restProps }, ref) => {
+Chat.TextInput = React.forwardRef(({ padding, value, maxLength = 100, ...restProps }, ref) => {
   const [ error, setError ] = useState('')
   const prevScrollHeight = useRef()
   const rowCount = useRef(1)
-  const maxLength = 200
 
   useEffect(() => {
     !error && value.length === maxLength ?

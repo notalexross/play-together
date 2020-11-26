@@ -29,6 +29,10 @@ export default function HeaderContainer({ innerRef }) {
       }
   }, [isHovered])
 
+  useEffect(() => {
+    setCurrentColor(userColor)
+  }, [userColor])
+
   const handleClick = () => {
     console.log('copying')
     const copyField = document.createElement('input')
