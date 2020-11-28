@@ -49,7 +49,7 @@ export default function GameContainer() {
     <Playarea aspectRatio={isSmall ? 0.81 : 0.75} paddingFraction={isSmall ? 0.005 : 0.03}>
       <Playarea.Board game='chess' color='white' paddingFraction={0.06}>
         <Playarea.BoardPiecesContainer ref={containerRef}>
-          {Object.keys(pieces).map(pieceId => (
+          {Object.entries(pieces).sort(([_, a], [__, b]) => a - b).map(([pieceId, _]) => (
             <MovablePiece
               key={pieceId}
               pieceId={pieceId}

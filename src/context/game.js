@@ -11,6 +11,7 @@ function ContextProvider({ children }) {
   const [ pieces, setPieces ] = useState({})
   const [ heldPiece, setHeldPiece ] = useState()
   const containerRef = useRef()
+  const lastUpdated = useRef()
 
   const firebase = window.firebase
   const database = firebase.database()
@@ -19,7 +20,7 @@ function ContextProvider({ children }) {
     const piecesIdsRef = database.ref(`rooms/${roomId}/pieces/ids`)
     const pieceRef = piecesIdsRef.push()
     const pieceId = pieceRef.key
-    pieceRef.set(true, alertError)
+    pieceRef.set(firebase.database.ServerValue.TIMESTAMP, alertError)
 
     updatePieceInDatabase(pieceId, { id: pieceId, game, name, color, size, holder, position })
 
@@ -29,13 +30,16 @@ function ContextProvider({ children }) {
 
   const updatePieceInDatabase = (pieceId, properties) => {
     const allowedProperties = [ 'game', 'name', 'color', 'size', 'holder', 'position', 'customValue' ]
-    const pieceRef = database.ref(`rooms/${roomId}/pieces/details/${pieceId}`)
+    const piecesRef = database.ref(`rooms/${roomId}/pieces`)
     const filteredEntries = Object.entries(properties).filter(entry => allowedProperties.includes(entry[0]))
     const mappedEntries = filteredEntries.map(([key, value]) => {
-      return [ `${key}`, value ]
+      return [ `details/${pieceId}/${key}`, value ]
     })
+    if (lastUpdated.current != pieceId) {
+      mappedEntries.push([ `ids/${pieceId}`, firebase.database.ServerValue.TIMESTAMP ]) // keep track of time of last update, for layering
+    }
     const updates = Object.fromEntries(mappedEntries)
-    pieceRef.update(updates, alertError)
+    piecesRef.update(updates, alertError)
   }
 
   const removePieceFromDatabase = pieceId => {
@@ -56,8 +60,15 @@ function ContextProvider({ children }) {
     const piecesIdsRef = database.ref(`rooms/${roomId}/pieces/ids`)
     piecesIdsRef.on('child_added', snapshot => {
       const pieceId = snapshot.key
-      onPieceAddedToDatabase(pieceId)
+      const value = snapshot.val()
+      onPieceAddedToDatabase(pieceId, value)
       console.log(`(listener) new piece: ${pieceId}`)
+    })
+    piecesIdsRef.on('child_changed', snapshot => {
+      const pieceId = snapshot.key
+      const value = snapshot.val()
+      onPieceAddedToDatabase(pieceId, value)
+      console.log(`(listener) piece brought to front: ${pieceId}`)
     })
     piecesIdsRef.on('child_removed', snapshot => {
       const pieceId = snapshot.key
@@ -75,8 +86,9 @@ function ContextProvider({ children }) {
     setPieces(pieces => ({...pieces, [pieceId]: undefined}))
   }
 
-  const onPieceAddedToDatabase = pieceId => {
-    setPieces(pieces => ({...pieces, [pieceId]: true}))
+  const onPieceAddedToDatabase = (pieceId, value = true) => {
+    lastUpdated.current = pieceId
+    setPieces(pieces => ({...pieces, [pieceId]: value}))
   }
 
   const trackProperty = (pieceId, property, callback) => {
@@ -92,13 +104,13 @@ function ContextProvider({ children }) {
   }
 
   const grabPiece = (pieceId) => {
-    console.log('grabbing piece')
+    // console.log('grabbing piece')
     setHeldPiece(pieceId)
     updatePieceInDatabase(pieceId, { holder: user.uid })
   }
 
   const releasePiece = (pieceId) => {
-    console.log('releasing piece')
+    // console.log('releasing piece')
     setHeldPiece(null)
     updatePieceInDatabase(pieceId, { holder: null })
   }

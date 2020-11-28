@@ -18,8 +18,6 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   const isDeleted = useRef(false)
   const scrollAmount = useRef(0)
 
-  // TODO move piece to top when selected
-
   const style = {
     position: 'absolute',
     transform: 'translate(-50%, -50%)',
@@ -41,7 +39,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
 
   const handleMouseUp = (event) => {
     event.preventDefault() // preventDefault on touchend event handler prevents mousedown and mouseup events triggering afterwards
-    console.log('mouseup')
+    // console.log('mouseup')
     if (heldPiece === pieceId) {
       releasePiece(pieceId)
     } 
@@ -64,7 +62,6 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   }
 
   const handleClick = event => {
-    console.log(event.button)
     if (event.button === 0 && event.ctrlKey) {
       const randomColor = Math.floor(Math.random() * 16 ** 6).toString(16)
       !isDeleted.current && updatePieceInDatabase(pieceId, { color: `#${randomColor}` })
