@@ -12,11 +12,11 @@ function Svg({ type='piece', game='chess', name='bishop', color='#fff', style, c
   let Component
   switch (type) {
     case 'piece': {
-      Component = Svgs[type][game][name]
+      Component = Svgs[type] && Svgs[type][game] && Svgs[type][game][name]
       break
     }
     case 'board': {
-      Component = Svgs[type][game]
+      Component = Svgs[type] && Svgs[type][game]
       break
     }
     default: {
@@ -24,6 +24,7 @@ function Svg({ type='piece', game='chess', name='bishop', color='#fff', style, c
       break
     }
   }
+  Component = Component || Svgs['piece']['chess']['bishop']
 
   return <Component ref={ref} customvalue={customValue} style={{...style, color}}{...restProps} />
 }

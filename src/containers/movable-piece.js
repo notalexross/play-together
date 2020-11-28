@@ -52,7 +52,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
 
   const handleWheelMove = event => {
     const maxSize = 1
-    const minSize = 0.05
+    const minSize = 0.04
     const increment = event.deltaY > 0 ? 1 : -1
     scrollAmount.current += increment
     let newSize = size - scrollAmount.current * 0.02

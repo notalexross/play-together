@@ -35,7 +35,7 @@ function ContextProvider({ children }) {
     const mappedEntries = filteredEntries.map(([key, value]) => {
       return [ `details/${pieceId}/${key}`, value ]
     })
-    if (lastUpdated.current != pieceId) {
+    if (lastUpdated.current !== pieceId) {
       // using server timestamp causes child_updated to fire twice
       mappedEntries.push([ `ids/${pieceId}`, firebase.database.ServerValue.TIMESTAMP ]) // keep track of time of last update, for layering
     }
@@ -66,6 +66,7 @@ function ContextProvider({ children }) {
       console.log(`(listener) new piece: ${pieceId}`)
     })
     piecesIdsRef.on('child_changed', snapshot => {
+      // TODO this is triggering too many times (it should only be triggering twice)
       const pieceId = snapshot.key
       const value = snapshot.val()
       onPieceAddedToDatabase(pieceId, value, true)

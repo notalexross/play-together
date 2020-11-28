@@ -2,11 +2,13 @@ import React, { useContext } from 'react'
 import { Playarea } from '../components'
 import { windowContext } from '../context/window'
 import { gameContext } from '../context/game'
+import { settingsContext } from '../context/settings'
 import MovablePiece from './movable-piece.js'
 
 export default function GameContainer() {
   const { containerRef, pieces, addPiece, getRelativePosition } = useContext(gameContext)
   const { windowWidth } = useContext(windowContext)
+  const { currentSettings } = useContext(settingsContext)
 
   const isSmall = windowWidth <= 800
 
@@ -47,7 +49,7 @@ export default function GameContainer() {
   // paddingFraction on board has to be same on all displays, otherwise coordinates no longer work
   return (
     <Playarea aspectRatio={isSmall ? 0.81 : 0.75} paddingFraction={isSmall ? 0.005 : 0.03}>
-      <Playarea.Board game='chess' color='white' paddingFraction={0.06}>
+      <Playarea.Board game={currentSettings.game} color={currentSettings.boardColor} paddingFraction={0.06}>
         <Playarea.BoardPiecesContainer ref={containerRef}>
           {Object.entries(pieces).sort(([_, a], [__, b]) => a - b).map(([pieceId, _]) => (
             <MovablePiece
