@@ -1,0 +1,44 @@
+{
+  "rooms": {
+    "qyJ3vJSqfaSPwOoM3RNF": {
+      "connections": {
+        "1W0fPJ6JH1TVxC0I6uTPYtHQ4e73": [],
+        "5MZWUwd2iOTa4YLtC6lMKQO26x53": [],
+        "7ISx2pLYR1PIVFZkZP1oOjsb3lU2": []
+      },
+      "settings": {
+        "board": "chess",
+        "pieces": [
+          {"game": "chess", "name": "king", "color": "#fff", "size": "0.1"},
+          {"game": "chess", "name": "kingDark", "color": "#000", "size": "0.1"}
+        ]
+      },
+      "pieces": {
+        "ids": {
+          "AAAAAA": true,
+          "BBBBBB": true
+        },
+        "details": {
+          "AAAAAA" : {
+            "game": "chess",
+            "name": "king",
+            "color": "#fff",
+            "size": 0.1,
+            "holder": "5MZWUwd2iOTa4YLtC6lMKQO26x53",
+            "position": [ 125, 500 ],
+            "customValue": null
+          },
+          "BBBBBB": {
+            "game": "chess",
+            "name": "kingDark",
+            "color": "#000",
+            "size": 0.1,
+            "holder": null,
+            "position": [ 200, 150 ],
+            "customValue": null
+          }
+        }
+      }
+    }
+  }
+}

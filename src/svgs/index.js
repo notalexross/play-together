@@ -7,7 +7,7 @@ const Svgs = {
   board
 }
 
-function Svg({ type='piece', game='chess', name='bishop', color='#fff', style, ...restProps }, ref) {
+function Svg({ type='piece', game='chess', name='bishop', color='#fff', style, customValue, ...restProps }, ref) {
 
   let Component
   switch (type) {
@@ -25,7 +25,7 @@ function Svg({ type='piece', game='chess', name='bishop', color='#fff', style, .
     }
   }
 
-  return <Component ref={ref} style={{...style, color}}{...restProps} />
+  return <Component ref={ref} customvalue={customValue} style={{...style, color}}{...restProps} />
 }
 
 const ForwardRef = React.forwardRef(Svg)

@@ -1,31 +1,8 @@
-import React, { useState } from "react"
+import React from "react"
 
 // TODO this could be done much better...
-function SvgComponent({ animate = true, ...restProps }, svgRef) {
-  const [ number, setNumber ] = useState(1)
-  // const [ angle, setAngle ] = useState(0)
-
-  const sides = 6
-
-  let timeout
-  const handleMouseUp = () => {
-    if (!animate) return
-    let time = 5
-    const roll = () => {
-      const randomNumber = Math.ceil(Math.random() * sides)
-      // const randomAngle = Math.ceil(Math.random() * 360)
-      setNumber(randomNumber)
-      // setAngle(randomAngle)
-      time *= 1.3
-      if (time < 500) {
-        setTimeout(() => {
-          roll()
-        }, time)
-      }
-    }
-    clearTimeout(timeout)
-    roll()
-  }
+function SvgComponent({ animate = true, customvalue, ...restProps }, svgRef) {
+  const number = customvalue
 
   const dots = [
     <circle key='left-top' cx={117.0258789} cy={117.0263672} r={70} />,
@@ -65,8 +42,6 @@ function SvgComponent({ animate = true, ...restProps }, svgRef) {
     }
   }
 
-  // <div style={{transform: `rotate(${angle}deg)`, border: 'solid 1px green'}}>
-
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -76,14 +51,14 @@ function SvgComponent({ animate = true, ...restProps }, svgRef) {
       ref={svgRef}
       {...restProps}
     >
-      <g onMouseUp={handleMouseUp} onTouchEnd={handleMouseUp}>
+      <g>
         <rect
           x={4}
           y={4}
           width={549}
           height={549}
           rx={68}
-          fill="#fff"
+          fill="currentColor"
           stroke="#000"
           strokeWidth={7}
         />

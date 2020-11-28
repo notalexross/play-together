@@ -27,8 +27,8 @@ export default function ChatContainer({ onFocus = () => {}, isExpanded }) {
 
   useEffect(() => {
     // console.log(messages.length)
-    console.log('---')
-    console.log(storedUsers.length)
+    // console.log('---')
+    // console.log(storedUsers.length)
     // console.log(storedUsers)
     setAllMessages(messages.map(message => {
       const storedUser = storedUsers.find(storedUser => storedUser.uid === message.uid)

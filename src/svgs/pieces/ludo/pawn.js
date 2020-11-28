@@ -4,7 +4,7 @@ function SvgComponent(props, svgRef) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 744.09 1052.4"
+      viewBox="0 -28 744.09 1062.4"
       ref={svgRef}
       {...props}
     >

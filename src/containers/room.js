@@ -7,6 +7,7 @@ import GameContainer from './game'
 import ChatContainer from './chat'
 import { windowContext } from '../context/window'
 import { ChatContextProvider } from '../context/chat'
+import { GameContextProvider } from '../context/game'
 import useForceRender from '../hooks/useForceRender.js'
 
 export default function RoomContainer() {
@@ -92,7 +93,9 @@ export default function RoomContainer() {
       </Panel>
       <Panel innerRef={mainPanelRef} style={{ zIndex: 0, overflow: 'hidden' }}>
         <Panel.Body>
-          <GameContainer />
+          <GameContextProvider>
+            <GameContainer />
+          </GameContextProvider>
         </Panel.Body>
       </Panel>
       <Panel innerRef={chatContainerRef} style={chatExpandedStyle} width={isSmall ? `100%` : '350px'}>

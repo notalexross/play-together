@@ -6,6 +6,7 @@ export const FlexContainer = styled.div`
   justify-content: center;
   align-items: center;
   min-height: 100%;
+  overflow: hidden; // for pieces
 `
 
 export const AspectRatioContainer = styled.div`

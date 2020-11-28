@@ -98,7 +98,7 @@ Playarea.Pieces = function PlayareaPieces({ children, ...restProps }) {
   )
 }
 
-Playarea.Piece = function PlayareaPiece({ dragStyle, game, name, color, sizeFraction = 0.1, ...restProps }) {
+Playarea.Piece = function PlayareaPiece({ style, game, name, color, sizeFraction = 0.1, ...restProps }) {
   const { basis } = useContext(PlayareaContext)
   const svgRef = useRef()
 
@@ -120,6 +120,6 @@ Playarea.Piece = function PlayareaPiece({ dragStyle, game, name, color, sizeFrac
 
 
   return (
-    <Svg type="piece" game={game} name={name} color={color} style={{...pieceStyle, ...dragStyle}} ref={svgRef} {...restProps}/>
+    <Svg type="piece" game={game} name={name} color={color} style={{...pieceStyle, ...style}} ref={svgRef} {...restProps}/>
   )
 }

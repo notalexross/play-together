@@ -95,7 +95,7 @@ function ContextProvider({ children }) {
   const initApp = () => {
     firebase.initializeApp(FIREBASE_CONFIG)
 
-    const listener =  firebase.auth().onAuthStateChanged(user => {
+    const listener = firebase.auth().onAuthStateChanged(user => {
       setCurrentUser(user)
       if (user) {
         console.log('signed in')
