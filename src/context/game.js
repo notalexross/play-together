@@ -17,8 +17,9 @@ function ContextProvider({ children }) {
 
   const addPieceToDatabase = ({ game, name, color, size, holder = null, position = [ 50, 50 ] } = {}) => {
     const piecesIdsRef = database.ref(`rooms/${roomId}/pieces/ids`)
-    const pieceId = piecesIdsRef.push().key
-    piecesIdsRef.child(pieceId).set(true, alertError)
+    const pieceRef = piecesIdsRef.push()
+    const pieceId = pieceRef.key
+    pieceRef.set(true, alertError)
 
     updatePieceInDatabase(pieceId, { id: pieceId, game, name, color, size, holder, position })
 
@@ -28,13 +29,13 @@ function ContextProvider({ children }) {
 
   const updatePieceInDatabase = (pieceId, properties) => {
     const allowedProperties = [ 'game', 'name', 'color', 'size', 'holder', 'position', 'customValue' ]
-    const piecesRef = database.ref(`rooms/${roomId}/pieces`)
+    const pieceRef = database.ref(`rooms/${roomId}/pieces/details/${pieceId}`)
     const filteredEntries = Object.entries(properties).filter(entry => allowedProperties.includes(entry[0]))
     const mappedEntries = filteredEntries.map(([key, value]) => {
-      return [ `details/${pieceId}/${key}`, value ]
+      return [ `${key}`, value ]
     })
     const updates = Object.fromEntries(mappedEntries)
-    piecesRef.update(updates, alertError)
+    pieceRef.update(updates, alertError)
   }
 
   const removePieceFromDatabase = pieceId => {

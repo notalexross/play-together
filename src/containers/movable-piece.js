@@ -15,6 +15,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   const [ holder, setHolder ] = useState()
   const [ customValue, setCustomValue ] = useState()
   const [ amOwner, setAmOwner ] = useState(false)
+  const isDeleted = useRef(false)
   const scrollAmount = useRef(0)
 
   // TODO move piece to top when selected
@@ -35,7 +36,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     const mouseY = event.clientY !== undefined ? event.clientY : event.touches[0].clientY
     const position = getRelativePosition(mouseX, mouseY)
 
-    updatePieceInDatabase(pieceId, { position })
+    !isDeleted.current && updatePieceInDatabase(pieceId, { position })
   }
 
   const handleMouseUp = (event) => {
@@ -59,29 +60,36 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       newSize = minSize
       scrollAmount.current -= increment
     }
-    updatePieceInDatabase(pieceId, { size: newSize })
+    !isDeleted.current && updatePieceInDatabase(pieceId, { size: newSize })
   }
 
   const handleClick = event => {
-    if (event.button !== undefined && event.button === 0 && event.ctrlKey) {
+    console.log(event.button)
+    if (event.button === 0 && event.ctrlKey) {
       const randomColor = Math.floor(Math.random() * 16 ** 6).toString(16)
-      updatePieceInDatabase(pieceId, { color: `#${randomColor}` })
+      !isDeleted.current && updatePieceInDatabase(pieceId, { color: `#${randomColor}` })
     }
+  }
+
+  const handleContextMenu = event => {
+    isDeleted.current = true
+    removePiece(pieceId)
   }
 
   const handleMouseDown = event => {
     if (!event.button || event.button === 0) {
-      console.log('triggered')
       grabPiece(pieceId)
     }
   }
 
   const customAction = event => {
-    if (game === 'dice') {
-      roll((value) => {
-        updatePieceInDatabase(pieceId, { customValue: value })
-      }, { sides: 6 })
-    }
+    // if (event.button === undefined || event.button === 0) {
+      if (!isDeleted.current && game === 'dice') {
+        roll((value) => {
+          !isDeleted.current && updatePieceInDatabase(pieceId, { customValue: value })
+        }, { sides: 6 })
+      }
+    // }
   }
 
   useEffect(() => {
@@ -140,7 +148,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       sizeFraction={size}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
-      onContextMenu={() => removePiece(pieceId)}
+      onContextMenu={handleContextMenu}
       onClick={handleClick}
       onMouseUp={customAction}
       onTouchEnd={customAction}
