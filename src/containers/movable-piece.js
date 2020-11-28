@@ -1,3 +1,7 @@
+// ctrl+click or double click/tap to change colour
+// right click or hold touch to remove piece
+// hold piece and scroll to change size
+
 import React, { useState, useContext, useEffect, useRef } from 'react'
 import { gameContext } from '../context/game'
 import { firebaseContext } from '../context/firebase'
@@ -15,6 +19,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   const [ holder, setHolder ] = useState()
   const [ customValue, setCustomValue ] = useState()
   const [ amOwner, setAmOwner ] = useState(false)
+  const doubleClick = useRef(false)
   const isDeleted = useRef(false)
   const scrollAmount = useRef(0)
 
@@ -61,10 +66,14 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     !isDeleted.current && updatePieceInDatabase(pieceId, { size: newSize })
   }
 
+  const updateColor = () => {
+    const randomColor = Math.floor(Math.random() * 16 ** 6).toString(16)
+    !isDeleted.current && updatePieceInDatabase(pieceId, { color: `#${randomColor}` })
+  }
+
   const handleClick = event => {
     if (event.button === 0 && event.ctrlKey) {
-      const randomColor = Math.floor(Math.random() * 16 ** 6).toString(16)
-      !isDeleted.current && updatePieceInDatabase(pieceId, { color: `#${randomColor}` })
+      updateColor()
     }
   }
 
@@ -76,6 +85,16 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   const handleMouseDown = event => {
     if (!event.button || event.button === 0) {
       grabPiece(pieceId)
+    }
+
+    if (doubleClick.current) {
+      doubleClick.current = false
+      updateColor()
+    } else {
+      doubleClick.current = true
+      setTimeout(() => {
+        doubleClick.current = false
+      }, 300)
     }
   }
 
@@ -143,13 +162,13 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       name={name}
       color={color}
       sizeFraction={size}
+      customValue={customValue}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}
       onContextMenu={handleContextMenu}
       onClick={handleClick}
       onMouseUp={customAction}
       onTouchEnd={customAction}
-      customValue={customValue}
       {...restProps}
     /> : null
   )

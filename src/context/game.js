@@ -36,6 +36,7 @@ function ContextProvider({ children }) {
       return [ `details/${pieceId}/${key}`, value ]
     })
     if (lastUpdated.current != pieceId) {
+      // using server timestamp causes child_updated to fire twice
       mappedEntries.push([ `ids/${pieceId}`, firebase.database.ServerValue.TIMESTAMP ]) // keep track of time of last update, for layering
     }
     const updates = Object.fromEntries(mappedEntries)
