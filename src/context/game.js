@@ -61,13 +61,13 @@ function ContextProvider({ children }) {
     piecesIdsRef.on('child_added', snapshot => {
       const pieceId = snapshot.key
       const value = snapshot.val()
-      onPieceAddedToDatabase(pieceId, value)
+      onPieceAddedToDatabase(pieceId, value, false)
       console.log(`(listener) new piece: ${pieceId}`)
     })
     piecesIdsRef.on('child_changed', snapshot => {
       const pieceId = snapshot.key
       const value = snapshot.val()
-      onPieceAddedToDatabase(pieceId, value)
+      onPieceAddedToDatabase(pieceId, value, true)
       console.log(`(listener) piece brought to front: ${pieceId}`)
     })
     piecesIdsRef.on('child_removed', snapshot => {
@@ -86,8 +86,8 @@ function ContextProvider({ children }) {
     setPieces(pieces => ({...pieces, [pieceId]: undefined}))
   }
 
-  const onPieceAddedToDatabase = (pieceId, value = true) => {
-    lastUpdated.current = pieceId
+  const onPieceAddedToDatabase = (pieceId, value = true, pieceUpdated = false) => {
+    if (pieceUpdated) lastUpdated.current = pieceId
     setPieces(pieces => ({...pieces, [pieceId]: value}))
   }
 
