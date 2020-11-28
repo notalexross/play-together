@@ -18,7 +18,6 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   const scrollAmount = useRef(0)
 
   // TODO move piece to top when selected
-  // TODO fix touch controls
 
   const style = {
     position: 'absolute',
@@ -30,7 +29,8 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   }
 
   const onMouseMove = event => {
-    event.preventDefault() // so chat doesn't get highlighted as you drag pieces
+    const isTouch = !!event.touches
+    isTouch || event.preventDefault() // so chat doesn't get highlighted as you drag pieces
     const mouseX = event.clientX !== undefined ? event.clientX : event.touches[0].clientX
     const mouseY = event.clientY !== undefined ? event.clientY : event.touches[0].clientY
     const position = getRelativePosition(mouseX, mouseY)
@@ -38,7 +38,9 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     updatePieceInDatabase(pieceId, { position })
   }
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (event) => {
+    event.preventDefault() // preventDefault on touchend event handler prevents mousedown and mouseup events triggering afterwards
+    console.log('mouseup')
     if (heldPiece === pieceId) {
       releasePiece(pieceId)
     } 
@@ -64,6 +66,13 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     if (event.button !== undefined && event.button === 0 && event.ctrlKey) {
       const randomColor = Math.floor(Math.random() * 16 ** 6).toString(16)
       updatePieceInDatabase(pieceId, { color: `#${randomColor}` })
+    }
+  }
+
+  const handleMouseDown = event => {
+    if (!event.button || event.button === 0) {
+      console.log('triggered')
+      grabPiece(pieceId)
     }
   }
 
@@ -94,12 +103,19 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     if (heldPiece === pieceId) {
       setAmOwner(true)
       scrollAmount.current = 0
+
+      window.addEventListener('touchmove', onMouseMove)
+      window.addEventListener('touchend', handleMouseUp)
+
       window.addEventListener('mousemove', onMouseMove)
       window.addEventListener('mouseup', handleMouseUp)
       window.addEventListener('wheel', handleWheelMove)
     }
 
     return () => {
+      window.removeEventListener('touchmove', onMouseMove)
+      window.removeEventListener('touchend', handleMouseUp)
+
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('wheel', handleWheelMove)
@@ -107,7 +123,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   }, [size !== undefined, heldPiece])
 
   useEffect(() => {
-    if (!holder && amOwner && position.some(coord => coord < 0 || coord > 100)) {
+    if (!holder && amOwner && position && position.some(coord => coord < 0 || coord > 100)) {
       removePiece(pieceId)
     }
     if (holder && holder !== user.uid) {
@@ -122,11 +138,12 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       name={name}
       color={color}
       sizeFraction={size}
-      onMouseDown={e => e.button === 0 && grabPiece(pieceId)}
-      onTouchStart={() => grabPiece(pieceId)}
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleMouseDown}
       onContextMenu={() => removePiece(pieceId)}
       onClick={handleClick}
       onMouseUp={customAction}
+      onTouchEnd={customAction}
       customValue={customValue}
       {...restProps}
     /> : null

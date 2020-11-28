@@ -44,9 +44,10 @@ export default function GameContainer() {
   // TODO add clear button (to settings menu?)
   // TODO add a "snap to grid" option in settings, define grid separation based on game board.
 
+  // paddingFraction on board has to be same on all displays, otherwise coordinates no longer work
   return (
     <Playarea aspectRatio={isSmall ? 0.81 : 0.75} paddingFraction={isSmall ? 0.005 : 0.03}>
-      <Playarea.Board game='chess' color='white' paddingFraction={isSmall ? 0 : 0.06}>
+      <Playarea.Board game='chess' color='white' paddingFraction={0.06}>
         <Playarea.BoardPiecesContainer ref={containerRef}>
           {Object.keys(pieces).map(pieceId => (
             <MovablePiece
