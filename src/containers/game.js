@@ -4,24 +4,16 @@ import { windowContext } from '../context/window'
 import { gameContext } from '../context/game'
 import { settingsContext } from '../context/settings'
 import { localSettingsContext } from '../context/local-settings'
-import setsConfig from '../constants/sets-config'
-import piecesConfig from '../constants/pieces-config'
 import MovablePiece from './movable-piece.js'
+import FavoritablePiece from './favoritable-piece.js'
 
 export default function GameContainer() {
   const { containerRef, pieces, addPiece, getRelativePosition } = useContext(gameContext)
   const { windowWidth } = useContext(windowContext)
   const { globalSettings } = useContext(settingsContext)
-  const { localSettings } = useContext(localSettingsContext)
-  const [ piecesGroup, setPiecesGroup ] = useState([])
+  const { piecesGroup } = useContext(localSettingsContext)
 
   const isSmall = windowWidth <= 800
-
-  useEffect(() => {
-    const set = setsConfig[localSettings.piecesGroup] || setsConfig["chess"]
-    const setMapped = set.map(piece => ({id: piece, ...piecesConfig[piece]}))
-    setPiecesGroup(setMapped)
-  }, [localSettings.piecesGroup])
 
   const handleAddPiece = (event, piece) => {
     if (event.button !== undefined && event.button !== 0 ) return
@@ -46,8 +38,9 @@ export default function GameContainer() {
       </Playarea.Board>
       <Playarea.Pieces>
         {piecesGroup.map(piece => (
-          <Playarea.Piece
+          <FavoritablePiece
             key={piece.id}
+            piece={piece}
             game={piece.game}
             name={piece.name}
             color={piece.color}
@@ -55,6 +48,16 @@ export default function GameContainer() {
             onMouseDown={e => handleAddPiece(e, piece)}
             onTouchStart={e => handleAddPiece(e, piece)}
           />
+          // <Playarea.Piece
+          //   key={piece.id}
+          //   game={piece.game}
+          //   name={piece.name}
+          //   color={piece.color}
+          //   sizeFraction={piece.size}
+          //   onMouseDown={e => handleAddPiece(e, piece)}
+          //   onTouchStart={e => handleAddPiece(e, piece)}
+          //   onContextMenu={e => addToFavorites(piece)} // TODO move to a favourites wrapper
+          // />
         ))}
       </Playarea.Pieces>
     </Playarea>

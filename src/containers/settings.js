@@ -33,7 +33,7 @@ export default function SettingsContainer() {
         <Accordion.Body onClick={selectPieces} data-value="tic-tac-toe">Tic Tac Toe</Accordion.Body>
         <Accordion.Body onClick={selectPieces} data-value="ludo">Ludo</Accordion.Body>
         <Accordion.Body onClick={selectPieces} data-value="connect-four">Connect Four</Accordion.Body>
-        <Accordion.Body onClick={selectPieces} data-value="favourites">Favourites</Accordion.Body>
+        <Accordion.Body onClick={selectPieces} data-value="favorites">Favourites</Accordion.Body>
       </Accordion.Item>
       <Accordion.Item>
         <Accordion.Header>Room Options</Accordion.Header>
