@@ -25,6 +25,19 @@ export const Container = styled.header`
   }
 `
 
+export const Wrapper = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+
+  &:first-child > * {
+    margin-right: auto;
+  }
+  &:last-child > * {
+    margin-left: auto;
+  }
+`
+
 export const HomeLink = styled(Link)`
   color: inherit;
   user-select: none;

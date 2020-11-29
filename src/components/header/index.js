@@ -1,7 +1,7 @@
 // TODO
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Container, HomeLink, Text, TextCopy } from './styles'
+import { Container, HomeLink, Text, TextCopy, Wrapper } from './styles'
 
 export default function Header({ children, ...restProps }) {
   return <Container {...restProps}>{children}</Container>
@@ -21,4 +21,8 @@ Header.TextCopy = function HeaderTextCopy({ children, innerRef, ...restProps }) 
         {children}
     </TextCopy>
   )
+}
+
+Header.Wrapper = function HeaderWrapper({ children, ...restProps }) {
+  return <Wrapper {...restProps}>{children}</Wrapper>
 }

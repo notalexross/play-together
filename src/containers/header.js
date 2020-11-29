@@ -53,30 +53,36 @@ export default function HeaderContainer({ innerRef }) {
   return (
     // <Header style={{flexDirection: isSmall ? 'column' : 'row'}}>
     <Header innerRef={innerRef}>
-      <Header.HomeLink to={ROUTES.HOME}>
-        Home
-      </Header.HomeLink>
-      <Header.Text style={{order: isSmall ? '1' : '0'}}>
-        {isSmall ? null : 'Shareable Link:'}
-        <Tooltip tooltip={tooltip} side={isLarge ? 'right' : isSmall ? 'left' : 'bottom'}>
-          <div ref={hoverRef} onClick={handleClick}>
-            {
-              isLarge ? 
-                <Header.TextCopy>{window.location.href}</Header.TextCopy> :
-                isHovered ? <CopyFilled style={{height: '20px', width: '20px'}}/> : <CopyEmpty style={{height: '20px', width: '20px'}}/> 
-            }
-          </div>
-        </Tooltip>
-      </Header.Text>
-      <Header.Text>
-        {isSmall ? null : 'Nickname:'} <span style={{color: currentColor}}>{user.displayName}</span>
-        <Hover
-          DefaultComponent={EditBoxEmpty}
-          HoverComponent={EditBoxFilled}
-          onClick={() => setIsNicknameModalOpen(true)}
-        />
-        <ColorPicker value={currentColor} onChange={event => setCurrentColor(event.target.value)} onBlur={handleCloseColorPicker}/>
-      </Header.Text>
+      <Header.Wrapper>
+        <Header.HomeLink to={ROUTES.HOME}>
+          Home
+        </Header.HomeLink>
+      </Header.Wrapper>
+      <Header.Wrapper style={{flex: 2}}>
+        <Header.Text style={{order: isSmall ? '1' : '0'}}>
+          {isSmall ? null : 'Shareable Link:'}
+          <Tooltip tooltip={tooltip} side={isLarge ? 'right' : isSmall ? 'left' : 'bottom'}>
+            <div ref={hoverRef} onClick={handleClick}>
+              {
+                isLarge ? 
+                  <Header.TextCopy>{window.location.href}</Header.TextCopy> :
+                  isHovered ? <CopyFilled style={{height: '20px', width: '20px'}}/> : <CopyEmpty style={{height: '20px', width: '20px'}}/> 
+              }
+            </div>
+          </Tooltip>
+        </Header.Text>
+      </Header.Wrapper>
+      <Header.Wrapper>
+        <Header.Text>
+          {isSmall ? null : 'Nickname:'} <span style={{color: currentColor}}>{user.displayName}</span>
+          <Hover
+            DefaultComponent={EditBoxEmpty}
+            HoverComponent={EditBoxFilled}
+            onClick={() => setIsNicknameModalOpen(true)}
+          />
+          <ColorPicker value={currentColor} onChange={event => setCurrentColor(event.target.value)} onBlur={handleCloseColorPicker}/>
+        </Header.Text>
+      </Header.Wrapper>
       <NicknameModal isOpen={isNicknameModalOpen} setIsOpen={setIsNicknameModalOpen} />
     </Header>
   )

@@ -23,7 +23,7 @@ function ContextProvider({ children }) {
   }
 
   const updateDefaultSettings = settings => {
-    const newSettingsEntries = Object.keys(DEFAULT_SETTINGS).filter(key => settings[key] === undefined).map(key => [key, DEFAULT_SETTINGS[key]])
+    const newSettingsEntries = Object.keys(DEFAULT_SETTINGS).filter(key => settings === undefined || settings[key] === undefined).map(key => [key, DEFAULT_SETTINGS[key]])
     if (newSettingsEntries.length) {
       const newSettingsObject = Object.fromEntries(newSettingsEntries)
       settingsRef.set(newSettingsObject, { merge: true })
