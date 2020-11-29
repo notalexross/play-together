@@ -8,14 +8,14 @@ const { Provider } = context
 function ContextProvider({ children }) {
   const { roomId } = useParams()
   const [ isLoading, setIsLoading ] = useState(true)
-  const [ currentSettings, setCurrentSettings ] = useState()
+  const [ globalSettings, setGlobalSettings ] = useState()
 
   const firebase = window.firebase
   const firestore = firebase.firestore()
   const roomRef = firestore.collection('rooms').doc(roomId)
   const settingsRef = roomRef.collection('settings').doc('settings')
 
-  const changeSetting = (setting, value) => {
+  const changeGlobalSetting = (setting, value) => {
     console.log(`changing ${setting} to ${value}`)
     settingsRef.set({
       [setting]: value
@@ -34,7 +34,7 @@ function ContextProvider({ children }) {
     return settingsRef.onSnapshot(snapshot => {
       const settings = snapshot.data()
       updateDefaultSettings(settings)
-      setCurrentSettings(settings)
+      setGlobalSettings(settings)
     })
   }
 
@@ -43,11 +43,11 @@ function ContextProvider({ children }) {
   }, [])
 
   useEffect(() => {
-    currentSettings ? setIsLoading(false) : setIsLoading(true)
-  }, [currentSettings])
+    globalSettings ? setIsLoading(false) : setIsLoading(true)
+  }, [globalSettings])
 
   return (
-    <Provider value={{ currentSettings, changeSetting }} >
+    <Provider value={{ globalSettings, changeGlobalSetting }} >
       {isLoading ? null : children}
     </Provider>
   )

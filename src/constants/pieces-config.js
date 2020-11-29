@@ -1,0 +1,20 @@
+export default {
+  "1001": { game: "chess", name: "king", color: "#fff", size: 0.1 },
+  "1002": { game: "chess", name: "queen", color: "#fff", size: 0.1 },
+  "1003": { game: "chess", name: "bishop", color: "#fff", size: 0.1 },
+  "1004": { game: "chess", name: "knight", color: "#fff", size: 0.1 },
+  "1005": { game: "chess", name: "rook", color: "#fff", size: 0.1 },
+  "1006": { game: "chess", name: "pawn", color: "#fff", size: 0.1 },
+  "1007": { game: "chess", name: "kingDark", color: "#000", size: 0.1 },
+  "1008": { game: "chess", name: "queenDark", color: "#000", size: 0.1 },
+  "1009": { game: "chess", name: "bishopDark", color: "#000", size: 0.1 },
+  "1010": { game: "chess", name: "knightDark", color: "#000", size: 0.1 },
+  "1011": { game: "chess", name: "rookDark", color: "#000", size: 0.1 },
+  "1012": { game: "chess", name: "pawnDark", color: "#000", size: 0.1 },
+  "2001": { game: "dice", name: "d6", color: "white", size: 0.07 },
+  "3001": { game: "ludo", name: "pawn", color: "green", size: 0.045 },
+  "3002": { game: "ludo", name: "pawn", color: "red", size: 0.045 },
+  "3003": { game: "ludo", name: "pawn", color: "cyan", size: 0.045 },
+  "3004": { game: "ludo", name: "pawn", color: "yellow", size: 0.045 },
+}
+

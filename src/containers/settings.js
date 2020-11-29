@@ -1,17 +1,19 @@
 import React, { useState, useContext } from 'react'
 import { Accordion } from '../components'
 import { settingsContext } from '../context/settings'
+import { localSettingsContext } from '../context/local-settings'
 
 export default function SettingsContainer() {
-  const { changeSetting } = useContext(settingsContext)
+  const { changeGlobalSetting } = useContext(settingsContext)
+  const { changeLocalSetting } = useContext(localSettingsContext)
 
   // TODO board and pieces etc. need to be set in database and updated in game.js in response to a change in the database
   const selectBoard = event => {
-    changeSetting('game', event.target.dataset.value)
+    changeGlobalSetting('game', event.target.dataset.value)
   }
 
   const selectPieces = event => {
-    changeSetting('pieces', event.target.dataset.value)
+    changeLocalSetting('piecesGroup', event.target.dataset.value)
   }
 
   return (
