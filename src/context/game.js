@@ -5,6 +5,8 @@ import { firebaseContext } from '../context/firebase'
 const context = React.createContext()
 const { Provider } = context
 
+// TODO this can be cleaned up. move ref definitions outside of functions for instance
+
 function ContextProvider({ children }) {
   const { user } = useContext(firebaseContext)
   const { roomId } = useParams()
@@ -17,6 +19,7 @@ function ContextProvider({ children }) {
   const database = firebase.database()
 
   const addPieceToDatabase = ({ game, name, color, size, holder = null, position = [ 50, 50 ] } = {}) => {
+    // TODO check there aren't too many pieces already in database... max 50 maybe?
     const piecesIdsRef = database.ref(`rooms/${roomId}/pieces/ids`)
     const pieceRef = piecesIdsRef.push()
     const pieceId = pieceRef.key
@@ -53,6 +56,13 @@ function ContextProvider({ children }) {
     console.log(`removed piece from database: ${pieceId}`)
   }
 
+  const removeAllPiecesFromDatabase = () => {
+    const piecesRef = database.ref(`rooms/${roomId}/pieces`)
+    piecesRef.remove()
+
+    console.log(`removed all pieces from database`)
+  }
+
   const alertError = error => {
     error && console.alert(error)
   }
@@ -85,7 +95,11 @@ function ContextProvider({ children }) {
   }
 
   const onPieceRemovedFromDatabase = pieceId => {
-    setPieces(pieces => ({...pieces, [pieceId]: undefined}))
+    setPieces(pieces => {
+      const newPieces = { ...pieces }
+      delete newPieces[pieceId]
+      return newPieces
+    })
   }
 
   const onPieceAddedToDatabase = (pieceId, value = true, pieceUpdated = false) => {
@@ -118,12 +132,24 @@ function ContextProvider({ children }) {
   }
 
   const addPiece = (piece, position) => {
-    const pieceId = addPieceToDatabase({...piece, position, holder: user.uid })
+    const pieceId = addPieceToDatabase({ ...piece, position, holder: user.uid })
     setHeldPiece(pieceId)
   }
 
   const removePiece = pieceId => {
     removePieceFromDatabase(pieceId)
+  }
+
+  const addMultiplePieces = (pieces, positions) => {
+    if (pieces.length !== positions.length) return
+    pieces.forEach((piece, idx) => {
+      console.log(positions[idx])
+      addPieceToDatabase({ ...piece, position: positions[idx] })
+    })
+  }
+
+  const clearPieces = () => {
+    Object.keys(pieces).length && removeAllPiecesFromDatabase()
   }
 
   const getRelativePosition = (mouseX, mouseY) => {
@@ -151,7 +177,9 @@ function ContextProvider({ children }) {
       unTrackAllProperties,
       heldPiece,
       updatePieceInDatabase,
-      getRelativePosition
+      getRelativePosition,
+      addMultiplePieces,
+      clearPieces
     }} >
       {children}
     </Provider>
