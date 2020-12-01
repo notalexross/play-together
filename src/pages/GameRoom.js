@@ -7,24 +7,23 @@ import RoomContainer from '../containers/room'
 import { SettingsContextProvider } from '../context/settings'
 import { LocalSettingsContextProvider } from '../context/local-settings'
 import { GameContextProvider } from '../context/game'
+import { PresenceContextProvider } from '../context/presence'
 
 export default function GameRoom() {
-  // const { windowHeight } = useContext(windowContext) // this will force a rerender of container when page is resized, so container height is correct
-
-  // console.log(windowHeight)
-
   return (
     <RoomRedirect>
-      <LocalSettingsContextProvider>
-        <SettingsContextProvider>
-          <GameContextProvider>
-            <Container direction="column" >
-              <HeaderContainer />
-              <RoomContainer />
-            </Container>
-          </GameContextProvider>
-        </SettingsContextProvider>
-      </LocalSettingsContextProvider>
+      <PresenceContextProvider>
+        <LocalSettingsContextProvider>
+          <SettingsContextProvider>
+            <GameContextProvider>
+              <Container direction="column" >
+                <HeaderContainer />
+                <RoomContainer />
+              </Container>
+            </GameContextProvider>
+          </SettingsContextProvider>
+        </LocalSettingsContextProvider>
+      </PresenceContextProvider>
     </RoomRedirect>
   )
 }

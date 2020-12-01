@@ -5,11 +5,13 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
 import { gameContext } from '../context/game'
 import { firebaseContext } from '../context/firebase'
+import { presenceContext } from '../context/presence'
 import { Playarea } from '../components'
 import roll from '../utils/roll'
 
 export default function MovablePiece({ pieceId, ...restProps }) {
   const { grabPiece, releasePiece, removePiece, trackProperty, unTrackAllProperties, heldPiece, updatePieceInDatabase, getRelativePosition } = useContext(gameContext)
+  const { storedUsers } = useContext(presenceContext)
   const { user } = useContext(firebaseContext)
   const [ game, setGame ] = useState()
   const [ name, setName ] = useState()
@@ -162,6 +164,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       name={name}
       color={color}
       sizeFraction={size}
+      holderColor={holder && storedUsers[holder] && storedUsers[holder].color}
       customValue={customValue}
       onMouseDown={handleMouseDown}
       onTouchStart={handleMouseDown}

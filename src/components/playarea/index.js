@@ -105,16 +105,23 @@ Playarea.Pieces = function PlayareaPieces({ children, ...restProps }) {
   )
 }
 
-Playarea.Piece = function PlayareaPiece({ style, game, name, color, sizeFraction = 0.1, ...restProps }) {
+Playarea.Piece = function PlayareaPiece({ style, game, name, color, sizeFraction = 0.1, holderColor, ...restProps }) {
   const { basis } = useContext(PlayareaContext)
   const svgRef = useRef()
 
   const pieceSize = basis * sizeFraction
 
+  const holderColorRadius = basis * 0.003
+
+  const holderHighlight = holderColor ? `drop-shadow(0 0 ${holderColorRadius}px ${holderColor})
+    drop-shadow(0 0 ${holderColorRadius}px ${holderColor})
+    drop-shadow(0 0 ${holderColorRadius}px ${holderColor})
+  ` : ''
+
   const pieceStyle = {
     height: `${pieceSize}px`,
     // width: `${pieceSize}px`,
-    filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
+    filter: holderHighlight || `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
     cursor: 'grab',
     pointerEvents: 'none',
     touchAction: 'none', // prevents screen scroll whilst dragging pieces
