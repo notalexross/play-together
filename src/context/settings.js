@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import DEFAULT_SETTINGS from '../constants/default-game-settings'
+import { localSettingsContext } from './local-settings'
 
 const context = React.createContext()
 const { Provider } = context
 
 function ContextProvider({ children }) {
+  const { changeLocalSetting } = useContext(localSettingsContext)
   const { roomId } = useParams()
   const [ isLoading, setIsLoading ] = useState(true)
   const [ globalSettings, setGlobalSettings ] = useState()
@@ -45,6 +47,10 @@ function ContextProvider({ children }) {
   useEffect(() => {
     globalSettings ? setIsLoading(false) : setIsLoading(true)
   }, [globalSettings])
+
+  useEffect(() => {
+    globalSettings && globalSettings.game && changeLocalSetting('piecesGroup', globalSettings.game)
+  }, [globalSettings && globalSettings.game])
 
   return (
     <Provider value={{ globalSettings, changeGlobalSetting }} >

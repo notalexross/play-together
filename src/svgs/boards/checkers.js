@@ -10,7 +10,7 @@ function SvgComponent(props, svgRef) {
       ref={svgRef}
       {...props}
     >
-      <path d="M-.5-.5h9v9h-9z" fill='brown'/>
+      <path d="M-.5-.5h9v9h-9z" />
       <path
         fill="currentColor"
         d="M0 0h8v1H0zm0 2h8v1H0zm0 2h8v1H0zm0 2h8v1H0zm1-6v8h1V0zm2 0v8h1V0zm2 0v8h1V0zm2 0v8h1V0z"

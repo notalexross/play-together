@@ -5,9 +5,9 @@ function SvgComponent(props, svgRef) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="210mm"
-      height="297mm"
-      viewBox="0 23 210 267"
+      // width="210mm"
+      // height="297mm"
+      viewBox="3.2 23.5 205.8 265.6"
       ref={svgRef}
       {...props}
     >

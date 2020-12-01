@@ -59,12 +59,19 @@ Playarea.Board = function PlayareaBoard({ children, game = 'chess', color = 'whi
   const boardStyle = {
     padding: `${boardPadding}px`,
     height: `${boardSize}px`,
-    width: `${boardSize}px`
+    width: `${boardSize}px`,
+  }
+
+  const svgStyle = {
+    height: '100%', // comment this when fixing size of svg
+    width: '100%',
+    filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
+    // background: 'purple',
   }
 
   return (
     <Board style={boardStyle} {...restProps}>
-      <Svg type="board" game={game} color={color} style={{height: '100%', width: '100%', filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`}}/>
+      <Svg type="board" game={game} color={color} style={svgStyle}/>
       {children}
     </Board>
   )
@@ -106,11 +113,12 @@ Playarea.Piece = function PlayareaPiece({ style, game, name, color, sizeFraction
 
   const pieceStyle = {
     height: `${pieceSize}px`,
-    width: `${pieceSize}px`,
+    // width: `${pieceSize}px`,
     filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
     cursor: 'grab',
     pointerEvents: 'none',
-    touchAction: 'none' // prevents screen scroll whilst dragging pieces
+    touchAction: 'none', // prevents screen scroll whilst dragging pieces
+    // background: 'orange'
   }
 
   useEffect(() => {

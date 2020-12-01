@@ -1,3 +1,5 @@
 export * as chess from './chess'
+export * as checkers from './checkers'
 export * as ludo from './ludo'
 export * as dice from './dice'
+export * as connectfour from './connect-four'

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import DEFAULT_LOCAL_SETTINGS from '../constants/default-local-settings'
-import { firebaseContext } from '../context/firebase'
+import { firebaseContext } from './firebase'
 import setsConfig from '../constants/sets-config'
 import piecesConfig from '../constants/pieces-config'
 
@@ -48,6 +48,7 @@ function ContextProvider({ children }) {
       setPiecesGroup(favorites)
     } else {
       const set = setsConfig[localSettings.piecesGroup] || []
+      !set.length && console.log('remember to add new pieces to config files before trying to use them!')
       const setMapped = set.map(piece => ({id: piece, ...piecesConfig[piece]}))
       setPiecesGroup(setMapped)
     }
@@ -68,7 +69,7 @@ function ContextProvider({ children }) {
 
   const initFavoritesListener = () => {
     return favoritesRef.onSnapshot(snapshot => {
-      const data = snapshot.data().pieces
+      const data = snapshot.data() && snapshot.data().pieces
       data && setFavorites(data)
     })
   }

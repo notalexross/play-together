@@ -15,16 +15,16 @@ export default function GameRoom() {
 
   return (
     <RoomRedirect>
-      <SettingsContextProvider>
-        <LocalSettingsContextProvider>
+      <LocalSettingsContextProvider>
+        <SettingsContextProvider>
           <GameContextProvider>
             <Container direction="column" >
               <HeaderContainer />
               <RoomContainer />
             </Container>
           </GameContextProvider>
-        </LocalSettingsContextProvider>
-      </SettingsContextProvider>
+        </SettingsContextProvider>
+      </LocalSettingsContextProvider>
     </RoomRedirect>
   )
 }

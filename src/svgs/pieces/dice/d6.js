@@ -45,8 +45,8 @@ function SvgComponent({ animate = true, customvalue, ...restProps }, svgRef) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={557}
-      height={557}
+      // width={557}
+      // height={557}
       viewBox="0 0 557 557"
       ref={svgRef}
       {...restProps}
