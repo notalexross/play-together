@@ -54,13 +54,33 @@ export const Error = styled.p`
   color: #ff8080;
 `
 
+export const Section = styled.section`
+  background: #1e1e1e;
+  border-bottom: solid 1px #444;
+  text-align: center;
+  max-height: 50%;
+  // overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+  // box-shadow: 0 0 5px black;
+
+  @media (max-width: 800px) {
+    ${({ isExpanded }) => !isExpanded && 'display: none;'}
+  }
+
+  // flex-grow: 1;
+  box-sizing: border-box;
+  display: flex;
+`
+
 export const Log = styled.div`
   box-sizing: border-box;
   flex-grow: 1;
-  overflow: auto;
+  min-height: 7em;
+
   display: flex;
-  flex-direction: column-reverse; // can't just use "justify-content: flex-end" as no scrollbar will appear
-  min-height: 4em;
+  flex-direction: column-reverse;
 
   @media (max-width: 800px) {
     ${({ isExpanded }) => !isExpanded && 'display: none;'}
@@ -68,7 +88,9 @@ export const Log = styled.div`
 `
 
 export const LogInner = styled.div`
-
+  overflow: auto;
+  display: flex;
+  flex-direction: column; 
 `
 
 export const Message = styled.div`
@@ -88,12 +110,13 @@ export const Message = styled.div`
 
 export const Timestamp = styled.span`
   margin-right: 0.4em;
-  color: #444;
+  color: #777;
 `
 
 export const Sender = styled.span`
   margin-right: 0.2em;
   color: ${({ color }) => color};
+  font-weight: 700;
   &:after {
     content: ': ';
     color: #e5e5e5;
@@ -112,4 +135,31 @@ export const Form = styled.form`
   @media (max-width: 800px) {
     flex-direction: row;
   }
+`
+
+export const List = styled.div`
+  overflow: auto;
+  text-align: center;
+  max-height: 100%;
+  ${({ isExpanded }) => !isExpanded && 'display: none;'}
+`
+
+export const User = styled.p`
+  color: ${({ color }) => color};
+  // margin-left: 1em;
+  margin-bottom: 0.5em;
+  font-weight: 700;
+`
+
+export const Heading = styled.div`
+  // padding: 1rem;
+  user-select: none;
+  cursor: pointer;
+`
+
+export const HeadingInner = styled.h1`
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  padding: 0.4em;
 `

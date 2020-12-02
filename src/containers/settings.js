@@ -71,6 +71,23 @@ export default function SettingsContainer() {
         <Accordion.Header>Local Options</Accordion.Header>
         <Accordion.Body>Rotate Board</Accordion.Body>
       </Accordion.Item>
+      <Accordion.Item>
+        <Accordion.Header>testing</Accordion.Header>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+        <Accordion.Body>test</Accordion.Body>
+      </Accordion.Item>
     </Accordion>
   )
 }

@@ -13,7 +13,12 @@ import {
   Message,
   Timestamp,
   Sender,
-  Text
+  Text,
+  Section,
+  List,
+  User,
+  Heading,
+  HeadingInner
 } from './styles'
 
 export default function Chat({ children, ...restProps }) {
@@ -66,10 +71,10 @@ Chat.TextInput = React.forwardRef(({ padding, value, maxLength = 100, ...restPro
   )
 })
 
-Chat.Log = React.forwardRef(({ children, isExpanded, ...restProps }, ref) => {
+Chat.Log = React.forwardRef(({ children, isExpanded, style, ...restProps }, ref) => {
   return (
     <Log isExpanded={isExpanded}>
-      <LogInner ref={ref} {...restProps}>
+      <LogInner ref={ref} style={style} {...restProps}>
         {children}
       </LogInner>
     </Log>
@@ -94,4 +99,26 @@ Chat.Text = function ChatText({ children, ...restProps }) {
 
 Chat.Form = function ChatForm({ children, ...restProps }) {
   return <Form {...restProps}>{children}</Form>
+}
+
+Chat.Section = function ChatSection({ children, ...restProps }) {
+  return <Section {...restProps}>{children}</Section>
+}
+
+Chat.List = function ChatList({ children, ...restProps }) {
+  return <List {...restProps}>{children}</List>
+}
+
+Chat.Heading = function ChatHeading({ children, ...restProps }) {
+  return (
+  <Heading {...restProps}>
+    <HeadingInner>
+      {children}
+    </HeadingInner>
+  </Heading>
+  )
+}
+
+Chat.User = function ChatUser({ children, color, ...restProps }) {
+  return <User color={color} {...restProps}>{children}</User>
 }

@@ -8,13 +8,13 @@ const { Provider } = context
 
 function ContextProvider({ children }) {
   const { user, firebase } = useContext(firebaseContext)
-  const { storedUsers, addToStoredUsers } = useContext(presenceContext)
+  const { addToStoredUsers } = useContext(presenceContext)
   const { roomId } = useParams()
   const [ messages, setMessages ] = useState([])
   const isFirstSnapshot = useRef(true)
   // TODO this uses client local time, so susceptible to user just setting system clock backwards.
-  // if client clock is slow by more than 60 seconds then it won't see messages initially at all.
-  const timeJoined = useRef(firebase.firestore.Timestamp.fromDate(new Date(Date.now() - 60000)))
+  // if client clock is slow by more than 5 seconds then it won't see messages initially at all.
+  const timeJoined = useRef(firebase.firestore.Timestamp.fromDate(new Date(Date.now() - 5000)))
 
   const firestore = firebase.firestore()
   const roomRef = firestore.collection('rooms').doc(roomId)
@@ -63,7 +63,7 @@ function ContextProvider({ children }) {
   }, [])
 
   return (
-    <Provider value={{ sendMessage, messages, storedUsers }} >
+    <Provider value={{ sendMessage, messages }} >
       {children}
     </Provider>
   )
