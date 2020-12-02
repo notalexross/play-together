@@ -1,14 +1,18 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { localSettingsContext } from '../context/local-settings'
+import PlayareaContext from '../context/playarea'
 import { Playarea } from '../components'
 import { Star } from '@styled-icons/bootstrap/Star'
 import { StarFill } from '@styled-icons/bootstrap/StarFill'
 import useHover from '../hooks/useHover'
 
-export default function FavoritablePiece({ piece, favoriteHeight = '15px', favoriteColor = 'gold', ...restProps }) {
+export default function FavoritablePiece({ piece, favoriteHeightFraction = '0.025', favoriteColor = 'gold', ...restProps }) {
   const { addToFavorites, removeFromFavorites, favorites } = useContext(localSettingsContext)
+  const { basis } = useContext(PlayareaContext)
   const [ isFavorite, setIsFavorite ] = useState(false)
   const [ isHovered, hoverRef ] = useHover()
+
+  const favoriteHeight = `${(favoriteHeightFraction || 0.1) * basis}px`
 
   let Favorite
   if (isFavorite) {

@@ -2,8 +2,7 @@ import React, { useRef, useEffect, useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { FlexContainer, AspectRatioContainer, PlayContainer, Board, BoardPiecesOuter, BoardPiecesContainer, Image, PiecesContainer, PiecesWrapper, PiecesInner } from './styles'
 import Svg from '../../svgs'
-
-const PlayareaContext = React.createContext()
+import PlayareaContext from '../../context/playarea'
 
 export default function Playarea({ children, aspectRatio = 0.75, paddingFraction = 0.03, ...restProps }) {
   const [ isVertical, setIsVertical ] = useState(false)
