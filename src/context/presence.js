@@ -45,11 +45,12 @@ function ContextProvider({ children }) {
     console.log('going offline')
   }
 
-  const initAuthRefreshTimeout = () => { 
+  const initAuthRefreshTimeout = () => {
+    // run on page load, as token is reused from any previous sessions within last 55 mins and may only have a few minutes left on refresh timer
+    user && user.getIdToken(true).then(() => console.log('user auth token refreshed')) 
     timeout.current = setTimeout(() => {
-      user && user.getIdToken(true).then(() => console.log('user auth token refreshed'))
       initAuthRefreshTimeout()
-    }, 45 * 60 * 1000) // TODO 30 mins works, 50 mins doesn't work.
+    }, 50 * 60 * 1000)
   }
 
   const killAuthRefreshTimeout = () => {

@@ -22,17 +22,19 @@ export default function Playarea({ children, aspectRatio = 0.75, paddingFraction
   }
 
   useEffect(() => {
-    let Width = parentWidth
-    let Height = ratio * Width
-    Height = Math.min(Height, parentHeight)
-    Width = Height / ratio
-    const size = Math.min(Width, Height)
-    
-    setPlayWidth(Width)
-    setPlayHeight(Height)
-    setBasis(size)
-    setPadding(paddingFraction * size)
-    setIsVertical(parentWidth <= parentHeight)
+    if (parentWidth && parentHeight) {
+      let width = parentWidth
+      let height = ratio * width
+      height = Math.min(height, parentHeight)
+      width = height / ratio
+      const size = Math.min(width, height)
+      
+      setPlayWidth(width)
+      setPlayHeight(height)
+      setBasis(size)
+      setPadding(paddingFraction * size)
+      setIsVertical(parentWidth <= parentHeight)
+    }
   }, [parent, parentHeight, parentWidth, ratio, paddingFraction])
 
   return (
@@ -131,7 +133,6 @@ Playarea.Piece = function PlayareaPiece({ style, game, name, color, sizeFraction
     const innerSvg = svgRef.current.querySelector('g') || svgRef.current.querySelector('path')
     innerSvg.style.pointerEvents = 'all'
   }, [])
-
 
   return (
     <Svg type="piece" game={game} name={name} color={color} style={{...pieceStyle, ...style}} ref={svgRef} {...restProps}/>
