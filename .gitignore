@@ -27,3 +27,5 @@ firebase-debug.log
 firebase.json
 database.rules.json
 src/constants/firebase-config.js
+firestore.indexes.json
+firestore.rules

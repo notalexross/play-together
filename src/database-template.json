@@ -26,7 +26,7 @@
             "size": 0.1,
             "holder": "5MZWUwd2iOTa4YLtC6lMKQO26x53",
             "position": [ 125, 500 ],
-            "customValue": null
+            "custom_value": null
           },
           "BBBBBB": {
             "game": "chess",
@@ -35,7 +35,7 @@
             "size": 0.1,
             "holder": null,
             "position": [ 200, 150 ],
-            "customValue": null
+            "custom_value": null
           }
         }
       }

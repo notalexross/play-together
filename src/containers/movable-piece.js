@@ -104,7 +104,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     // if (event.button === undefined || event.button === 0) {
       if (!isDeleted.current && game === 'dice') {
         roll((value) => {
-          !isDeleted.current && updatePieceInDatabase(pieceId, { customValue: value })
+          !isDeleted.current && updatePieceInDatabase(pieceId, { custom_value: value })
         }, { sides: 6 })
       }
     // }
@@ -118,7 +118,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     trackProperty(pieceId, 'size', size => setSize(size))
     trackProperty(pieceId, 'position', position => setPosition(position))
     trackProperty(pieceId, 'holder', holder => setHolder(holder))
-    trackProperty(pieceId, 'customValue', customValue => setCustomValue(customValue))
+    trackProperty(pieceId, 'custom_value', customValue => setCustomValue(customValue))
     return () => {
       unTrackAllProperties(pieceId)
     }

@@ -18,9 +18,20 @@ function ContextProvider({ children }) {
   const firebase = window.firebase
   const database = firebase.database()
 
+  const allowedProperties = [ 'game', 'name', 'color', 'size', 'holder', 'position', 'custom_value' ]
+  const piecesRef = database.ref(`rooms/${roomId}/pieces`)
+  const piecesIdsRef = database.ref(`rooms/${roomId}/pieces/ids`)
+  const maxPieces = 50
+
+  const areTooManyPieces = (numberToAdd = 1) => {
+    if (Object.keys(pieces).length + numberToAdd > maxPieces) {
+      alert(`Adding ${numberToAdd} piece(s) will put you over the ${maxPieces} pieces limit, remove some before trying again`)
+      return true
+    }
+    return false
+  }
+
   const addPieceToDatabase = ({ game, name, color, size, holder = null, position = [ 50, 50 ] } = {}) => {
-    // TODO check there aren't too many pieces already in database... max 50 maybe?
-    const piecesIdsRef = database.ref(`rooms/${roomId}/pieces/ids`)
     const pieceRef = piecesIdsRef.push()
     const pieceId = pieceRef.key
     pieceRef.set(firebase.database.ServerValue.TIMESTAMP, alertError)
@@ -32,8 +43,6 @@ function ContextProvider({ children }) {
   }
 
   const updatePieceInDatabase = (pieceId, properties) => {
-    const allowedProperties = [ 'game', 'name', 'color', 'size', 'holder', 'position', 'customValue' ]
-    const piecesRef = database.ref(`rooms/${roomId}/pieces`)
     const filteredEntries = Object.entries(properties).filter(entry => allowedProperties.includes(entry[0]))
     const mappedEntries = filteredEntries.map(([key, value]) => {
       return [ `details/${pieceId}/${key}`, value ]
@@ -47,50 +56,46 @@ function ContextProvider({ children }) {
   }
 
   const removePieceFromDatabase = pieceId => {
-    const piecesRef = database.ref(`rooms/${roomId}/pieces`)
     const idRef = piecesRef.child(`ids/${pieceId}`)
     const detailRef = piecesRef.child(`details/${pieceId}`)
     idRef.remove()
     detailRef.remove()
-
     console.log(`removed piece from database: ${pieceId}`)
   }
 
   const removeAllPiecesFromDatabase = () => {
-    const piecesRef = database.ref(`rooms/${roomId}/pieces`)
+    // TODO the local delete triggers before confirmed on database... not a huge deal, but causes issues if permissions not set right
     piecesRef.remove()
-
     console.log(`removed all pieces from database`)
   }
 
   const alertError = error => {
-    error && console.alert(error)
+    error && alert(error)
+    error && console.error(error)
   }
 
   const initPiecesListener = () => {
-    const piecesIdsRef = database.ref(`rooms/${roomId}/pieces/ids`)
     piecesIdsRef.on('child_added', snapshot => {
       const pieceId = snapshot.key
       const value = snapshot.val()
       onPieceAddedToDatabase(pieceId, value, false)
       console.log(`(listener) new piece: ${pieceId}`)
-    })
+    }, alertError)
     piecesIdsRef.on('child_changed', snapshot => {
-      // TODO this is triggering too many times (it should only be triggering twice)
+      // TODO this is triggering too many times? (it should only be triggering twice)
       const pieceId = snapshot.key
       const value = snapshot.val()
       onPieceAddedToDatabase(pieceId, value, true)
       console.log(`(listener) piece brought to front: ${pieceId}`)
-    })
+    }, alertError)
     piecesIdsRef.on('child_removed', snapshot => {
       const pieceId = snapshot.key
       onPieceRemovedFromDatabase(pieceId)
       console.log(`(listener) piece removed: ${pieceId}`)
-    })
+    }, alertError)
   }
 
   const removePiecesListener = () => {
-    const piecesIdsRef = database.ref(`rooms/${roomId}/pieces/ids`)
     piecesIdsRef.off()
   }
 
@@ -108,10 +113,9 @@ function ContextProvider({ children }) {
   }
 
   const trackProperty = (pieceId, property, callback) => {
-    const allowedProperties = [ 'game', 'name', 'color', 'size', 'holder', 'position', 'customValue' ]
     if (!allowedProperties.includes(property)) return
     const detailsRef = database.ref(`rooms/${roomId}/pieces/details/${pieceId}/${property}`)
-    detailsRef.on('value', snap => callback(snap.val()))
+    detailsRef.on('value', snap => callback(snap.val()), alertError)
   }
 
   const unTrackAllProperties = pieceId => {
@@ -132,6 +136,7 @@ function ContextProvider({ children }) {
   }
 
   const addPiece = (piece, position) => {
+    if (areTooManyPieces()) return
     const pieceId = addPieceToDatabase({ ...piece, position, holder: user.uid })
     setHeldPiece(pieceId)
   }
@@ -140,9 +145,10 @@ function ContextProvider({ children }) {
     removePieceFromDatabase(pieceId)
   }
 
-  const addMultiplePieces = (pieces, positions) => {
-    if (pieces.length !== positions.length) return
-    pieces.forEach((piece, idx) => {
+  const addMultiplePieces = (newPieces, positions) => {
+    if (newPieces.length !== positions.length) return
+    if (areTooManyPieces(newPieces.length)) return
+    newPieces.forEach((piece, idx) => {
       console.log(positions[idx])
       addPieceToDatabase({ ...piece, position: positions[idx] })
     })

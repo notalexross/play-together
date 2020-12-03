@@ -23,6 +23,11 @@ function ContextProvider({ children }) {
   const connectionsRef = userRef.child('connections')
   const connectedRef = database.ref('.info/connected')
 
+  const alertError = error => {
+    error && alert(error)
+    error && console.error(error)
+  }
+
   const goOnline = () => {
     connectedRef.on('value', snap => {
       console.log(new Date)
@@ -35,7 +40,7 @@ function ContextProvider({ children }) {
       } else {
         console.log('connection lost')
       }
-    })
+    }, alertError)
     database.goOnline()
   }
 
@@ -63,12 +68,12 @@ function ContextProvider({ children }) {
       if (!snapshot) return
       setOnlineUsers(users => [ ...users, snapshot.key ])
       addUserListener(snapshot.key)
-    })
+    }, alertError)
     onlineUsersRef.on('child_removed', snapshot => {
       if (!snapshot) return
       setOnlineUsers(users => users.filter(user => user !== snapshot.key))
       removeUserListener(snapshot.key)
-    })
+    }, alertError)
   }
 
   const addUserListener = uid => {
