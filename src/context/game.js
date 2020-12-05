@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useParams } from 'react-router-dom'
 import { firebaseContext } from '../context/firebase'
+import { localSettingsContext } from '../context/local-settings'
 
 const context = React.createContext()
 const { Provider } = context
@@ -9,6 +10,7 @@ const { Provider } = context
 
 function ContextProvider({ children }) {
   const { user } = useContext(firebaseContext)
+  const { getRotatedPosition } = useContext(localSettingsContext)
   const { roomId } = useParams()
   const [ pieces, setPieces ] = useState({})
   const [ heldPiece, setHeldPiece ] = useState()
@@ -118,8 +120,8 @@ function ContextProvider({ children }) {
     detailsRef.on('value', snap => callback(snap.val()), alertError)
   }
 
-  const unTrackAllProperties = pieceId => {
-    const detailsRef = database.ref(`rooms/${roomId}/pieces/details/${pieceId}`)
+  const unTrackProperty = (pieceId, property) => {
+    const detailsRef = database.ref(`rooms/${roomId}/pieces/details/${pieceId}/${property}`)
     detailsRef.off()
   }
 
@@ -149,7 +151,6 @@ function ContextProvider({ children }) {
     if (newPieces.length !== positions.length) return
     if (areTooManyPieces(newPieces.length)) return
     newPieces.forEach((piece, idx) => {
-      console.log(positions[idx])
       addPieceToDatabase({ ...piece, position: positions[idx] })
     })
   }
@@ -162,7 +163,8 @@ function ContextProvider({ children }) {
     const containerRect = containerRef.current.getBoundingClientRect()
     const relativeX = (mouseX - containerRect.left) / containerRect.width * 100
     const relativeY = (mouseY - containerRect.top) / containerRect.height * 100
-    return [relativeX, relativeY]
+    const position = getRotatedPosition(relativeX, relativeY)
+    return position
   }
 
   useEffect(() => {
@@ -180,7 +182,7 @@ function ContextProvider({ children }) {
       grabPiece,
       releasePiece,
       trackProperty,
-      unTrackAllProperties,
+      unTrackProperty,
       heldPiece,
       updatePieceInDatabase,
       getRelativePosition,

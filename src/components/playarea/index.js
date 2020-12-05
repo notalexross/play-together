@@ -4,7 +4,7 @@ import { FlexContainer, AspectRatioContainer, PlayContainer, Board, BoardPiecesO
 import Svg from '../../svgs'
 import PlayareaContext from '../../context/playarea'
 
-export default function Playarea({ children, aspectRatio = 0.75, paddingFraction = 0.03, ...restProps }) {
+export default function Playarea({ children, aspectRatio = 0.75, paddingFraction = 0.03, rotation = 0, ...restProps }) {
   const [ isVertical, setIsVertical ] = useState(false)
   const [ padding, setPadding ] = useState(0)
   const [ playWidth, setPlayWidth ] = useState(0)
@@ -38,7 +38,7 @@ export default function Playarea({ children, aspectRatio = 0.75, paddingFraction
   }, [parent, parentHeight, parentWidth, ratio, paddingFraction])
 
   return (
-    <PlayareaContext.Provider value={{ isVertical, basis, padding }}>
+    <PlayareaContext.Provider value={{ isVertical, basis, padding, rotation }}>
       <FlexContainer ref={containerRef} {...restProps}>
         <AspectRatioContainer style={{width: `${playWidth}px`, height: `${playHeight}px`, padding: `${padding}px`}}>
           <PlayContainer style={{padding: `${padding}px`}} direction={isVertical ? 'column' : 'row'} onContextMenu={e => e.preventDefault()} onDragStart={e => e.preventDefault()}>
@@ -52,7 +52,7 @@ export default function Playarea({ children, aspectRatio = 0.75, paddingFraction
 
 Playarea.Board = function PlayareaBoard({ children, game = 'chess', color = 'white', paddingFraction = 0.06, ...restProps }) {
   // paddingFraction is relative to aspect ratio container, not board container
-  const { basis, padding } = useContext(PlayareaContext)
+  const { basis, padding, rotation } = useContext(PlayareaContext)
 
   const boardPadding = paddingFraction * basis
   const boardSize = basis - 4 * padding
@@ -67,6 +67,7 @@ Playarea.Board = function PlayareaBoard({ children, game = 'chess', color = 'whi
     height: '100%', // comment this when fixing size of svg
     width: '100%',
     filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
+    transform: `rotate(${-rotation}deg)`
     // background: 'purple',
   }
 

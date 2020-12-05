@@ -11,7 +11,7 @@ export default function GameContainer() {
   const { containerRef, pieces, addPiece, getRelativePosition } = useContext(gameContext)
   const { windowWidth } = useContext(windowContext)
   const { globalSettings } = useContext(settingsContext)
-  const { piecesGroup } = useContext(localSettingsContext)
+  const { piecesGroup, localSettings } = useContext(localSettingsContext)
 
   const isSmall = windowWidth <= 800
 
@@ -25,7 +25,7 @@ export default function GameContainer() {
 
   // paddingFraction on board has to be same on all displays, otherwise coordinates no longer work
   return (
-    <Playarea aspectRatio={isSmall ? 0.81 : 0.75} paddingFraction={isSmall ? 0.005 : 0.03}>
+    <Playarea aspectRatio={isSmall ? 0.81 : 0.75} paddingFraction={isSmall ? 0.005 : 0.03} rotation={localSettings.rotation}>
       <Playarea.Board game={globalSettings.game} color={globalSettings.boardColor} paddingFraction={0.06}>
         <Playarea.BoardPiecesContainer ref={containerRef}>
           {Object.entries(pieces).sort(([_, a], [__, b]) => a - b).map(([pieceId, _]) => (

@@ -6,14 +6,16 @@ import { localSettingsContext } from '../context/local-settings'
 import setsConfig from '../constants/sets-config'
 import piecesConfig from '../constants/pieces-config'
 import layoutsConfig from '../constants/layouts-config'
+import gamesConfig from '../constants/games-config'
 
 export default function SettingsContainer() {
-  const { addMultiplePieces, clearPieces } = useContext(gameContext)
+  const { addMultiplePieces, clearPieces} = useContext(gameContext)
   const { globalSettings, changeGlobalSetting } = useContext(settingsContext)
-  const { changeLocalSetting } = useContext(localSettingsContext)
+  const { changeLocalSetting, rotatePlayarea } = useContext(localSettingsContext)
 
   const selectBoard = event => {
     changeGlobalSetting('game', event.target.dataset.value)
+    rotatePlayarea(0)
   }
 
   const selectPieces = event => {
@@ -59,8 +61,8 @@ export default function SettingsContainer() {
         <Accordion.Body onClick={clearPieces}>Clear Board</Accordion.Body>
         {/* <Accordion.Body>Board Colour</Accordion.Body>
         <Accordion.Body>Scale Pieces</Accordion.Body> */}
-        <Accordion.Body>Reset Sizes</Accordion.Body>
-        <Accordion.Body>Reset Colours</Accordion.Body>
+        {/* <Accordion.Body>Reset Sizes</Accordion.Body>
+        <Accordion.Body>Reset Colours</Accordion.Body> */}
       </Accordion.Item>
       {/* <Accordion.Item>
         <Accordion.Header>Custom Layouts</Accordion.Header>
@@ -69,9 +71,9 @@ export default function SettingsContainer() {
       </Accordion.Item> */}
       <Accordion.Item>
         <Accordion.Header>Local Options</Accordion.Header>
-        <Accordion.Body>Rotate Board</Accordion.Body>
+        <Accordion.Body onClick={() => rotatePlayarea()}>Rotate Board</Accordion.Body>
       </Accordion.Item>
-      <Accordion.Item>
+      {/* <Accordion.Item>
         <Accordion.Header>testing</Accordion.Header>
         <Accordion.Body>test</Accordion.Body>
         <Accordion.Body>test</Accordion.Body>
@@ -87,7 +89,7 @@ export default function SettingsContainer() {
         <Accordion.Body>test</Accordion.Body>
         <Accordion.Body>test</Accordion.Body>
         <Accordion.Body>test</Accordion.Body>
-      </Accordion.Item>
+      </Accordion.Item> */}
     </Accordion>
   )
 }

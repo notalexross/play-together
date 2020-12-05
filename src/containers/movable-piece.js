@@ -6,13 +6,15 @@ import React, { useState, useContext, useEffect, useRef } from 'react'
 import { gameContext } from '../context/game'
 import { firebaseContext } from '../context/firebase'
 import { presenceContext } from '../context/presence'
+import { localSettingsContext } from '../context/local-settings'
 import { Playarea } from '../components'
 import roll from '../utils/roll'
 
 export default function MovablePiece({ pieceId, ...restProps }) {
-  const { grabPiece, releasePiece, removePiece, trackProperty, unTrackAllProperties, heldPiece, updatePieceInDatabase, getRelativePosition } = useContext(gameContext)
+  const { grabPiece, releasePiece, removePiece, trackProperty, unTrackProperty, heldPiece, updatePieceInDatabase, getRelativePosition } = useContext(gameContext)
   const { storedUsers } = useContext(presenceContext)
   const { user } = useContext(firebaseContext)
+  const { getUnrotatedPosition } = useContext(localSettingsContext)
   const [ game, setGame ] = useState()
   const [ name, setName ] = useState()
   const [ color, setColor ] = useState()
@@ -25,11 +27,13 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   const isDeleted = useRef(false)
   const scrollAmount = useRef(0)
 
+  const unRotatedPosition = position && getUnrotatedPosition(...position)
+
   const style = {
     position: 'absolute',
     transform: 'translate(-50%, -50%)',
-    left: `${position && position[0]}%`,
-    top: `${position && position[1]}%`,
+    left: `${unRotatedPosition && unRotatedPosition[0]}%`,
+    top: `${unRotatedPosition && unRotatedPosition[1]}%`,
     zIndex: 100,
     cursor: heldPiece === pieceId ? 'grabbing' : 'grab'
   }
@@ -79,7 +83,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     }
   }
 
-  const handleContextMenu = event => {
+  const handleContextMenu = () => {
     isDeleted.current = true
     removePiece(pieceId)
   }
@@ -111,7 +115,6 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   }
 
   useEffect(() => {
-    trackProperty(pieceId)
     trackProperty(pieceId, 'game', game => setGame(game))
     trackProperty(pieceId, 'name', name => setName(name))
     trackProperty(pieceId, 'color', color => setColor(color))
@@ -120,7 +123,13 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     trackProperty(pieceId, 'holder', holder => setHolder(holder))
     trackProperty(pieceId, 'custom_value', customValue => setCustomValue(customValue))
     return () => {
-      unTrackAllProperties(pieceId)
+      unTrackProperty(pieceId, 'game')
+      unTrackProperty(pieceId, 'name')
+      unTrackProperty(pieceId, 'color')
+      unTrackProperty(pieceId, 'size')
+      unTrackProperty(pieceId, 'position')
+      unTrackProperty(pieceId, 'holder')
+      unTrackProperty(pieceId, 'custom_value')
     }
   }, [])
 
@@ -149,7 +158,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   }, [size !== undefined, heldPiece])
 
   useEffect(() => {
-    if (!holder && amOwner && position && position.some(coord => coord < 0 || coord > 100)) {
+    if (!holder && amOwner && unRotatedPosition && unRotatedPosition.some(coord => coord < 0 || coord > 100)) {
       removePiece(pieceId)
     }
     if (holder && holder !== user.uid) {

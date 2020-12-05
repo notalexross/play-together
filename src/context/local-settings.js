@@ -3,16 +3,21 @@ import DEFAULT_LOCAL_SETTINGS from '../constants/default-local-settings'
 import { firebaseContext } from './firebase'
 import setsConfig from '../constants/sets-config'
 import piecesConfig from '../constants/pieces-config'
+import gamesConfig from '../constants/games-config'
+import { settingsContext } from './settings'
 
 const context = React.createContext()
 const { Provider } = context
 
 function ContextProvider({ children }) {
   const { user } = useContext(firebaseContext)
+  const { globalSettings } = useContext(settingsContext)
   const [ isLoading, setIsLoading ] = useState(true)
   const [ localSettings, setLocalSettings ] = useState()
   const [ piecesGroup, setPiecesGroup ] = useState([])
   const [ favorites, setFavorites ] = useState([])
+
+  const gameSettings = gamesConfig[globalSettings.game] || gamesConfig['default']
 
   const firebase = window.firebase
   const firestore = firebase.firestore()
@@ -52,6 +57,26 @@ function ContextProvider({ children }) {
       const setMapped = set.map(piece => ({id: piece, ...piecesConfig[piece]}))
       setPiecesGroup(setMapped)
     }
+  }
+
+  const rotatePlayarea = newAngle => {
+    newAngle = newAngle !== undefined ? newAngle : (localSettings.rotation + gameSettings.rotationIncrement) % 360
+    changeLocalSetting('rotation', newAngle)
+  }
+
+  const getRotatedPosition = (mouseX, mouseY, angle = localSettings.rotation) => {
+    const angleRadians = angle / 180 * Math.PI
+    const translatedX = mouseX - 50
+    const translatedY = mouseY - 50
+    const rotatedX = translatedX * Math.cos(angleRadians) - translatedY * Math.sin(angleRadians)
+    const rotatedY = translatedY * Math.cos(angleRadians) + translatedX * Math.sin(angleRadians)
+    const untranslatedX = rotatedX + 50
+    const untranslatedY = rotatedY + 50
+    return [untranslatedX, untranslatedY]
+  }
+
+  const getUnrotatedPosition = (mouseX, mouseY) => {
+    return getRotatedPosition(mouseX, mouseY, -localSettings.rotation)
   }
 
   const addToFavorites = piece => {
@@ -96,8 +121,22 @@ function ContextProvider({ children }) {
      }
   }, [localSettings && localSettings.piecesGroup, favorites])
 
+  useEffect(() => {
+    localSettings && changeLocalSetting('piecesGroup', globalSettings.game)
+  }, [globalSettings.game])
+
   return (
-    <Provider value={{ localSettings, piecesGroup, changeLocalSetting, addToFavorites, removeFromFavorites, favorites }} >
+    <Provider value={{
+      localSettings,
+      piecesGroup,
+      changeLocalSetting,
+      addToFavorites,
+      removeFromFavorites,
+      favorites,
+      rotatePlayarea,
+      getRotatedPosition,
+      getUnrotatedPosition
+    }}>
       {isLoading ? null : children}
     </Provider>
   )
