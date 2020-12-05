@@ -17,7 +17,7 @@ function ContextProvider({ children }) {
   const [ piecesGroup, setPiecesGroup ] = useState([])
   const [ favorites, setFavorites ] = useState([])
 
-  const gameSettings = gamesConfig[globalSettings.game] || gamesConfig['default']
+  const gameSettings = gamesConfig[globalSettings && globalSettings.game] || gamesConfig['default']
 
   const firebase = window.firebase
   const firestore = firebase.firestore()
@@ -122,8 +122,8 @@ function ContextProvider({ children }) {
   }, [localSettings && localSettings.piecesGroup, favorites])
 
   useEffect(() => {
-    localSettings && changeLocalSetting('piecesGroup', globalSettings.game)
-  }, [globalSettings.game])
+    localSettings && globalSettings && globalSettings.game && changeLocalSetting('piecesGroup', globalSettings.game)
+  }, [globalSettings && globalSettings.game])
 
   return (
     <Provider value={{

@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import { Container, Overlay, Close, Title, Text, Form, Submit, InputText } from './styles'
+import { Container, Overlay, Close, Title, Text, Subtext, Form, Submit, InputText } from './styles'
 import { CloseCircle as CloseCircleEmpty } from '@styled-icons/remix-line'
 import { CloseCircle as CloseCircleFilled } from '@styled-icons/remix-fill'
 import useHover from '../../hooks/useHover'
@@ -36,6 +36,10 @@ Modal.Title = function ModalTitle({ children, ...restProps }) {
 
 Modal.Text = function ModalText({ children, ...restProps }) {
   return <Text {...restProps}>{children}</Text>
+}
+
+Modal.Subtext = function ModalSubtext({ children, ...restProps }) {
+  return <Subtext {...restProps}>{children}</Subtext>
 }
 
 Modal.Form = function ModalForm({ children, ...restProps }) {

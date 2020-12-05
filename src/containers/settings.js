@@ -3,10 +3,8 @@ import { Accordion } from '../components'
 import { gameContext } from '../context/game'
 import { settingsContext } from '../context/settings'
 import { localSettingsContext } from '../context/local-settings'
-import setsConfig from '../constants/sets-config'
 import piecesConfig from '../constants/pieces-config'
 import layoutsConfig from '../constants/layouts-config'
-import gamesConfig from '../constants/games-config'
 
 export default function SettingsContainer() {
   const { addMultiplePieces, clearPieces} = useContext(gameContext)
@@ -14,6 +12,7 @@ export default function SettingsContainer() {
   const { changeLocalSetting, rotatePlayarea } = useContext(localSettingsContext)
 
   const selectBoard = event => {
+    if (globalSettings.game === event.target.dataset.value) return
     changeGlobalSetting('game', event.target.dataset.value)
     rotatePlayarea(0)
   }

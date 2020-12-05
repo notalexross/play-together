@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { GlobalStyle } from './styles/global';
-import { ResponsiveStyle } from './styles/responsive';
 import { PreventTransitionsOnResize } from './components'
 import * as ROUTES from './constants/routes'
 import { WindowContextProvider } from './context/window'
@@ -14,7 +13,6 @@ export default function App() {
     <>
       <FirebaseContextProvider>
         <GlobalStyle/>
-        <ResponsiveStyle/>
         <PreventTransitionsOnResize/>
         <Router>
           <WindowContextProvider>

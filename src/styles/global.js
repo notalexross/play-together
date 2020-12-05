@@ -34,6 +34,7 @@ export const GlobalStyle = createGlobalStyle`
     background: #e5e5e5;
     color: #1e1e1e;
     letter-spacing: 0.05em;
+    user-select: none;
   }
 
   button:active {

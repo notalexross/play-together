@@ -16,16 +16,22 @@ export default function Home() {
     user.displayName ? enterGameRoom() : setIsNicknameModalOpen(true)
   }
 
-  const enterGameRoom = () => {
-    // TODO
-    // disable button until response from server is received (after redirect to room)
+  const handleCompleted = () => {
     buttonRef.current.disabled = true;
+  }
 
+  const enterGameRoom = () => {
     createRoom().then(roomId => {
       console.log('moving to game room')
       history.push(`${ROUTES.GAMES}/${roomId}`)
     })
   }
+
+  useEffect(() => {
+    if (user && user.displayName && buttonRef.current.disabled) {
+      enterGameRoom()
+    }
+  }, [user && user.displayName])
 
   return (
     <>
@@ -35,7 +41,7 @@ export default function Home() {
         <Feature.Text>Just give your friends the link and play</Feature.Text>
         <Feature.Button onClick={handleClick} ref={buttonRef}>create game room</Feature.Button>
       </Feature>
-      <NicknameModal onComplete={handleClick} isOpen={isNicknameModalOpen} setIsOpen={setIsNicknameModalOpen}/>
+      <NicknameModal onComplete={handleCompleted} isOpen={isNicknameModalOpen} setIsOpen={setIsNicknameModalOpen}/>
     </>
   )
 }

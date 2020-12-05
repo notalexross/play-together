@@ -35,8 +35,14 @@ export const Overlay = styled.div`
 export const Container = styled.section`
   position: relative;
   background: white;
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 0.4rem;
+  
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
 
   animation: ${drop} 0.1s linear 1;
 `
@@ -53,15 +59,30 @@ export const Close = styled.div`
   };
 `
 
-export const Title = styled.h1``
+export const Title = styled.h1`
 
-export const Text = styled.p``
+`
 
-export const Form = styled.form``
+export const Text = styled.p`
+  // margin-bottom: 1rem;
+  font-size: 1.3rem;
+`
 
-export const Submit = styled.button``
+export const Subtext = styled.p`
+  margin-top: 0.2rem;
+  font-size: 1.2rem;
+  opacity: 0.8;
+`
+
+export const Form = styled.form`
+  margin-top: 1rem;
+`
+
+export const Submit = styled.button`
+  margin: 0;
+`
 
 export const InputText = styled.input`
   font-family: inherit;
-  padding: 0.5em 1em;
+  padding: 0.8rem 1.2rem;
 `

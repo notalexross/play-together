@@ -8,7 +8,8 @@ const { Provider } = context
 function ContextProvider({ children }) {
   const [ currentUser, setCurrentUser ] = useState(null)
   const [ isLoading, setIsLoading ] = useState(true)
-  const [ userColor, setUserColor ] = useState(window.localStorage.getItem('color'))
+  const [ userColor, setUserColor ] = useState()
+  // const [ userColor, setUserColor ] = useState(window.localStorage.getItem('color'))
   const forceRender = useForceRender()
 
   const firebase = window.firebase
@@ -50,7 +51,7 @@ function ContextProvider({ children }) {
   }
 
   const updateLocalColor = newColor => {
-    window.localStorage.setItem('color', newColor)
+    // window.localStorage.setItem('color', newColor)
     setUserColor(newColor)
     return newColor
   }
@@ -59,8 +60,7 @@ function ContextProvider({ children }) {
     const R = (Math.round(Math.random()) * 255).toString(16).padEnd(2,'0').slice(0,3)
     const G = (Math.round(Math.random()) * 255).toString(16).padEnd(2,'0').slice(0,3)
     const B = (Math.round(Math.random()) * 255).toString(16).padEnd(2,'0').slice(0,3)
-
-    console.log(`#${R}${G}${B}`)
+    // console.log(`#${R}${G}${B}`)
 
     return `#${R}${G}${B}`
   }
@@ -93,7 +93,7 @@ function ContextProvider({ children }) {
   }
 
   const initApp = () => {
-    firebase.initializeApp(FIREBASE_CONFIG)
+    !firebase.apps.length && firebase.initializeApp(FIREBASE_CONFIG)
 
     const listener = firebase.auth().onAuthStateChanged(user => {
       setCurrentUser(user)
@@ -114,14 +114,7 @@ function ContextProvider({ children }) {
 
   useEffect(() => {
     if (!currentUser) return
-
-    if (currentUser.displayName) {
-      setIsLoading(false)
-    } else {
-      setNickname('Unknown').then(() => {
-        setIsLoading(false)
-      })
-    }
+    setIsLoading(false)
 
     const usersRef = firebase.firestore().collection('users')
     const query = usersRef.doc(currentUser.uid)

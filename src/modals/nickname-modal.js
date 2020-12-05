@@ -26,6 +26,7 @@ export default function NicknameModal({ isOpen = false, setIsOpen = () => {}, on
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <Modal.Close/>
       <Modal.Text>Enter your nickname below</Modal.Text>
+      <Modal.Subtext>You can change this at any time</Modal.Subtext>
       <Modal.Form onSubmit={handleSubmit}>
         <Modal.InputText
           ref={inputRef}

@@ -81,7 +81,8 @@ function ContextProvider({ children }) {
     const query = usersRef.doc(uid)
     const newListener = query.onSnapshot(snapshot => {
       if (snapshot.metadata.hasPendingWrites) return
-      console.log('updating user: '+uid)
+      if (!snapshot.data()) return // TODO this shouldn't be required... (required for if a user is deleted from firestore DB but then returns, so no data in snapshot)
+      console.log(`updating user: ${uid}`)
       const displayName = snapshot.data().displayName
       const color = snapshot.data().color
       setStoredUsers(storedUsers => ({
@@ -107,8 +108,10 @@ function ContextProvider({ children }) {
   }
 
   const removeAllUserListeners = () => {
-    console.log(Object.values(userListeners.current))
-    Object.values(userListeners.current).forEach(listener => listener())
+    // console.log(Object.values(userListeners.current))
+    Object.keys(userListeners.current).forEach(uid => {
+      removeUserListener(uid)
+    })
   }
 
   const addToStoredUsers = uids => {
@@ -134,11 +137,11 @@ function ContextProvider({ children }) {
     initPresenceListeners()
     console.log('mounting presence listeners')
     goOnline()
-    initAuthRefreshTimeout()
+    // initAuthRefreshTimeout() // no longer needed due to database rules
     return () => {
       onlineUsersRef.off()
       removeAllUserListeners()
-      killAuthRefreshTimeout()
+      // killAuthRefreshTimeout()
       goOffline()
     }
   }, [])
