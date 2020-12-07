@@ -2,8 +2,10 @@ import React, { useContext, useState, useRef, useEffect } from 'react'
 import { Chat } from '../components'
 import { chatContext } from '../context/chat'
 import { presenceContext } from '../context/presence'
+import { firebaseContext } from '../context/firebase'
 
 export default function ChatContainer({ onFocus = () => {}, isExpanded }) {
+  const { user } = useContext(firebaseContext)
   const { sendMessage, messages } = useContext(chatContext)
   const { onlineUsers, storedUsers } = useContext(presenceContext)
   const [ allMessages, setAllMessages ] = useState([])
@@ -21,7 +23,6 @@ export default function ChatContainer({ onFocus = () => {}, isExpanded }) {
     if (text.length < 1) return
     sendMessage(text)
     setText('')
-    logRef.current && logRef.current.lastChild && logRef.current.lastChild.scrollIntoView()
   }
 
   const handleKeyPress = event => {
@@ -43,6 +44,17 @@ export default function ChatContainer({ onFocus = () => {}, isExpanded }) {
       }
     }))
   }, [messages, storedUsers])
+
+  useEffect(() => {
+    const container = logRef.current
+    if (container && container.lastChild) {
+      const lastMessageAuthor = allMessages[allMessages.length - 1].uid
+      const scrollAmount = container.scrollHeight - container.clientHeight - container.scrollTop
+      if (scrollAmount < 100 || lastMessageAuthor === user.uid) {
+        container.lastChild.scrollIntoView()
+      }
+    }
+  }, [allMessages])
 
   return (
     <Chat>
