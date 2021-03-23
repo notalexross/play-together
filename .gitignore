@@ -29,3 +29,5 @@ database.rules.json
 src/constants/firebase-config.js
 firestore.indexes.json
 firestore.rules
+.env.development
+.env.production
