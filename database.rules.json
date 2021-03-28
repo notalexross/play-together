@@ -1,0 +1,44 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "rooms": {
+      "$room_id": {
+        "pieces": {
+          ".write": "root.child('rooms/'+$room_id+'/users/'+auth.uid).exists()",
+          ".read": "auth !== null",
+          "details": {
+            "$piece_id": {
+              "color": { ".validate": true },
+              "game": { ".validate": true },
+              "name": { ".validate": true },
+              "position": { ".validate": true },
+              "size": { ".validate": true },
+              "custom_value": { ".validate": true },
+              "holder": { ".validate": true },
+              "$other": { ".validate": false }
+            }
+          },
+          "ids": {
+            "$piece_id" : {
+              ".validate": true
+            }
+          },
+          "$other": { ".validate": false }
+        },
+        "users": {
+          ".read": "auth !== null",
+          "$uid": {
+            "connections": {
+              ".write": "$uid === auth.uid || !newData.exists()",
+              "$connection_id": {
+                ".validate": true
+              }
+            },
+            "$other": { ".validate": false }
+          }
+        }
+      }
+    }
+  }
+}
