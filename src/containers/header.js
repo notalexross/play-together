@@ -11,7 +11,7 @@ import useHover from '../hooks/useHover.js'
 import { windowContext } from '../context/window'
 import { firebaseContext } from '../context/firebase'
 
-export default function HeaderContainer({ innerRef }) {
+export default function HeaderContainer() {
   const { user, userColor, setColor } = useContext(firebaseContext)
   const [ currentColor, setCurrentColor ] = useState(userColor)
   const [ tooltip, setTooltip ] = useState()
@@ -52,7 +52,7 @@ export default function HeaderContainer({ innerRef }) {
 
   return (
     // <Header style={{flexDirection: isSmall ? 'column' : 'row'}}>
-    <Header innerRef={innerRef}>
+    <Header>
       <Header.Wrapper>
         <Header.HomeLink to={ROUTES.HOME}>
           Home
@@ -87,4 +87,3 @@ export default function HeaderContainer({ innerRef }) {
     </Header>
   )
 }
-

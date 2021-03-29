@@ -1,10 +1,11 @@
 import React, { useContext, useState, useRef, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { Chat } from '../components'
 import { chatContext } from '../context/chat'
 import { presenceContext } from '../context/presence'
 import { firebaseContext } from '../context/firebase'
 
-export default function ChatContainer({ onFocus = () => {}, isExpanded }) {
+export default function ChatContainer({ onFocus = () => {}, isExpanded = false }) {
   const { user } = useContext(firebaseContext)
   const { sendMessage, messages } = useContext(chatContext)
   const { onlineUsers, storedUsers } = useContext(presenceContext)
@@ -117,4 +118,9 @@ export default function ChatContainer({ onFocus = () => {}, isExpanded }) {
       </Chat.Section>
     </Chat>
   )
+}
+
+ChatContainer.propTypes = {
+  onFocus: PropTypes.func,
+  isExpanded: PropTypes.bool
 }

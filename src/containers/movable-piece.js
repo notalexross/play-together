@@ -3,6 +3,7 @@
 // hold piece and scroll to change size
 
 import React, { useState, useContext, useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 import { gameContext } from '../context/game'
 import { firebaseContext } from '../context/firebase'
 import { presenceContext } from '../context/presence'
@@ -184,4 +185,8 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       {...restProps}
     /> : null
   )
+}
+
+MovablePiece.propTypes = {
+  pieceId: PropTypes.string
 }

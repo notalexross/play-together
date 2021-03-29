@@ -1,4 +1,3 @@
-// TODO
 import React, { useContext, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { CollapseRight } from '@styled-icons/open-iconic/CollapseRight'
@@ -33,12 +32,22 @@ export default function Panel({ children, startCollapsed = false, innerRef, widt
   )
 }
 
+Panel.propTypes = {
+  startCollapsed: PropTypes.bool,
+  innerRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  width: PropTypes.string
+}
+
 Panel.Container = React.forwardRef(({ children, ...restProps }, ref) => {
   return <Panels ref={ref} {...restProps}>{children}</Panels>
 })
 
 Panel.Header = function PanelHeader({ children, innerRef, ...restProps }) {
   return <Header ref={innerRef} {...restProps}>{children}</Header>
+}
+
+Panel.Header.propTypes = {
+  innerRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
 }
 
 Panel.Title = function PanelTitle({ children, ...restProps }) {
@@ -76,3 +85,6 @@ Panel.Collapse = function PanelCollapse({ direction = 'right', ...restProps }) {
   )
 }
 
+Panel.Collapse.propTypes = {
+  direction: PropTypes.oneOf(['left', 'right'])
+}

@@ -50,6 +50,12 @@ export default function Playarea({ children, aspectRatio = 0.75, paddingFraction
   )
 }
 
+Playarea.propTypes = {
+  aspectRatio: PropTypes.number,
+  paddingFraction: PropTypes.number,
+  rotation: PropTypes.number
+}
+
 Playarea.Board = function PlayareaBoard({ children, game = 'chess', color = 'white', paddingFraction = 0.06, ...restProps }) {
   // paddingFraction is relative to aspect ratio container, not board container
   const { basis, padding, rotation } = useContext(PlayareaContext)
@@ -77,6 +83,12 @@ Playarea.Board = function PlayareaBoard({ children, game = 'chess', color = 'whi
       {children}
     </Board>
   )
+}
+
+Playarea.Board.propTypes = {
+  game: PropTypes.string,
+  color: PropTypes.string,
+  paddingFraction: PropTypes.number
 }
 
 Playarea.BoardPiecesContainer = React.forwardRef(({ ...restProps }, ref) => {
@@ -138,4 +150,13 @@ Playarea.Piece = function PlayareaPiece({ style, game, name, color, sizeFraction
   return (
     <Svg type="piece" game={game} name={name} color={color} style={{...pieceStyle, ...style}} ref={svgRef} {...restProps}/>
   )
+}
+
+Playarea.Piece.propTypes = {
+  style: PropTypes.object,
+  game: PropTypes.string,
+  name: PropTypes.string,
+  color: PropTypes.string,
+  sizeFraction: PropTypes.number,
+  holderColor: PropTypes.string
 }

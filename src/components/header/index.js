@@ -1,6 +1,4 @@
-// TODO
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Container, HomeLink, Text, TextCopy, Wrapper } from './styles'
 
 export default function Header({ children, ...restProps }) {
@@ -15,10 +13,10 @@ Header.Text = function HeaderText({ children, ...restProps }) {
   return <Text {...restProps}>{children}</Text>
 }
 
-Header.TextCopy = function HeaderTextCopy({ children, innerRef, ...restProps }) {
+Header.TextCopy = function HeaderTextCopy({ children, ...restProps }) {
   return (
-    <TextCopy ref={innerRef} {...restProps}>
-        {children}
+    <TextCopy {...restProps}>
+      {children}
     </TextCopy>
   )
 }

@@ -10,7 +10,7 @@ export default function Tooltip({
   arrowLength = '10px',
   arrowWidth = '6px',
   maxWidth = '300px',
-  align = 'center', // center/flex-start/flex-end
+  align = 'center',
   ...restProps
 }) {
 
@@ -35,4 +35,14 @@ export default function Tooltip({
       </Tip>
     </Container>
   )
+}
+
+Tooltip.propTypes = {
+  tooltip: PropTypes.string,
+  side: PropTypes.oneOf(['top','right','bottom','left']),
+  separation: PropTypes.string,
+  arrowLength: PropTypes.string,
+  arrowWidth: PropTypes.string,
+  maxWidth: PropTypes.string,
+  align: PropTypes.oneOf(['center','flex-start','flex-end'])
 }

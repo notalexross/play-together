@@ -8,7 +8,7 @@ import useHover from '../../hooks/useHover'
 
 const ModalContext = React.createContext()
 
-export default function Modal({ children, isOpen, setIsOpen, ...restProps }) {
+export default function Modal({ children, isOpen = false, setIsOpen = () => {}, ...restProps }) {
 
   const closeModal = () => setIsOpen(false)
 
@@ -28,6 +28,11 @@ export default function Modal({ children, isOpen, setIsOpen, ...restProps }) {
       </ModalContext.Provider>, document.getElementById('root')
     )
   : null
+}
+
+Modal.propTypes = {
+  isOpen: PropTypes.bool,
+  setIsOpen: PropTypes.func.isRequired
 }
 
 Modal.Title = function ModalTitle({ children, ...restProps }) {
@@ -50,7 +55,7 @@ Modal.Submit = function ModalSubmit({ children, ...restProps }) {
   return <Submit {...restProps}>{children}</Submit>
 }
 
-Modal.InputText = React.forwardRef(({ children, type='text', ...restProps }, ref) => {
+Modal.InputText = React.forwardRef(({ children, type = 'text', ...restProps }, ref) => {
   return <InputText type={type} ref={ref} {...restProps}>{children}</InputText>
 })
 

@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { localSettingsContext } from '../context/local-settings'
 import PlayareaContext from '../context/playarea'
 import { Playarea } from '../components'
@@ -46,4 +47,12 @@ export default function FavoritablePiece({ piece, favoriteHeightFraction = '0.02
       </div>
     </div>
   )
+}
+
+FavoritablePiece.propTypes = {
+  piece: PropTypes.shape({
+    id: PropTypes.string
+  }).isRequired,
+  favoriteHeightFraction: PropTypes.string,
+  favoriteColor: PropTypes.string,
 }

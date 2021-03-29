@@ -1,4 +1,3 @@
-// TODO
 import React, { useState, useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import {
@@ -35,7 +34,7 @@ Chat.Send = function ChatSend({ children, ...restProps }) {
   )
 }
 
-Chat.TextInput = React.forwardRef(({ padding, value, maxLength = 100, ...restProps }, ref) => {
+Chat.TextInput = React.forwardRef(({ value, maxLength = 100, ...restProps }, ref) => {
   const [ error, setError ] = useState('')
   const prevScrollHeight = useRef()
   const rowCount = useRef(1)
@@ -64,22 +63,30 @@ Chat.TextInput = React.forwardRef(({ padding, value, maxLength = 100, ...restPro
         ariaLabel="Send a message"
         placeholder="Send a message"
         maxLength={maxLength}
-        padding={padding}
         {...restProps}
       />
     </>
   )
 })
 
-Chat.Log = React.forwardRef(({ children, isExpanded, style, ...restProps }, ref) => {
+Chat.TextInput.propTypes = {
+  value: PropTypes.string.isRequired,
+  maxLength: PropTypes.number
+}
+
+Chat.Log = React.forwardRef(({ children, isExpanded = false, ...restProps }, ref) => {
   return (
     <Log isExpanded={isExpanded}>
-      <LogInner ref={ref} style={style} {...restProps}>
+      <LogInner ref={ref} {...restProps}>
         {children}
       </LogInner>
     </Log>
   )
 })
+
+Chat.Log.propTypes = {
+  isExpanded: PropTypes.bool
+}
 
 Chat.Message = function ChatMessage({ children, ...restProps }) {
   return <Message {...restProps}>{children}</Message>
@@ -91,6 +98,10 @@ Chat.Timestamp = function ChatTimestamp({ children, ...restProps }) {
 
 Chat.Sender = function ChatSender({ children, color, ...restProps }) {
   return <Sender color={color} {...restProps}>{children}</Sender>
+}
+
+Chat.Sender.propTypes = {
+  color: PropTypes.string
 }
 
 Chat.Text = function ChatText({ children, ...restProps }) {
@@ -121,4 +132,8 @@ Chat.Heading = function ChatHeading({ children, ...restProps }) {
 
 Chat.User = function ChatUser({ children, color, ...restProps }) {
   return <User color={color} {...restProps}>{children}</User>
+}
+
+Chat.User.propTypes = {
+  color: PropTypes.string
 }
