@@ -62,6 +62,7 @@ export default function ChatContainer({ onFocus = () => {}, isExpanded = false }
       <Chat.Form onSubmit={handleSubmit}>
         <Chat.TextInput
           ref={inputRef}
+          maxLength={150}
           onKeyPress={handleKeyPress}
           onFocus={onFocus}
           value={text}
