@@ -1,4 +1,3 @@
-// TODO
 import styled from 'styled-components'
 
 export const Container = styled.div`
@@ -6,7 +5,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column-reverse;
   box-sizing: border-box;
-  // border-left: solid 1px #444;
   height: 100%;
 `
 
@@ -59,26 +57,19 @@ export const Section = styled.section`
   border-bottom: solid 1px #444;
   text-align: center;
   max-height: 50%;
-  // overflow: hidden;
-
   display: flex;
   flex-direction: column;
-  // box-shadow: 0 0 5px black;
+  box-sizing: border-box;
 
   @media (max-width: 800px) {
     ${({ isExpanded }) => !isExpanded && 'display: none;'}
   }
-
-  // flex-grow: 1;
-  box-sizing: border-box;
-  display: flex;
 `
 
 export const Log = styled.div`
   box-sizing: border-box;
   flex-grow: 1;
   min-height: 7em;
-
   display: flex;
   flex-direction: column-reverse;
 
@@ -90,19 +81,19 @@ export const Log = styled.div`
 export const LogInner = styled.div`
   overflow: auto;
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
 `
 
 export const Message = styled.div`
   word-wrap: break-word;
+  border-radius: 10px;
   margin: 0.5em 1em 0;
+
   &:last-of-type {
     margin-bottom: 1em;
   }
-  border-radius: 10px;
 
   @media (max-width: 800px) {
-    // font-size: 1.3rem;
     background: #111;
     padding: 1em;
   }
@@ -117,6 +108,7 @@ export const Sender = styled.span`
   margin-right: 0.2em;
   color: ${({ color }) => color};
   font-weight: 700;
+
   &:after {
     content: ': ';
     color: #e5e5e5;
@@ -146,13 +138,11 @@ export const List = styled.div`
 
 export const User = styled.p`
   color: ${({ color }) => color};
-  // margin-left: 1em;
   margin-bottom: 0.5em;
   font-weight: 700;
 `
 
 export const Heading = styled.div`
-  // padding: 1rem;
   user-select: none;
   cursor: pointer;
 `

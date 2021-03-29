@@ -1,16 +1,8 @@
-import * as React from "react"
+import * as React from 'react'
 
 function SvgComponent(props, svgRef) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      // width={45}
-      // height={45}
-      // viewBox="0 0 45 45"
-      viewBox="3 5 39 36.5"
-      ref={svgRef}
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="3 5 39 36.5" ref={svgRef} {...props}>
       <g
         fill="none"
         fillRule="evenodd"
@@ -24,11 +16,7 @@ function SvgComponent(props, svgRef) {
           d="M24 18c.38 2.91-5.55 7.37-8 9-3 2-2.82 4.34-5 4-1.042-.94 1.41-3.04 0-3-1 0 .19 1.23-1 2-1 0-4.003 1-4-4 0-2 6-12 6-12s1.89-1.9 2-3.5c-.73-.994-.5-2-.5-3 1-1 3 2.5 3 2.5h2s.78-1.992 2.5-3c1 0 1 3 1 3"
           fill="currentColor"
         />
-        <path
-          d="M9.5 25.5a.5.5 0 11-1 0 .5.5 0 111 0z"
-          fill="#fff"
-          stroke="#fff"
-        />
+        <path d="M9.5 25.5a.5.5 0 11-1 0 .5.5 0 111 0z" fill="#fff" stroke="#fff" />
         <path
           d="M14.933 15.75a.5 1.5 30 11-.866-.5.5 1.5 30 11.866.5z"
           fill="#fff"

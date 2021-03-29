@@ -26,9 +26,8 @@ export const Overlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0, 0, 0, 0.6);
   color: #000;
-
   animation: ${fadeIn} 0.1s linear 1;
 `
 
@@ -37,13 +36,11 @@ export const Container = styled.section`
   background: white;
   padding: 2rem;
   border-radius: 0.4rem;
-  
   max-width: 350px;
   display: flex;
   flex-direction: column;
   align-items: center;
   user-select: none;
-
   animation: ${drop} 0.1s linear 1;
 `
 
@@ -56,15 +53,12 @@ export const Close = styled.div`
 
   &:hover {
     cursor: pointer;
-  };
+  }
 `
 
-export const Title = styled.h1`
-
-`
+export const Title = styled.h1``
 
 export const Text = styled.p`
-  // margin-bottom: 1rem;
   font-size: 1.3rem;
 `
 

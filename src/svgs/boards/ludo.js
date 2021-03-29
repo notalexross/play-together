@@ -1,24 +1,13 @@
-import * as React from "react"
+import * as React from 'react'
 
 function SvgComponent(props, svgRef) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      // width={383}
-      // height={383}
-      // viewBox="0 0 383 383"
-      viewBox="11 11 361 361"
-      ref={svgRef}
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="11 11 361 361" ref={svgRef} {...props}>
       <path fill="currentColor" d="M11.5 11.5h360v360h-360z" />
       <path d="M155.5 347.5h48v-120h24l-36-36-36 36h24v96h-24v24" fill="#ff0" />
       <path d="M35.5 155.5v48h120v24l36-36-36-36v24h-96v-24h-24" fill="#0f0" />
       <path d="M227.5 35.5h-48v120h-24l36 36 36-36h-24v-96h24v-24" fill="red" />
-      <path
-        d="M347.5 227.5v-48h-120v-24l-36 36 36 36v-24h96v24h24"
-        fill="#00f"
-      />
+      <path d="M347.5 227.5v-48h-120v-24l-36 36 36 36v-24h96v24h24" fill="#00f" />
       <path fill="#ff0" d="M11.5 227.5h144v144h-144z" />
       <path fill="#0f0" d="M11.5 11.5h144v144h-144z" />
       <path fill="red" d="M227.5 11.5h144v144h-144z" />

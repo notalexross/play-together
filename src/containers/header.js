@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Copy as CopyEmpty } from '@styled-icons/boxicons-regular/Copy'
-import { Copy as CopyFilled} from '@styled-icons/boxicons-solid/Copy'
+import { Copy as CopyFilled } from '@styled-icons/boxicons-solid/Copy'
 import { EditBox as EditBoxEmpty } from '@styled-icons/remix-line'
 import { EditBox as EditBoxFilled } from '@styled-icons/remix-fill'
 import * as ROUTES from '../constants/routes'
@@ -12,26 +12,26 @@ import { windowContext } from '../context/window'
 import { firebaseContext } from '../context/firebase'
 
 export default function HeaderContainer() {
-  const { user, userColor, setColor } = useContext(firebaseContext)
-  const [ currentColor, setCurrentColor ] = useState(userColor)
-  const [ tooltip, setTooltip ] = useState()
-  const [ isNicknameModalOpen, setIsNicknameModalOpen ] = useState(false)
-  const [ isHovered, hoverRef ] = useHover()
-
   const { windowWidth } = useContext(windowContext)
+  const { user, userColor, setColor } = useContext(firebaseContext)
+  const [currentColor, setCurrentColor] = useState(userColor)
+  const [tooltip, setTooltip] = useState()
+  const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false)
+  const [isHovered, hoverRef] = useHover()
 
   const isLarge = windowWidth > 1000
   const isSmall = windowWidth <= 800
 
-  useEffect(() => {
-      if (isHovered) {
-        setTooltip('click to copy')
-      }
-  }, [isHovered])
-
-  useEffect(() => {
-    setCurrentColor(userColor)
-  }, [userColor])
+  let renderUrlCopyField
+  if (isLarge) {
+    renderUrlCopyField = <Header.TextCopy>{window.location.href}</Header.TextCopy>
+  } else {
+    if (isHovered) {
+      renderUrlCopyField = <CopyFilled style={{ height: '20px', width: '20px' }} />
+    } else {
+      renderUrlCopyField = <CopyEmpty style={{ height: '20px', width: '20px' }} />
+    }
+  }
 
   const handleClick = () => {
     console.log('copying')
@@ -47,40 +47,49 @@ export default function HeaderContainer() {
 
   const handleCloseColorPicker = () => {
     if (currentColor === userColor) return
+
     setColor(currentColor)
   }
 
+  useEffect(() => {
+    if (isHovered) {
+      setTooltip('click to copy')
+    }
+  }, [isHovered])
+
+  useEffect(() => {
+    setCurrentColor(userColor)
+  }, [userColor])
+
   return (
-    // <Header style={{flexDirection: isSmall ? 'column' : 'row'}}>
     <Header>
       <Header.Wrapper>
-        <Header.HomeLink to={ROUTES.HOME}>
-          Home
-        </Header.HomeLink>
+        <Header.HomeLink to={ROUTES.HOME}>Home</Header.HomeLink>
       </Header.Wrapper>
-      <Header.Wrapper style={{flex: 2}}>
-        <Header.Text style={{order: isSmall ? '1' : '0'}}>
+      <Header.Wrapper style={{ flex: 2 }}>
+        <Header.Text style={{ order: isSmall ? '1' : '0' }}>
           {isSmall ? null : 'Shareable Link:'}
           <Tooltip tooltip={tooltip} side={isLarge ? 'right' : isSmall ? 'left' : 'bottom'}>
             <div ref={hoverRef} onClick={handleClick}>
-              {
-                isLarge ? 
-                  <Header.TextCopy>{window.location.href}</Header.TextCopy> :
-                  isHovered ? <CopyFilled style={{height: '20px', width: '20px'}}/> : <CopyEmpty style={{height: '20px', width: '20px'}}/> 
-              }
+              {renderUrlCopyField}
             </div>
           </Tooltip>
         </Header.Text>
       </Header.Wrapper>
       <Header.Wrapper>
         <Header.Text>
-          {isSmall ? null : 'Nickname:'} <span style={{color: currentColor}}>{user.displayName}</span>
+          {isSmall ? null : 'Nickname: '}
+          <span style={{ color: currentColor }}>{user.displayName}</span>
           <Hover
             DefaultComponent={EditBoxEmpty}
             HoverComponent={EditBoxFilled}
             onClick={() => setIsNicknameModalOpen(true)}
           />
-          <ColorPicker value={currentColor} onChange={event => setCurrentColor(event.target.value)} onBlur={handleCloseColorPicker}/>
+          <ColorPicker
+            value={currentColor}
+            onChange={event => setCurrentColor(event.target.value)}
+            onBlur={handleCloseColorPicker}
+          />
         </Header.Text>
       </Header.Wrapper>
       <NicknameModal isOpen={isNicknameModalOpen} setIsOpen={setIsNicknameModalOpen} />

@@ -3,9 +3,13 @@ import PropTypes from 'prop-types'
 import { firebaseContext } from '../context/firebase'
 import { Modal } from '../components'
 
-export default function NicknameModal({ isOpen = false, setIsOpen = () => {}, onComplete = () => {} }) {
+export default function NicknameModal({
+  isOpen = false,
+  setIsOpen = () => {},
+  onComplete = () => {}
+}) {
   const { setNickname } = useContext(firebaseContext)
-  const [ userInput, setUserInput ] = useState('')
+  const [userInput, setUserInput] = useState('')
   const inputRef = useRef(null)
 
   const handleSubmit = event => {
@@ -24,13 +28,13 @@ export default function NicknameModal({ isOpen = false, setIsOpen = () => {}, on
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <Modal.Close/>
+      <Modal.Close />
       <Modal.Text>Enter your nickname below</Modal.Text>
       <Modal.Subtext>You can change this at any time</Modal.Subtext>
       <Modal.Form onSubmit={handleSubmit}>
         <Modal.InputText
           ref={inputRef}
-          placeholder='enter your nickname'
+          placeholder="enter your nickname"
           value={userInput}
           onChange={event => setUserInput(event.target.value)}
         />
@@ -40,6 +44,6 @@ export default function NicknameModal({ isOpen = false, setIsOpen = () => {}, on
   )
 }
 
-NicknameModal.propTypes ={
+NicknameModal.propTypes = {
   onComplete: PropTypes.func
 }

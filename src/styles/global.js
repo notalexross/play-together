@@ -27,7 +27,6 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0.8em 1.2em;
     text-align: center;
     text-transform: uppercase;
-    // font-family: 'Ubuntu', sans-serif;
     font-family: inherit;
     font-weight: 700;
     border: none;
@@ -50,8 +49,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .scrollbox {
-    // --bg-color: orange;
-    // --shadow-color: black;
     overflow: auto;
     background:
       /* Shadow covers */

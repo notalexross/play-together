@@ -28,21 +28,7 @@ export const Board = styled.div`
   box-sizing: border-box;
   background: #1e1e1e;
   box-shadow: inset 0 0 5px black;
-
-  // border: solid green 1px;
-  // display: flex;
-  // justify-content: center;
-  // align-items: center;
-
   position: relative;
-`
-
-export const Image = styled.img`
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-  // filter: drop-shadow(0 0 5px black);
-  user-select: none;
 `
 
 export const BoardPiecesOuter = styled.div`
@@ -68,37 +54,17 @@ export const PiecesWrapper = styled.div`
   box-shadow: inset 0 0 5px black;
   width: 100%;
   height: 100%;
-  // padding: 10%;
   box-sizing: border-box;
-
   position: relative;
-  // border: solid 1px red;
   overflow: auto;
 `
 
 export const PiecesInner = styled.div`
   position: absolute;
-  // top: 0;
-  // left: 0;
-  // border: solid 1px green;
   box-sizing: border-box;
-  // width: 100%;
   max-width: 100%;
-  // height: 100%;
   max-height: 100%;
-
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-
-
-  // display: grid;
-  // // grid-template-columns: repeat(auto-fill, 10%);
-  
-  // // grid-template-columns: repeat( auto-fit, minmax(30px, 1fr) );
-  // grid-template-columns: repeat( auto-fit, minmax(30px, 1fr) );
-
-  // justify-items: center;
-  // // grid-gap: 10%;
-  // // grid-auto-columns: 1fr;
 `

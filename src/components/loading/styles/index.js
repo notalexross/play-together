@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-
 // TODO
+import styled from 'styled-components'
 
 export const Text = styled.p``

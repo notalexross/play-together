@@ -1,1 +1,1 @@
-export {default as d6} from './d6'
+export { default as d6 } from './d6'

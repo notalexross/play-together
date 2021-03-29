@@ -4,8 +4,8 @@ const context = React.createContext()
 const { Provider } = context
 
 function ContextProvider({ children }) {
-  const [ width, setWidth ] = useState()
-  const [ height, setHeight ] = useState()
+  const [width, setWidth] = useState()
+  const [height, setHeight] = useState()
 
   useEffect(() => {
     const handleResize = () => {
@@ -21,13 +21,8 @@ function ContextProvider({ children }) {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
-    
-  return (
-    <Provider value={{ windowWidth: width, windowHeight: height }} >
-      {children}
-    </Provider>
-  )
-}
 
+  return <Provider value={{ windowWidth: width, windowHeight: height }}>{children}</Provider>
+}
 
 export { context as windowContext, ContextProvider as WindowContextProvider }

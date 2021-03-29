@@ -8,8 +8,8 @@ import NicknameModal from '../modals/nickname-modal'
 export default function RoomRedirect({ children }) {
   const { doesRoomExist, user } = useContext(firebaseContext)
   const { roomId } = useParams()
-  const [ roomExists, setRoomExists ] = useState(false)
-  const [ isLoading, setIsLoading ] = useState(true)
+  const [roomExists, setRoomExists] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     if (!user) return
@@ -19,14 +19,13 @@ export default function RoomRedirect({ children }) {
     })
   }, [user])
 
-
-  let render = <Loading/>
+  let render = <Loading />
   if (user && !isLoading) {
     if (roomExists) {
       if (user.displayName) {
         render = children
       } else {
-        render = <NicknameModal onComplete={() => {}} isOpen={true}/>
+        render = <NicknameModal onComplete={() => {}} isOpen={true} />
       }
     } else {
       render = <Redirect to={ROUTES.HOME} />

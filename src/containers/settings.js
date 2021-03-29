@@ -7,12 +7,13 @@ import piecesConfig from '../constants/pieces-config'
 import layoutsConfig from '../constants/layouts-config'
 
 export default function SettingsContainer() {
-  const { addMultiplePieces, clearPieces} = useContext(gameContext)
+  const { addMultiplePieces, clearPieces } = useContext(gameContext)
   const { globalSettings, changeGlobalSetting } = useContext(settingsContext)
   const { changeLocalSetting, rotatePlayarea } = useContext(localSettingsContext)
 
   const selectBoard = event => {
     if (globalSettings.game === event.target.dataset.value) return
+
     changeGlobalSetting('game', event.target.dataset.value)
     rotatePlayarea(0)
   }
@@ -23,6 +24,7 @@ export default function SettingsContainer() {
 
   const handleAutoPopulate = () => {
     const layout = layoutsConfig[globalSettings.game]
+
     if (layout) {
       const pieces = layout.map(([id, _]) => piecesConfig[id])
       const positions = layout.map(([_, position]) => position)
@@ -34,25 +36,57 @@ export default function SettingsContainer() {
     <Accordion>
       <Accordion.Item>
         <Accordion.Header>Game Board</Accordion.Header>
-        <Accordion.Body onClick={selectBoard} data-value="backgammon">Backgammon</Accordion.Body>
-        <Accordion.Body onClick={selectBoard} data-value="checkers">Checkers</Accordion.Body>
-        <Accordion.Body onClick={selectBoard} data-value="chess">Chess</Accordion.Body>
-        <Accordion.Body onClick={selectBoard} data-value="chess3p">Chess (3 players)</Accordion.Body>
-        <Accordion.Body onClick={selectBoard} data-value="connectfour">Connect Four</Accordion.Body>
-        <Accordion.Body onClick={selectBoard} data-value="ludo">Ludo</Accordion.Body>
-        <Accordion.Body onClick={selectBoard} data-value="snakes">Snakes & Ladders</Accordion.Body>
+        <Accordion.Body onClick={selectBoard} data-value="backgammon">
+          Backgammon
+        </Accordion.Body>
+        <Accordion.Body onClick={selectBoard} data-value="checkers">
+          Checkers
+        </Accordion.Body>
+        <Accordion.Body onClick={selectBoard} data-value="chess">
+          Chess
+        </Accordion.Body>
+        <Accordion.Body onClick={selectBoard} data-value="chess3p">
+          Chess (3 players)
+        </Accordion.Body>
+        <Accordion.Body onClick={selectBoard} data-value="connectfour">
+          Connect Four
+        </Accordion.Body>
+        <Accordion.Body onClick={selectBoard} data-value="ludo">
+          Ludo
+        </Accordion.Body>
+        <Accordion.Body onClick={selectBoard} data-value="snakes">
+          Snakes & Ladders
+        </Accordion.Body>
       </Accordion.Item>
       <Accordion.Item>
         <Accordion.Header>Game Pieces</Accordion.Header>
-        <Accordion.Body onClick={selectPieces} data-value="backgammon">Backgammon</Accordion.Body>
-        <Accordion.Body onClick={selectPieces} data-value="checkers">Checkers</Accordion.Body>
-        <Accordion.Body onClick={selectPieces} data-value="chess">Chess</Accordion.Body>
-        <Accordion.Body onClick={selectPieces} data-value="chess3p">Chess (3 players)</Accordion.Body>
-        <Accordion.Body onClick={selectPieces} data-value="connectfour">Connect Four</Accordion.Body>
-        <Accordion.Body onClick={selectPieces} data-value="ludo">Ludo</Accordion.Body>
-        <Accordion.Body onClick={selectPieces} data-value="snakes">Snakes & Ladders</Accordion.Body>
-        <Accordion.Body onClick={selectPieces} data-value="dice">Dice</Accordion.Body>
-        <Accordion.Body onClick={selectPieces} data-value="favorites">Favourites</Accordion.Body>
+        <Accordion.Body onClick={selectPieces} data-value="backgammon">
+          Backgammon
+        </Accordion.Body>
+        <Accordion.Body onClick={selectPieces} data-value="checkers">
+          Checkers
+        </Accordion.Body>
+        <Accordion.Body onClick={selectPieces} data-value="chess">
+          Chess
+        </Accordion.Body>
+        <Accordion.Body onClick={selectPieces} data-value="chess3p">
+          Chess (3 players)
+        </Accordion.Body>
+        <Accordion.Body onClick={selectPieces} data-value="connectfour">
+          Connect Four
+        </Accordion.Body>
+        <Accordion.Body onClick={selectPieces} data-value="ludo">
+          Ludo
+        </Accordion.Body>
+        <Accordion.Body onClick={selectPieces} data-value="snakes">
+          Snakes & Ladders
+        </Accordion.Body>
+        <Accordion.Body onClick={selectPieces} data-value="dice">
+          Dice
+        </Accordion.Body>
+        <Accordion.Body onClick={selectPieces} data-value="favorites">
+          Favourites
+        </Accordion.Body>
       </Accordion.Item>
       <Accordion.Item>
         <Accordion.Header>Game Options</Accordion.Header>
@@ -72,23 +106,6 @@ export default function SettingsContainer() {
         <Accordion.Header>Local Options</Accordion.Header>
         <Accordion.Body onClick={() => rotatePlayarea()}>Rotate Board</Accordion.Body>
       </Accordion.Item>
-      {/* <Accordion.Item>
-        <Accordion.Header>testing</Accordion.Header>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-        <Accordion.Body>test</Accordion.Body>
-      </Accordion.Item> */}
     </Accordion>
   )
 }

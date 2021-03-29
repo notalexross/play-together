@@ -8,8 +8,8 @@ const { Provider } = context
 function ContextProvider({ children }) {
   const { user } = useContext(firebaseContext)
   const { roomId } = useParams()
-  const [ onlineUsers, setOnlineUsers ] = useState([])
-  const [ storedUsers, setStoredUsers ] = useState({})
+  const [onlineUsers, setOnlineUsers] = useState([])
+  const [storedUsers, setStoredUsers] = useState({})
   const userListeners = useRef({})
   const timeout = useRef()
 
@@ -29,18 +29,26 @@ function ContextProvider({ children }) {
   }
 
   const goOnline = () => {
-    connectedRef.on('value', snap => {
-      console.log(new Date)
-      if (snap.val() === true) {
-        const connection = connectionsRef.push()
-        connection.onDisconnect().remove(err => err && console.error('could not establish onDisconnect event', err)).then(() => {
-          connection.set(true)
-          console.log('going online: tracking presence')
-        })
-      } else {
-        console.log('connection lost')
-      }
-    }, alertError)
+    connectedRef.on(
+      'value',
+      snap => {
+        console.log(new Date())
+
+        if (snap.val() === true) {
+          const connection = connectionsRef.push()
+          connection
+            .onDisconnect()
+            .remove(err => err && console.error('could not establish onDisconnect event', err))
+            .then(() => {
+              connection.set(true)
+              console.log('going online: tracking presence')
+            })
+        } else {
+          console.log('connection lost')
+        }
+      },
+      alertError
+    )
     database.goOnline()
   }
 
@@ -50,38 +58,37 @@ function ContextProvider({ children }) {
     console.log('going offline')
   }
 
-  const initAuthRefreshTimeout = () => {
-    // run on page load, as token is reused from any previous sessions within last 55 mins and may only have a few minutes left on refresh timer
-    user && user.getIdToken(true).then(() => console.log('user auth token refreshed')) 
-    timeout.current = setTimeout(() => {
-      initAuthRefreshTimeout()
-    }, 50 * 60 * 1000)
-  }
-
-  const killAuthRefreshTimeout = () => {
-    console.log('no longer refreshing auth token on timeout')
-    clearTimeout(timeout.current)
-  }
-
   const initPresenceListeners = () => {
-    onlineUsersRef.on('child_added', snapshot => {
-      if (!snapshot) return
-      setOnlineUsers(users => [ ...users, snapshot.key ])
-      addUserListener(snapshot.key)
-    }, alertError)
-    onlineUsersRef.on('child_removed', snapshot => {
-      if (!snapshot) return
-      setOnlineUsers(users => users.filter(user => user !== snapshot.key))
-      removeUserListener(snapshot.key)
-    }, alertError)
+    onlineUsersRef.on(
+      'child_added',
+      snapshot => {
+        if (!snapshot) return
+
+        setOnlineUsers(users => [...users, snapshot.key])
+        addUserListener(snapshot.key)
+      },
+      alertError
+    )
+    onlineUsersRef.on(
+      'child_removed',
+      snapshot => {
+        if (!snapshot) return
+
+        setOnlineUsers(users => users.filter(user => user !== snapshot.key))
+        removeUserListener(snapshot.key)
+      },
+      alertError
+    )
   }
 
   const addUserListener = uid => {
     if (userListeners.current && userListeners.current[uid]) return
+
     const query = usersRef.doc(uid)
     const newListener = query.onSnapshot(snapshot => {
       if (snapshot.metadata.hasPendingWrites) return
-      if (!snapshot.data()) return // TODO this shouldn't be required... (required for if a user is deleted from firestore DB but then returns, so no data in snapshot)
+      if (!snapshot.data()) return
+
       console.log(`updating user: ${uid}`)
       const displayName = snapshot.data().displayName
       const color = snapshot.data().color
@@ -108,7 +115,6 @@ function ContextProvider({ children }) {
   }
 
   const removeAllUserListeners = () => {
-    // console.log(Object.values(userListeners.current))
     Object.keys(userListeners.current).forEach(uid => {
       removeUserListener(uid)
     })
@@ -137,21 +143,22 @@ function ContextProvider({ children }) {
     initPresenceListeners()
     console.log('mounting presence listeners')
     goOnline()
-    // initAuthRefreshTimeout() // no longer needed due to database rules
+    
     return () => {
       onlineUsersRef.off()
       removeAllUserListeners()
-      // killAuthRefreshTimeout()
       goOffline()
     }
   }, [])
-  
+
   return (
-    <Provider value={{
-      onlineUsers,
-      storedUsers,
-      addToStoredUsers
-    }} >
+    <Provider
+      value={{
+        onlineUsers,
+        storedUsers,
+        addToStoredUsers
+      }}
+    >
       {children}
     </Provider>
   )

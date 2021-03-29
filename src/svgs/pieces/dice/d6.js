@@ -1,17 +1,16 @@
-import React from "react"
+import React from 'react'
 
-// TODO this could be done much better...
-function SvgComponent({ animate = true, customvalue, ...restProps }, svgRef) {
+function SvgComponent({ customvalue, ...restProps }, svgRef) {
   const number = customvalue
 
   const dots = [
-    <circle key='left-top' cx={117.0258789} cy={117.0263672} r={70} />,
-    <circle key='left-center' cx={117.0258789} cy={278.5} r={70} />,
-    <circle key='left-bottom' cx={117.0258789} cy={439.9746094} r={70} />,
-    <circle key='right-top' cx={439.9746094} cy={117.0263672} r={70} />,
-    <circle key='right-center' cx={439.9746094} cy={278.5} r={70} />,
-    <circle key='right-bottom' cx={439.9746094} cy={439.9746094} r={70} />,
-    <circle key='center' cx={278.5} cy={278.5} r={70} />,
+    <circle key="left-top" cx={117.0258789} cy={117.0263672} r={70} />,
+    <circle key="left-center" cx={117.0258789} cy={278.5} r={70} />,
+    <circle key="left-bottom" cx={117.0258789} cy={439.9746094} r={70} />,
+    <circle key="right-top" cx={439.9746094} cy={117.0263672} r={70} />,
+    <circle key="right-center" cx={439.9746094} cy={278.5} r={70} />,
+    <circle key="right-bottom" cx={439.9746094} cy={439.9746094} r={70} />,
+    <circle key="center" cx={278.5} cy={278.5} r={70} />
   ]
 
   let face
@@ -43,14 +42,7 @@ function SvgComponent({ animate = true, customvalue, ...restProps }, svgRef) {
   }
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      // width={557}
-      // height={557}
-      viewBox="0 0 557 557"
-      ref={svgRef}
-      {...restProps}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 557 557" ref={svgRef} {...restProps}>
       <g>
         <rect
           x={4}

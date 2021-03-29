@@ -13,12 +13,9 @@ export default function Tooltip({
   align = 'center',
   ...restProps
 }) {
-
   return (
     <Container align={align} {...restProps}>
-      <Wrapper>
-        {children}
-      </Wrapper>
+      <Wrapper>{children}</Wrapper>
       <Tip
         side={side}
         separation={separation}
@@ -26,11 +23,7 @@ export default function Tooltip({
         maxWidth={maxWidth}
         align={align}
       >
-        <Arrow
-          side={side}
-          arrowLength={arrowLength}
-          arrowWidth={arrowWidth}
-        />
+        <Arrow side={side} arrowLength={arrowLength} arrowWidth={arrowWidth} />
         {tooltip}
       </Tip>
     </Container>
@@ -39,10 +32,10 @@ export default function Tooltip({
 
 Tooltip.propTypes = {
   tooltip: PropTypes.string,
-  side: PropTypes.oneOf(['top','right','bottom','left']),
+  side: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
   separation: PropTypes.string,
   arrowLength: PropTypes.string,
   arrowWidth: PropTypes.string,
   maxWidth: PropTypes.string,
-  align: PropTypes.oneOf(['center','flex-start','flex-end'])
+  align: PropTypes.oneOf(['center', 'flex-start', 'flex-end'])
 }

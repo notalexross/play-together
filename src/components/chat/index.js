@@ -27,36 +27,42 @@ export default function Chat({ children, ...restProps }) {
 Chat.Send = function ChatSend({ children, ...restProps }) {
   return (
     <SendWrapper>
-      <Send {...restProps}>
-        {children}
-      </Send>
+      <Send {...restProps}>{children}</Send>
     </SendWrapper>
   )
 }
 
 Chat.TextInput = React.forwardRef(({ value, maxLength = 100, ...restProps }, ref) => {
-  const [ error, setError ] = useState('')
+  const [error, setError] = useState('')
   const prevScrollHeight = useRef()
   const rowCount = useRef(1)
 
+  prevScrollHeight.current = ref.current && ref.current.scrollHeight
+
   useEffect(() => {
-    !error && value.length === maxLength ?
-      setError(`Reached ${maxLength} Character Limit`) :
+    if (!error && value.length === maxLength) {
+      setError(`Reached ${maxLength} Character Limit`)
+    } else {
       setError('')
+    }
   }, [value])
 
   if (value.length === 0) {
     rowCount.current = 1
   } else {
-    ref.current && rowCount.current < 3 && ref.current.scrollHeight > prevScrollHeight.current && rowCount.current++
+    if (
+      ref.current &&
+      rowCount.current < 3 &&
+      ref.current.scrollHeight > prevScrollHeight.current
+    ) {
+      rowCount.current++
+    }
   }
-
-  prevScrollHeight.current = ref.current && ref.current.scrollHeight
 
   return (
     <>
       {error ? <Error>{error}</Error> : null}
-      <TextInput 
+      <TextInput
         ref={ref}
         value={value}
         rows={rowCount.current}
@@ -97,7 +103,11 @@ Chat.Timestamp = function ChatTimestamp({ children, ...restProps }) {
 }
 
 Chat.Sender = function ChatSender({ children, color, ...restProps }) {
-  return <Sender color={color} {...restProps}>{children}</Sender>
+  return (
+    <Sender color={color} {...restProps}>
+      {children}
+    </Sender>
+  )
 }
 
 Chat.Sender.propTypes = {
@@ -112,8 +122,12 @@ Chat.Form = function ChatForm({ children, ...restProps }) {
   return <Form {...restProps}>{children}</Form>
 }
 
-Chat.Section = function ChatSection({ children, ...restProps }) {
-  return <Section {...restProps}>{children}</Section>
+Chat.Section = function ChatSection({ children, isExpanded, ...restProps }) {
+  return (
+    <Section isExpanded={isExpanded} {...restProps}>
+      {children}
+    </Section>
+  )
 }
 
 Chat.List = function ChatList({ children, ...restProps }) {
@@ -122,16 +136,18 @@ Chat.List = function ChatList({ children, ...restProps }) {
 
 Chat.Heading = function ChatHeading({ children, ...restProps }) {
   return (
-  <Heading {...restProps}>
-    <HeadingInner>
-      {children}
-    </HeadingInner>
-  </Heading>
+    <Heading {...restProps}>
+      <HeadingInner>{children}</HeadingInner>
+    </Heading>
   )
 }
 
 Chat.User = function ChatUser({ children, color, ...restProps }) {
-  return <User color={color} {...restProps}>{children}</User>
+  return (
+    <User color={color} {...restProps}>
+      {children}
+    </User>
+  )
 }
 
 Chat.User.propTypes = {

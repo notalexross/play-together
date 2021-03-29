@@ -14,11 +14,7 @@ Header.Text = function HeaderText({ children, ...restProps }) {
 }
 
 Header.TextCopy = function HeaderTextCopy({ children, ...restProps }) {
-  return (
-    <TextCopy {...restProps}>
-      {children}
-    </TextCopy>
-  )
+  return <TextCopy {...restProps}>{children}</TextCopy>
 }
 
 Header.Wrapper = function HeaderWrapper({ children, ...restProps }) {

@@ -1,7 +1,7 @@
 const DEFAULT_GAME_SETTINGS = {
-  game: "chess",
+  game: 'chess',
   scale: 1,
-  boardColor: "#fff"
+  boardColor: '#fff'
 }
 
 export default DEFAULT_GAME_SETTINGS

@@ -1,8 +1,7 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { PreventTransitions } from './styles'
 
 export default function PreventTransitionsOnResize() {
-
   useEffect(() => {
     let resizeTimeout
     const handleResize = () => {
@@ -13,13 +12,12 @@ export default function PreventTransitionsOnResize() {
       }, 100)
     }
 
-    window.addEventListener("resize", handleResize)
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener("resize", handleResize)
+      window.removeEventListener('resize', handleResize)
     }
-
   }, [])
 
-  return <PreventTransitions/>
+  return <PreventTransitions />
 }

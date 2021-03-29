@@ -10,7 +10,7 @@ function ContextProvider({ children }) {
   const { user, firebase } = useContext(firebaseContext)
   const { addToStoredUsers } = useContext(presenceContext)
   const { roomId } = useParams()
-  const [ messages, setMessages ] = useState([])
+  const [messages, setMessages] = useState([])
   const isFirstSnapshot = useRef(true)
   // TODO this uses client local time, so susceptible to user just setting system clock backwards.
   // if client clock is slow by more than 5 seconds then it won't see messages initially at all.
@@ -29,32 +29,41 @@ function ContextProvider({ children }) {
     })
   }
 
-  // TODO increase the message limit
   const initMessaging = () => {
     console.log('initialising messaging')
-    const query = messagesRef.where('createdAt', '>', timeJoined.current).orderBy('createdAt', 'desc').limit(100)
+    const query = messagesRef
+      .where('createdAt', '>', timeJoined.current)
+      .orderBy('createdAt', 'desc')
+      .limit(500)
+
     return query.onSnapshot(snapshot => {
-      if (snapshot.docs.some(doc => doc.metadata.hasPendingWrites)) return // this should prevent triggering twice locally
+      if (snapshot.docs.some(doc => doc.metadata.hasPendingWrites)) return // prevents triggering twice locally
+
       if (isFirstSnapshot.current) {
         isFirstSnapshot.current = false
-        const uids = [ ...new Set(snapshot.docs.map(doc => doc.data().uid))]
+        const uids = [...new Set(snapshot.docs.map(doc => doc.data().uid))]
         addToStoredUsers(uids)
       }
+
       console.log('updating messages')
-      setMessages(snapshot.docs.reverse().map(doc => {
-        const id = doc.id
-        const uid = doc.data().uid
-        const message = doc.data().content
-        const time = doc.data().createdAt.toDate()
-        const hours = time.getHours().toString().padStart(2,'0').slice(0,2)
-        const minutes = time.getMinutes().toString().padStart(2,'0').slice(0,2)
-        return {
-          id,
-          uid,
-          timestamp: `${hours}:${minutes}`,
-          message
-        }
-      }))
+
+      setMessages(
+        snapshot.docs.reverse().map(doc => {
+          const id = doc.id
+          const uid = doc.data().uid
+          const message = doc.data().content
+          const time = doc.data().createdAt.toDate()
+          const hours = time.getHours().toString().padStart(2, '0').slice(0, 2)
+          const minutes = time.getMinutes().toString().padStart(2, '0').slice(0, 2)
+
+          return {
+            id,
+            uid,
+            timestamp: `${hours}:${minutes}`,
+            message
+          }
+        })
+      )
     })
   }
 
@@ -62,11 +71,7 @@ function ContextProvider({ children }) {
     return initMessaging()
   }, [])
 
-  return (
-    <Provider value={{ sendMessage, messages }} >
-      {children}
-    </Provider>
-  )
+  return <Provider value={{ sendMessage, messages }}>{children}</Provider>
 }
 
 export { context as chatContext, ContextProvider as ChatContextProvider }

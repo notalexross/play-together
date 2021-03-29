@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-
 export const Container = styled.div`
   position: relative;
   display: flex;
@@ -21,11 +20,8 @@ export const Tip = styled.span`
   width: max-content;
   max-width: ${({ maxWidth }) => maxWidth};
   line-height: initial;
-  pointer-events : none;
-
+  pointer-events: none;
   opacity: 0;
-  // transition: opacity 0.2s;
-  // transition-delay: 0.2s;
 
   ${({ side, separation, arrowLength }) => {
     let transform
@@ -46,7 +42,8 @@ export const Tip = styled.span`
         transform = `translateX(calc(-100% - ${separation} - ${arrowLength}))`
         break
       }
-      default: break
+      default:
+        break
     }
 
     return `
@@ -66,8 +63,8 @@ export const Wrapper = styled.div`
 
 export const Arrow = styled.div`
   position: absolute;
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
 
   ${({ side, arrowLength, arrowWidth }) => {
     let transform, oppositeSide
@@ -92,7 +89,8 @@ export const Arrow = styled.div`
         oppositeSide = 'right'
         break
       }
-      default: break
+      default:
+        break
     }
 
     return `

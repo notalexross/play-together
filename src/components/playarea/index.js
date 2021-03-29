@@ -1,18 +1,34 @@
 import React, { useRef, useEffect, useState, useContext } from 'react'
 import PropTypes from 'prop-types'
-import { FlexContainer, AspectRatioContainer, PlayContainer, Board, BoardPiecesOuter, BoardPiecesContainer, Image, PiecesContainer, PiecesWrapper, PiecesInner } from './styles'
+import {
+  FlexContainer,
+  AspectRatioContainer,
+  PlayContainer,
+  Board,
+  BoardPiecesOuter,
+  BoardPiecesContainer,
+  PiecesContainer,
+  PiecesWrapper,
+  PiecesInner
+} from './styles'
 import Svg from '../../svgs'
 import PlayareaContext from '../../context/playarea'
 
-export default function Playarea({ children, aspectRatio = 0.75, paddingFraction = 0.03, rotation = 0, ...restProps }) {
-  const [ isVertical, setIsVertical ] = useState(false)
-  const [ padding, setPadding ] = useState(0)
-  const [ playWidth, setPlayWidth ] = useState(0)
-  const [ playHeight, setPlayHeight ] = useState(0)
-  const [ basis, setBasis ] = useState(0)
+export default function Playarea({
+  children,
+  aspectRatio = 0.75,
+  paddingFraction = 0.03,
+  rotation = 0,
+  ...restProps
+}) {
+  const [isVertical, setIsVertical] = useState(false)
+  const [padding, setPadding] = useState(0)
+  const [playWidth, setPlayWidth] = useState(0)
+  const [playHeight, setPlayHeight] = useState(0)
+  const [basis, setBasis] = useState(0)
   const containerRef = useRef()
 
-  const ratio = isVertical ? (1 / aspectRatio) : aspectRatio
+  const ratio = isVertical ? 1 / aspectRatio : aspectRatio
 
   let parentHeight, parentWidth, parent
   if (containerRef && containerRef.current) {
@@ -28,7 +44,7 @@ export default function Playarea({ children, aspectRatio = 0.75, paddingFraction
       height = Math.min(height, parentHeight)
       width = height / ratio
       const size = Math.min(width, height)
-      
+
       setPlayWidth(width)
       setPlayHeight(height)
       setBasis(size)
@@ -40,8 +56,15 @@ export default function Playarea({ children, aspectRatio = 0.75, paddingFraction
   return (
     <PlayareaContext.Provider value={{ isVertical, basis, padding, rotation }}>
       <FlexContainer ref={containerRef} {...restProps}>
-        <AspectRatioContainer style={{width: `${playWidth}px`, height: `${playHeight}px`, padding: `${padding}px`}}>
-          <PlayContainer style={{padding: `${padding}px`}} direction={isVertical ? 'column' : 'row'} onContextMenu={e => e.preventDefault()} onDragStart={e => e.preventDefault()}>
+        <AspectRatioContainer
+          style={{ width: `${playWidth}px`, height: `${playHeight}px`, padding: `${padding}px` }}
+        >
+          <PlayContainer
+            style={{ padding: `${padding}px` }}
+            direction={isVertical ? 'column' : 'row'}
+            onContextMenu={e => e.preventDefault()}
+            onDragStart={e => e.preventDefault()}
+          >
             {children}
           </PlayContainer>
         </AspectRatioContainer>
@@ -56,7 +79,13 @@ Playarea.propTypes = {
   rotation: PropTypes.number
 }
 
-Playarea.Board = function PlayareaBoard({ children, game = 'chess', color = 'white', paddingFraction = 0.06, ...restProps }) {
+Playarea.Board = function PlayareaBoard({
+  children,
+  game = 'chess',
+  color = 'white',
+  paddingFraction = 0.06,
+  ...restProps
+}) {
   // paddingFraction is relative to aspect ratio container, not board container
   const { basis, padding, rotation } = useContext(PlayareaContext)
 
@@ -66,7 +95,7 @@ Playarea.Board = function PlayareaBoard({ children, game = 'chess', color = 'whi
   const boardStyle = {
     padding: `${boardPadding}px`,
     height: `${boardSize}px`,
-    width: `${boardSize}px`,
+    width: `${boardSize}px`
   }
 
   const svgStyle = {
@@ -79,7 +108,7 @@ Playarea.Board = function PlayareaBoard({ children, game = 'chess', color = 'whi
 
   return (
     <Board style={boardStyle} {...restProps}>
-      <Svg type="board" game={game} color={color} style={svgStyle}/>
+      <Svg type="board" game={game} color={color} style={svgStyle} />
       {children}
     </Board>
   )
@@ -102,16 +131,23 @@ Playarea.BoardPiecesContainer = React.forwardRef(({ ...restProps }, ref) => {
 Playarea.Pieces = function PlayareaPieces({ children, ...restProps }) {
   const { isVertical, padding } = useContext(PlayareaContext)
 
-  const containerStyle = isVertical ? {
-    paddingTop: `${padding}px`
-  } : {
-    paddingLeft: `${padding}px`
+  let containerStyle
+  if (isVertical) {
+    containerStyle = { paddingTop: `${padding}px` }
+  } else {
+    containerStyle = { paddingLeft: `${padding}px` }
   }
 
   return (
     <PiecesContainer style={containerStyle}>
       <PiecesWrapper {...restProps}>
-        <PiecesInner style={{padding: `${padding}px`, gridGap: `${padding / 2}px`, flexDirection: isVertical ? 'column' : 'row'}}>
+        <PiecesInner
+          style={{
+            padding: `${padding}px`,
+            gridGap: `${padding / 2}px`,
+            flexDirection: isVertical ? 'column' : 'row'
+          }}
+        >
           {children}
         </PiecesInner>
       </PiecesWrapper>
@@ -119,27 +155,41 @@ Playarea.Pieces = function PlayareaPieces({ children, ...restProps }) {
   )
 }
 
-Playarea.Piece = function PlayareaPiece({ style, game, name, color, sizeFraction = 0.1, holderColor, ...restProps }) {
+Playarea.Piece = function PlayareaPiece({
+  style,
+  game,
+  name,
+  color,
+  sizeFraction = 0.1,
+  holderColor,
+  ...restProps
+}) {
   const { basis } = useContext(PlayareaContext)
   const svgRef = useRef()
 
   const pieceSize = basis * sizeFraction
-
   const holderColorRadius = basis * 0.003
 
-  const holderHighlight = holderColor ? `drop-shadow(0 0 ${holderColorRadius}px ${holderColor})
-    drop-shadow(0 0 ${holderColorRadius}px ${holderColor})
-    drop-shadow(0 0 ${holderColorRadius}px ${holderColor})
-  ` : ''
+  let highlight
+  if (holderColor) {
+    highlight = `
+      drop-shadow(0 0 ${holderColorRadius}px ${holderColor})
+      drop-shadow(0 0 ${holderColorRadius}px ${holderColor})
+      drop-shadow(0 0 ${holderColorRadius}px ${holderColor})
+    `
+  } else {
+    highlight = `
+      drop-shadow(0 0 ${basis * 0.002}px white)
+      drop-shadow(0 0 ${basis * 0.005}px black)
+    `
+  }
 
   const pieceStyle = {
     height: `${pieceSize}px`,
-    // width: `${pieceSize}px`,
-    filter: holderHighlight || `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
+    filter: highlight,
     cursor: 'grab',
     pointerEvents: 'none',
-    touchAction: 'none', // prevents screen scroll whilst dragging pieces
-    // background: 'orange'
+    touchAction: 'none' // prevents screen scroll whilst dragging pieces
   }
 
   useEffect(() => {
@@ -148,7 +198,15 @@ Playarea.Piece = function PlayareaPiece({ style, game, name, color, sizeFraction
   }, [])
 
   return (
-    <Svg type="piece" game={game} name={name} color={color} style={{...pieceStyle, ...style}} ref={svgRef} {...restProps}/>
+    <Svg
+      type="piece"
+      game={game}
+      name={name}
+      color={color}
+      style={{ ...pieceStyle, ...style }}
+      ref={svgRef}
+      {...restProps}
+    />
   )
 }
 

@@ -12,18 +12,27 @@ import { Playarea } from '../components'
 import roll from '../utils/roll'
 
 export default function MovablePiece({ pieceId, ...restProps }) {
-  const { grabPiece, releasePiece, removePiece, trackProperty, unTrackProperty, heldPiece, updatePieceInDatabase, getRelativePosition } = useContext(gameContext)
+  const {
+    grabPiece,
+    releasePiece,
+    removePiece,
+    trackProperty,
+    unTrackProperty,
+    heldPiece,
+    updatePieceInDatabase,
+    getRelativePosition
+  } = useContext(gameContext)
   const { storedUsers } = useContext(presenceContext)
   const { user } = useContext(firebaseContext)
   const { getUnrotatedPosition } = useContext(localSettingsContext)
-  const [ game, setGame ] = useState()
-  const [ name, setName ] = useState()
-  const [ color, setColor ] = useState()
-  const [ size, setSize ] = useState()
-  const [ position, setPosition ] = useState([-1000, -1000])
-  const [ holder, setHolder ] = useState()
-  const [ customValue, setCustomValue ] = useState()
-  const [ amOwner, setAmOwner ] = useState(false)
+  const [game, setGame] = useState()
+  const [name, setName] = useState()
+  const [color, setColor] = useState()
+  const [size, setSize] = useState()
+  const [position, setPosition] = useState([-1000, -1000])
+  const [holder, setHolder] = useState()
+  const [customValue, setCustomValue] = useState()
+  const [amOwner, setAmOwner] = useState(false)
   const doubleClick = useRef(false)
   const isDeleted = useRef(false)
   const scrollAmount = useRef(0)
@@ -49,12 +58,12 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     !isDeleted.current && updatePieceInDatabase(pieceId, { position })
   }
 
-  const handleMouseUp = (event) => {
-    event.preventDefault() // preventDefault on touchend event handler prevents mousedown and mouseup events triggering afterwards
-    // console.log('mouseup')
+  const handleMouseUp = event => {
+    // preventDefault on touchend event handler prevents mousedown and mouseup events triggering afterwards
+    event.preventDefault() 
     if (heldPiece === pieceId) {
       releasePiece(pieceId)
-    } 
+    }
   }
 
   const handleWheelMove = event => {
@@ -62,6 +71,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     const minSize = 0.04
     const increment = event.deltaY > 0 ? 1 : -1
     scrollAmount.current += increment
+
     let newSize = size - scrollAmount.current * 0.02
     if (newSize > maxSize) {
       newSize = maxSize
@@ -70,6 +80,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       newSize = minSize
       scrollAmount.current -= increment
     }
+
     !isDeleted.current && updatePieceInDatabase(pieceId, { size: newSize })
   }
 
@@ -105,14 +116,15 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     }
   }
 
-  const customAction = event => {
-    // if (event.button === undefined || event.button === 0) {
-      if (!isDeleted.current && game === 'dice') {
-        roll((value) => {
+  const customAction = () => {
+    if (!isDeleted.current && game === 'dice') {
+      roll(
+        value => {
           !isDeleted.current && updatePieceInDatabase(pieceId, { custom_value: value })
-        }, { sides: 6 })
-      }
-    // }
+        },
+        { sides: 6 }
+      )
+    }
   }
 
   useEffect(() => {
@@ -123,6 +135,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     trackProperty(pieceId, 'position', position => setPosition(position))
     trackProperty(pieceId, 'holder', holder => setHolder(holder))
     trackProperty(pieceId, 'custom_value', customValue => setCustomValue(customValue))
+
     return () => {
       unTrackProperty(pieceId, 'game')
       unTrackProperty(pieceId, 'name')
@@ -136,6 +149,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
 
   useEffect(() => {
     if (size === undefined) return
+
     if (heldPiece === pieceId) {
       setAmOwner(true)
       scrollAmount.current = 0
@@ -159,15 +173,21 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   }, [size !== undefined, heldPiece])
 
   useEffect(() => {
-    if (!holder && amOwner && unRotatedPosition && unRotatedPosition.some(coord => coord < 0 || coord > 100)) {
+    if (
+      !holder &&
+      amOwner &&
+      unRotatedPosition &&
+      unRotatedPosition.some(coord => coord < 0 || coord > 100)
+    ) {
       removePiece(pieceId)
     }
+    
     if (holder && holder !== user.uid) {
       setAmOwner(false)
     }
   }, [holder])
 
-  return ( game && name ? 
+  return game && name ? (
     <Playarea.Piece
       style={style}
       game={game}
@@ -183,8 +203,8 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       onMouseUp={customAction}
       onTouchEnd={customAction}
       {...restProps}
-    /> : null
-  )
+    />
+  ) : null
 }
 
 MovablePiece.propTypes = {

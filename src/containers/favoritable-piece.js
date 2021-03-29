@@ -7,19 +7,24 @@ import { Star } from '@styled-icons/bootstrap/Star'
 import { StarFill } from '@styled-icons/bootstrap/StarFill'
 import useHover from '../hooks/useHover'
 
-export default function FavoritablePiece({ piece, favoriteHeightFraction = '0.025', favoriteColor = 'gold', ...restProps }) {
+export default function FavoritablePiece({
+  piece,
+  favoriteHeightFraction = '0.025',
+  favoriteColor = 'gold',
+  ...restProps
+}) {
   const { addToFavorites, removeFromFavorites, favorites } = useContext(localSettingsContext)
   const { basis } = useContext(PlayareaContext)
-  const [ isFavorite, setIsFavorite ] = useState(false)
-  const [ isHovered, hoverRef ] = useHover()
+  const [isFavorite, setIsFavorite] = useState(false)
+  const [isHovered, hoverRef] = useHover()
 
   const favoriteHeight = `${(favoriteHeightFraction || 0.1) * basis}px`
 
   let Favorite
   if (isFavorite) {
-    Favorite = <StarFill height={favoriteHeight} color={favoriteColor}/>
+    Favorite = <StarFill height={favoriteHeight} color={favoriteColor} />
   } else {
-    Favorite = isHovered && <Star height={favoriteHeight} color={favoriteColor}/>
+    Favorite = isHovered && <Star height={favoriteHeight} color={favoriteColor} />
   }
 
   const handleFavoriting = () => {
@@ -34,13 +39,11 @@ export default function FavoritablePiece({ piece, favoriteHeightFraction = '0.02
   return (
     <div
       ref={hoverRef}
-      style={{ height: '100%', width: 'min-content', position: 'relative', lineHeight: 0}}
+      style={{ height: '100%', width: 'min-content', position: 'relative', lineHeight: 0 }}
     >
-      <Playarea.Piece
-        {...restProps}
-      />
+      <Playarea.Piece {...restProps} />
       <div
-        style={{position: 'absolute', bottom: 0, right: 0, cursor: 'pointer'}}
+        style={{ position: 'absolute', bottom: 0, right: 0, cursor: 'pointer' }}
         onClick={handleFavoriting}
       >
         {Favorite}
@@ -54,5 +57,5 @@ FavoritablePiece.propTypes = {
     id: PropTypes.string
   }).isRequired,
   favoriteHeightFraction: PropTypes.string,
-  favoriteColor: PropTypes.string,
+  favoriteColor: PropTypes.string
 }

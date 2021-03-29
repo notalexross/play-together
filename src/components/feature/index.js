@@ -2,11 +2,7 @@ import React from 'react'
 import { Container, Title, Text, Button } from './styles'
 
 export default function Feature({ children, ...restProps }) {
-  return (
-    <Container {...restProps}>
-      {children}
-    </Container>
-  )
+  return <Container {...restProps}>{children}</Container>
 }
 
 Feature.Title = function FeatureTitle({ children, ...restProps }) {
@@ -18,5 +14,9 @@ Feature.Text = function FeatureText({ children, ...restProps }) {
 }
 
 Feature.Button = React.forwardRef(({ children, ...restProps }, ref) => {
-  return <Button ref={ref} {...restProps}>{children}</Button>
+  return (
+    <Button ref={ref} {...restProps}>
+      {children}
+    </Button>
+  )
 })

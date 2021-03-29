@@ -1,9 +1,9 @@
 const gamesConfig = {
-  "default": {
-    "rotationIncrement": -90
+  default: {
+    rotationIncrement: -90
   },
-  "chess3p": {
-    "rotationIncrement": -120
+  chess3p: {
+    rotationIncrement: -120
   }
 }
 

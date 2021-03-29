@@ -1,1 +1,1 @@
-export {default as pawn} from './pawn'
+export { default as pawn } from './pawn'

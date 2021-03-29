@@ -1,10 +1,8 @@
-// TODO
 import styled from 'styled-components'
 
 export const Panels = styled.div`
   display: flex;
   flex-direction: row;
-  // background: #1e1e1e;
   flex-grow: 1;
   overflow: hidden;
 
@@ -25,17 +23,18 @@ export const Container = styled.section`
   position: relative;
   height: 100%;
   transition: max-width 0.2s;
-  max-width: ${({ collapsed, width }) => collapsed ? '0' : width};
+  max-width: ${({ collapsed, width }) => (collapsed ? '0' : width)};
 
   ${({ direction }) => {
-    switch(direction) {
+    switch (direction) {
       case 'left': {
         return 'direction: rtl;'
       }
       case 'right': {
         return 'direction: ltr;'
       }
-      default: break
+      default:
+        break
     }
   }}
 
@@ -44,9 +43,7 @@ export const Container = styled.section`
   }
 `
 
-export const Test = styled.div`
-
-`
+export const Test = styled.div``
 
 export const Inner = styled.div`
   display: Flex;
@@ -54,7 +51,7 @@ export const Inner = styled.div`
   box-sizing: border-box;
   height: 100%;
   direction: ltr;
-  width: ${({ width }) => width ? width : '100%'};
+  width: ${({ width }) => (width ? width : '100%')};
 `
 
 export const Header = styled.div`
@@ -86,8 +83,8 @@ export const Collapse = styled.div`
   transition: transform 0.2s;
 
   ${({ direction, collapsed }) => {
-    let opposite, offset;
-    switch(direction) {
+    let opposite, offset
+    switch (direction) {
       case 'left': {
         opposite = 'right'
         offset = '3em'
@@ -98,7 +95,8 @@ export const Collapse = styled.div`
         offset = '-3em'
         break
       }
-      default: break
+      default:
+        break
     }
     return `
       ${opposite}: 0.5em;

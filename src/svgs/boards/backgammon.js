@@ -1,12 +1,10 @@
-import * as React from "react"
+import * as React from 'react'
 
 function SvgComponent(props, svgRef) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      // width={705.712}
-      // height={604.896}
       viewBox="0 0 705.712 604.896"
       ref={svgRef}
       {...props}
@@ -116,16 +114,8 @@ function SvgComponent(props, svgRef) {
         transform="scale(2.5204)"
       />
       <g fill="none">
-        <path
-          d="M351.596 12.278v574.984"
-          stroke="#774b1f"
-          strokeWidth={2.5204}
-        />
-        <path
-          d="M354.116 12.278v574.984"
-          stroke="#b1875a"
-          strokeWidth={2.5204}
-        />
+        <path d="M351.596 12.278v574.984" stroke="#774b1f" strokeWidth={2.5204} />
+        <path d="M354.116 12.278v574.984" stroke="#b1875a" strokeWidth={2.5204} />
       </g>
       <g stroke="#000" strokeWidth={0.228}>
         <path
@@ -176,11 +166,7 @@ function SvgComponent(props, svgRef) {
         />
       </g>
       <g color="#000">
-        <path
-          fill="#5d3d21"
-          overflow="visible"
-          d="M346.672 38.529h12.872v28.055h-12.872z"
-        />
+        <path fill="#5d3d21" overflow="visible" d="M346.672 38.529h12.872v28.055h-12.872z" />
         <path
           fill="url(#prefix__n)"
           overflow="visible"
@@ -189,24 +175,12 @@ function SvgComponent(props, svgRef) {
         />
       </g>
       <g fill="none" strokeWidth={0.5}>
-        <path
-          d="M348.674 53.508l8.866-.051"
-          stroke="#774b1f"
-          strokeWidth={1.805335}
-        />
-        <path
-          d="M348.674 51.651l8.866-.051"
-          stroke="#b1875a"
-          strokeWidth={1.805335}
-        />
+        <path d="M348.674 53.508l8.866-.051" stroke="#774b1f" strokeWidth={1.805335} />
+        <path d="M348.674 51.651l8.866-.051" stroke="#b1875a" strokeWidth={1.805335} />
       </g>
       <g>
         <g color="#000">
-          <path
-            fill="#5d3d21"
-            overflow="visible"
-            d="M346.672 538.317h12.872v28.055h-12.872z"
-          />
+          <path fill="#5d3d21" overflow="visible" d="M346.672 538.317h12.872v28.055h-12.872z" />
           <path
             fill="url(#prefix__o)"
             overflow="visible"
@@ -215,16 +189,8 @@ function SvgComponent(props, svgRef) {
           />
         </g>
         <g fill="none" strokeWidth={0.5}>
-          <path
-            d="M348.674 553.296l8.866-.051"
-            stroke="#774b1f"
-            strokeWidth={1.805335}
-          />
-          <path
-            d="M348.674 551.44l8.866-.052"
-            stroke="#b1875a"
-            strokeWidth={1.805335}
-          />
+          <path d="M348.674 553.296l8.866-.051" stroke="#774b1f" strokeWidth={1.805335} />
+          <path d="M348.674 551.44l8.866-.052" stroke="#b1875a" strokeWidth={1.805335} />
         </g>
       </g>
     </svg>

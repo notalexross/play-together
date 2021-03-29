@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from 'react'
+import React, { useEffect, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { Container, Overlay, Close, Title, Text, Subtext, Form, Submit, InputText } from './styles'
@@ -9,25 +9,26 @@ import useHover from '../../hooks/useHover'
 const ModalContext = React.createContext()
 
 export default function Modal({ children, isOpen = false, setIsOpen = () => {}, ...restProps }) {
-
   const closeModal = () => setIsOpen(false)
 
   const handleClick = event => {
     if (event.target !== event.currentTarget) return
+
     setIsOpen(false)
   }
 
-  return isOpen ?
-    ReactDOM.createPortal(
-      <ModalContext.Provider value={{ closeModal }}>
-        <Overlay onClick={handleClick} {...restProps}>
-          <Container>
-            {children}
-          </Container>
-        </Overlay>
-      </ModalContext.Provider>, document.getElementById('root')
-    )
-  : null
+  if (!isOpen) {
+    return null
+  }
+
+  return ReactDOM.createPortal(
+    <ModalContext.Provider value={{ closeModal }}>
+      <Overlay onClick={handleClick} {...restProps}>
+        <Container>{children}</Container>
+      </Overlay>
+    </ModalContext.Provider>,
+    document.getElementById('root')
+  )
 }
 
 Modal.propTypes = {
@@ -56,7 +57,11 @@ Modal.Submit = function ModalSubmit({ children, ...restProps }) {
 }
 
 Modal.InputText = React.forwardRef(({ children, type = 'text', ...restProps }, ref) => {
-  return <InputText type={type} ref={ref} {...restProps}>{children}</InputText>
+  return (
+    <InputText type={type} ref={ref} {...restProps}>
+      {children}
+    </InputText>
+  )
 })
 
 Modal.InputText.propTypes = {
@@ -64,12 +69,12 @@ Modal.InputText.propTypes = {
 }
 
 Modal.Close = function ModalClose({ children, ...restProps }) {
-  const [ isHovered, hoverRef ] = useHover()
+  const [isHovered, hoverRef] = useHover()
   const { closeModal } = useContext(ModalContext)
 
   useEffect(() => {
     const handleKeyPress = event => {
-      if(event.key === 'Escape' || event.keyCode === 27) closeModal()
+      if (event.key === 'Escape' || event.keyCode === 27) closeModal()
     }
 
     window.addEventListener('keydown', handleKeyPress)
@@ -78,7 +83,7 @@ Modal.Close = function ModalClose({ children, ...restProps }) {
 
   return (
     <Close ref={hoverRef} onClick={closeModal} {...restProps}>
-      {isHovered ? <CloseCircleFilled/> : <CloseCircleEmpty/>}
+      {isHovered ? <CloseCircleFilled /> : <CloseCircleEmpty />}
     </Close>
   )
 }

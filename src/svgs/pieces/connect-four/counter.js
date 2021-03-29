@@ -1,13 +1,8 @@
-import * as React from "react"
+import * as React from 'react'
 
 function SvgComponent(props, svgRef) {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="223.5 322.3 91.8 91"
-      ref={svgRef}
-      {...props}
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="223.5 322.3 91.8 91" ref={svgRef} {...props}>
       <g fillRule="evenodd">
         <path
           d="M309.04 345.18a45.735 45.377 0 11-79.216 45.377 45.735 45.377 0 1179.215-45.377z"

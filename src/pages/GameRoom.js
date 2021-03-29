@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-// import { windowContext } from '../context/window'
+import React from 'react'
 import RoomRedirect from '../helpers/RoomRedirect'
 import { Container } from '../components'
 import HeaderContainer from '../containers/header'
@@ -16,7 +15,7 @@ export default function GameRoom() {
         <SettingsContextProvider>
           <LocalSettingsContextProvider>
             <GameContextProvider>
-              <Container direction="column" >
+              <Container direction="column">
                 <HeaderContainer />
                 <RoomContainer />
               </Container>

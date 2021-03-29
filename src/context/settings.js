@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import DEFAULT_SETTINGS from '../constants/default-game-settings'
 
@@ -7,8 +7,8 @@ const { Provider } = context
 
 function ContextProvider({ children }) {
   const { roomId } = useParams()
-  const [ isLoading, setIsLoading ] = useState(true)
-  const [ globalSettings, setGlobalSettings ] = useState()
+  const [isLoading, setIsLoading] = useState(true)
+  const [globalSettings, setGlobalSettings] = useState()
 
   const firebase = window.firebase
   const firestore = firebase.firestore()
@@ -17,13 +17,14 @@ function ContextProvider({ children }) {
 
   const changeGlobalSetting = (setting, value) => {
     console.log(`changing ${setting} to ${value}`)
-    settingsRef.set({
-      [setting]: value
-    }, { merge: true })
+    settingsRef.set({ [setting]: value }, { merge: true })
   }
 
   const updateDefaultSettings = settings => {
-    const newSettingsEntries = Object.keys(DEFAULT_SETTINGS).filter(key => settings === undefined || settings[key] === undefined).map(key => [key, DEFAULT_SETTINGS[key]])
+    const newSettingsEntries = Object.keys(DEFAULT_SETTINGS)
+      .filter(key => settings === undefined || settings[key] === undefined)
+      .map(key => [key, DEFAULT_SETTINGS[key]])
+
     if (newSettingsEntries.length) {
       const newSettingsObject = Object.fromEntries(newSettingsEntries)
       settingsRef.set(newSettingsObject, { merge: true })
@@ -47,7 +48,7 @@ function ContextProvider({ children }) {
   }, [globalSettings])
 
   return (
-    <Provider value={{ globalSettings, changeGlobalSetting }} >
+    <Provider value={{ globalSettings, changeGlobalSetting }}>
       {isLoading ? null : children}
     </Provider>
   )

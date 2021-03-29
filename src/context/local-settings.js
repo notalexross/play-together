@@ -12,10 +12,10 @@ const { Provider } = context
 function ContextProvider({ children }) {
   const { user } = useContext(firebaseContext)
   const { globalSettings } = useContext(settingsContext)
-  const [ isLoading, setIsLoading ] = useState(true)
-  const [ localSettings, setLocalSettings ] = useState()
-  const [ piecesGroup, setPiecesGroup ] = useState([])
-  const [ favorites, setFavorites ] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [localSettings, setLocalSettings] = useState()
+  const [piecesGroup, setPiecesGroup] = useState([])
+  const [favorites, setFavorites] = useState([])
 
   const gameSettings = gamesConfig[globalSettings && globalSettings.game] || gamesConfig['default']
 
@@ -27,13 +27,14 @@ function ContextProvider({ children }) {
 
   const changeLocalSetting = (setting, value) => {
     console.log(`changing ${setting} to ${value}`)
-    settingsRef.set({
-      [setting]: value
-    }, { merge: true })
+    settingsRef.set({ [setting]: value }, { merge: true })
   }
 
   const updateDefaultSettings = settings => {
-    const newSettingsEntries = Object.keys(DEFAULT_LOCAL_SETTINGS).filter(key => settings === undefined || settings[key] === undefined).map(key => [key, DEFAULT_LOCAL_SETTINGS[key]])
+    const newSettingsEntries = Object.keys(DEFAULT_LOCAL_SETTINGS)
+      .filter(key => settings === undefined || settings[key] === undefined)
+      .map(key => [key, DEFAULT_LOCAL_SETTINGS[key]])
+
     if (newSettingsEntries.length) {
       const newSettingsObject = Object.fromEntries(newSettingsEntries)
       settingsRef.set(newSettingsObject, { merge: true })
@@ -53,19 +54,23 @@ function ContextProvider({ children }) {
       setPiecesGroup(favorites)
     } else {
       const set = setsConfig[localSettings.piecesGroup] || []
-      !set.length && console.log('remember to add new pieces to config files before trying to use them!')
-      const setMapped = set.map(piece => ({id: piece, ...piecesConfig[piece]}))
+      !set.length &&
+        console.log('remember to add new pieces to config files before trying to use them!')
+      const setMapped = set.map(piece => ({ id: piece, ...piecesConfig[piece] }))
       setPiecesGroup(setMapped)
     }
   }
 
   const rotatePlayarea = newAngle => {
-    newAngle = newAngle !== undefined ? newAngle : (localSettings.rotation + gameSettings.rotationIncrement) % 360
+    if (newAngle === undefined) {
+      newAngle = (localSettings.rotation + gameSettings.rotationIncrement) % 360
+    }
+
     changeLocalSetting('rotation', newAngle)
   }
 
   const getRotatedPosition = (mouseX, mouseY, angle = localSettings.rotation) => {
-    const angleRadians = angle / 180 * Math.PI
+    const angleRadians = (angle / 180) * Math.PI
     const translatedX = mouseX - 50
     const translatedY = mouseY - 50
     const rotatedX = translatedX * Math.cos(angleRadians) - translatedY * Math.sin(angleRadians)
@@ -82,13 +87,13 @@ function ContextProvider({ children }) {
   const addToFavorites = piece => {
     if (favorites.some(favorite => favorite.id === piece.id)) return
     favoritesRef.set({
-      pieces: [ ...favorites, piece ]
+      pieces: [...favorites, piece]
     })
   }
 
   const removeFromFavorites = pieceId => {
     favoritesRef.set({
-      pieces: [ ...favorites.filter(favorite => favorite.id !== pieceId) ]
+      pieces: [...favorites.filter(favorite => favorite.id !== pieceId)]
     })
   }
 
@@ -113,30 +118,34 @@ function ContextProvider({ children }) {
   }, [localSettings])
 
   useEffect(() => {
-     if (localSettings && localSettings.piecesGroup) {
+    if (localSettings && localSettings.piecesGroup) {
       setIsLoading(false)
       updatePiecesGroup()
-     } else {
-       setIsLoading(true)
-     }
+    } else {
+      setIsLoading(true)
+    }
   }, [localSettings && localSettings.piecesGroup, favorites])
 
   useEffect(() => {
-    localSettings && globalSettings && globalSettings.game && changeLocalSetting('piecesGroup', globalSettings.game)
+    if (localSettings && globalSettings && globalSettings.game) {
+      changeLocalSetting('piecesGroup', globalSettings.game)
+    }
   }, [globalSettings && globalSettings.game])
 
   return (
-    <Provider value={{
-      localSettings,
-      piecesGroup,
-      changeLocalSetting,
-      addToFavorites,
-      removeFromFavorites,
-      favorites,
-      rotatePlayarea,
-      getRotatedPosition,
-      getUnrotatedPosition
-    }}>
+    <Provider
+      value={{
+        localSettings,
+        piecesGroup,
+        changeLocalSetting,
+        addToFavorites,
+        removeFromFavorites,
+        favorites,
+        rotatePlayarea,
+        getRotatedPosition,
+        getUnrotatedPosition
+      }}
+    >
       {isLoading ? null : children}
     </Provider>
   )
