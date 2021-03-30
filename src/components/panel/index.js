@@ -18,7 +18,7 @@ import { windowContext } from '../../context/window'
 
 const CollapseContext = React.createContext()
 
-export default function Panel({ children, startCollapsed = false, innerRef, width, ...restProps }) {
+export default function Panel({ children, innerRef, width, startCollapsed = false, ...restProps }) {
   const [isCollapsed, setIsCollapsed] = useState(startCollapsed)
   const [collapseDirection, setCollapseDirection] = useState('')
   const { windowWidth } = useContext(windowContext)
@@ -43,9 +43,9 @@ export default function Panel({ children, startCollapsed = false, innerRef, widt
 }
 
 Panel.propTypes = {
-  startCollapsed: PropTypes.bool,
   innerRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-  width: PropTypes.string
+  width: PropTypes.string,
+  startCollapsed: PropTypes.bool
 }
 
 Panel.Container = React.forwardRef(({ children, ...restProps }, ref) => {
