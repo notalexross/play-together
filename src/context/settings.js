@@ -20,27 +20,28 @@ function ContextProvider({ children }) {
     settingsRef.set({ [setting]: value }, { merge: true })
   }
 
-  const updateDefaultSettings = settings => {
-    const newSettingsEntries = Object.keys(DEFAULT_SETTINGS)
-      .filter(key => settings === undefined || settings[key] === undefined)
-      .map(key => [key, DEFAULT_SETTINGS[key]])
-
-    if (newSettingsEntries.length) {
-      const newSettingsObject = Object.fromEntries(newSettingsEntries)
-      settingsRef.set(newSettingsObject, { merge: true })
-    }
-  }
-
-  const initSettingsListener = () => {
-    return settingsRef.onSnapshot(snapshot => {
-      const settings = snapshot.data()
-      updateDefaultSettings(settings)
-      setGlobalSettings(settings)
-    })
-  }
-
   useEffect(() => {
+    const updateDefaultSettings = settings => {
+      const newSettingsEntries = Object.keys(DEFAULT_SETTINGS)
+        .filter(key => settings === undefined || settings[key] === undefined)
+        .map(key => [key, DEFAULT_SETTINGS[key]])
+
+      if (newSettingsEntries.length) {
+        const newSettingsObject = Object.fromEntries(newSettingsEntries)
+        settingsRef.set(newSettingsObject, { merge: true })
+      }
+    }
+
+    const initSettingsListener = () => {
+      return settingsRef.onSnapshot(snapshot => {
+        const settings = snapshot.data()
+        updateDefaultSettings(settings)
+        setGlobalSettings(settings)
+      })
+    }
+
     return initSettingsListener()
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {

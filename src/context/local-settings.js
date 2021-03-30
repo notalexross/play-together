@@ -17,7 +17,9 @@ function ContextProvider({ children }) {
   const [piecesGroup, setPiecesGroup] = useState([])
   const [favorites, setFavorites] = useState([])
 
-  const gameSettings = gamesConfig[globalSettings && globalSettings.game] || gamesConfig['default']
+  const globalSettingsGame = globalSettings && globalSettings.game
+  const localSettingsPiecesGroup = localSettings && localSettings.piecesGroup
+  const gameSettings = gamesConfig[globalSettingsGame] || gamesConfig['default']
 
   const firebase = window.firebase
   const firestore = firebase.firestore()
@@ -28,37 +30,6 @@ function ContextProvider({ children }) {
   const changeLocalSetting = (setting, value) => {
     console.log(`changing ${setting} to ${value}`)
     settingsRef.set({ [setting]: value }, { merge: true })
-  }
-
-  const updateDefaultSettings = settings => {
-    const newSettingsEntries = Object.keys(DEFAULT_LOCAL_SETTINGS)
-      .filter(key => settings === undefined || settings[key] === undefined)
-      .map(key => [key, DEFAULT_LOCAL_SETTINGS[key]])
-
-    if (newSettingsEntries.length) {
-      const newSettingsObject = Object.fromEntries(newSettingsEntries)
-      settingsRef.set(newSettingsObject, { merge: true })
-    }
-  }
-
-  const initSettingsListener = () => {
-    return settingsRef.onSnapshot(snapshot => {
-      const settings = snapshot.data()
-      updateDefaultSettings(settings)
-      setLocalSettings(settings)
-    })
-  }
-
-  const updatePiecesGroup = () => {
-    if (localSettings.piecesGroup === 'favorites') {
-      setPiecesGroup(favorites)
-    } else {
-      const set = setsConfig[localSettings.piecesGroup] || []
-      !set.length &&
-        console.log('remember to add new pieces to config files before trying to use them!')
-      const setMapped = set.map(piece => ({ id: piece, ...piecesConfig[piece] }))
-      setPiecesGroup(setMapped)
-    }
   }
 
   const rotatePlayarea = newAngle => {
@@ -77,6 +48,7 @@ function ContextProvider({ children }) {
     const rotatedY = translatedY * Math.cos(angleRadians) + translatedX * Math.sin(angleRadians)
     const untranslatedX = rotatedX + 50
     const untranslatedY = rotatedY + 50
+
     return [untranslatedX, untranslatedY]
   }
 
@@ -97,20 +69,41 @@ function ContextProvider({ children }) {
     })
   }
 
-  const initFavoritesListener = () => {
-    return favoritesRef.onSnapshot(snapshot => {
-      const data = snapshot.data() && snapshot.data().pieces
-      data && setFavorites(data)
-    })
-  }
-
   useEffect(() => {
+    const updateDefaultSettings = settings => {
+      const newSettingsEntries = Object.keys(DEFAULT_LOCAL_SETTINGS)
+        .filter(key => settings === undefined || settings[key] === undefined)
+        .map(key => [key, DEFAULT_LOCAL_SETTINGS[key]])
+
+      if (newSettingsEntries.length) {
+        const newSettingsObject = Object.fromEntries(newSettingsEntries)
+        settingsRef.set(newSettingsObject, { merge: true })
+      }
+    }
+
+    const initSettingsListener = () => {
+      return settingsRef.onSnapshot(snapshot => {
+        const settings = snapshot.data()
+        updateDefaultSettings(settings)
+        setLocalSettings(settings)
+      })
+    }
+
+    const initFavoritesListener = () => {
+      return favoritesRef.onSnapshot(snapshot => {
+        const data = snapshot.data() && snapshot.data().pieces
+        data && setFavorites(data)
+      })
+    }
+
     const settingsListener = initSettingsListener()
     const favoritesListener = initFavoritesListener()
+
     return () => {
       settingsListener()
       favoritesListener()
     }
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -118,19 +111,32 @@ function ContextProvider({ children }) {
   }, [localSettings])
 
   useEffect(() => {
-    if (localSettings && localSettings.piecesGroup) {
+    const updatePiecesGroup = () => {
+      if (localSettingsPiecesGroup === 'favorites') {
+        setPiecesGroup(favorites)
+      } else {
+        const set = setsConfig[localSettingsPiecesGroup] || []
+        !set.length &&
+          console.log('remember to add new pieces to config files before trying to use them!')
+        const setMapped = set.map(piece => ({ id: piece, ...piecesConfig[piece] }))
+        setPiecesGroup(setMapped)
+      }
+    }
+
+    if (localSettingsPiecesGroup) {
       setIsLoading(false)
       updatePiecesGroup()
     } else {
       setIsLoading(true)
     }
-  }, [localSettings && localSettings.piecesGroup, favorites])
+  }, [localSettingsPiecesGroup, favorites])
 
   useEffect(() => {
-    if (localSettings && globalSettings && globalSettings.game) {
-      changeLocalSetting('piecesGroup', globalSettings.game)
+    if (globalSettingsGame) {
+      changeLocalSetting('piecesGroup', globalSettingsGame)
     }
-  }, [globalSettings && globalSettings.game])
+    // eslint-disable-next-line
+  }, [globalSettingsGame])
 
   return (
     <Provider

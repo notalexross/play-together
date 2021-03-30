@@ -29,46 +29,47 @@ function ContextProvider({ children }) {
     })
   }
 
-  const initMessaging = () => {
-    console.log('initialising messaging')
-    const query = messagesRef
-      .where('createdAt', '>', timeJoined.current)
-      .orderBy('createdAt', 'desc')
-      .limit(500)
-
-    return query.onSnapshot(snapshot => {
-      if (snapshot.docs.some(doc => doc.metadata.hasPendingWrites)) return // prevents triggering twice locally
-
-      if (isFirstSnapshot.current) {
-        isFirstSnapshot.current = false
-        const uids = [...new Set(snapshot.docs.map(doc => doc.data().uid))]
-        addToStoredUsers(uids)
-      }
-
-      console.log('updating messages')
-
-      setMessages(
-        snapshot.docs.reverse().map(doc => {
-          const id = doc.id
-          const uid = doc.data().uid
-          const message = doc.data().content
-          const time = doc.data().createdAt.toDate()
-          const hours = time.getHours().toString().padStart(2, '0').slice(0, 2)
-          const minutes = time.getMinutes().toString().padStart(2, '0').slice(0, 2)
-
-          return {
-            id,
-            uid,
-            timestamp: `${hours}:${minutes}`,
-            message
-          }
-        })
-      )
-    })
-  }
-
   useEffect(() => {
+    const initMessaging = () => {
+      console.log('initialising messaging')
+      const query = messagesRef
+        .where('createdAt', '>', timeJoined.current)
+        .orderBy('createdAt', 'desc')
+        .limit(500)
+
+      return query.onSnapshot(snapshot => {
+        if (snapshot.docs.some(doc => doc.metadata.hasPendingWrites)) return // prevents triggering twice locally
+
+        if (isFirstSnapshot.current) {
+          isFirstSnapshot.current = false
+          const uids = [...new Set(snapshot.docs.map(doc => doc.data().uid))]
+          addToStoredUsers(uids)
+        }
+
+        console.log('updating messages')
+
+        setMessages(
+          snapshot.docs.reverse().map(doc => {
+            const id = doc.id
+            const uid = doc.data().uid
+            const message = doc.data().content
+            const time = doc.data().createdAt.toDate()
+            const hours = time.getHours().toString().padStart(2, '0').slice(0, 2)
+            const minutes = time.getMinutes().toString().padStart(2, '0').slice(0, 2)
+
+            return {
+              id,
+              uid,
+              timestamp: `${hours}:${minutes}`,
+              message
+            }
+          })
+        )
+      })
+    }
+
     return initMessaging()
+    // eslint-disable-next-line
   }, [])
 
   return <Provider value={{ sendMessage, messages }}>{children}</Provider>

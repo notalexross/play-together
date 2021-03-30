@@ -48,42 +48,6 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     cursor: heldPiece === pieceId ? 'grabbing' : 'grab'
   }
 
-  const onMouseMove = event => {
-    const isTouch = !!event.touches
-    isTouch || event.preventDefault() // so chat doesn't get highlighted as you drag pieces
-    const mouseX = event.clientX !== undefined ? event.clientX : event.touches[0].clientX
-    const mouseY = event.clientY !== undefined ? event.clientY : event.touches[0].clientY
-    const position = getRelativePosition(mouseX, mouseY)
-
-    !isDeleted.current && updatePieceInDatabase(pieceId, { position })
-  }
-
-  const handleMouseUp = event => {
-    // preventDefault on touchend event handler prevents mousedown and mouseup events triggering afterwards
-    event.preventDefault() 
-    if (heldPiece === pieceId) {
-      releasePiece(pieceId)
-    }
-  }
-
-  const handleWheelMove = event => {
-    const maxSize = 1
-    const minSize = 0.04
-    const increment = event.deltaY > 0 ? 1 : -1
-    scrollAmount.current += increment
-
-    let newSize = size - scrollAmount.current * 0.02
-    if (newSize > maxSize) {
-      newSize = maxSize
-      scrollAmount.current -= increment
-    } else if (newSize < minSize) {
-      newSize = minSize
-      scrollAmount.current -= increment
-    }
-
-    !isDeleted.current && updatePieceInDatabase(pieceId, { size: newSize })
-  }
-
   const updateColor = () => {
     const randomColor = Math.floor(Math.random() * 16 ** 6).toString(16)
     !isDeleted.current && updatePieceInDatabase(pieceId, { color: `#${randomColor}` })
@@ -145,10 +109,47 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       unTrackProperty(pieceId, 'holder')
       unTrackProperty(pieceId, 'custom_value')
     }
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
     if (size === undefined) return
+
+    const onMouseMove = event => {
+      const isTouch = !!event.touches
+      isTouch || event.preventDefault() // so chat doesn't get highlighted as you drag pieces
+      const mouseX = event.clientX !== undefined ? event.clientX : event.touches[0].clientX
+      const mouseY = event.clientY !== undefined ? event.clientY : event.touches[0].clientY
+      const position = getRelativePosition(mouseX, mouseY)
+
+      !isDeleted.current && updatePieceInDatabase(pieceId, { position })
+    }
+
+    const handleMouseUp = event => {
+      // preventDefault on touchend event handler prevents mousedown and mouseup events triggering afterwards
+      event.preventDefault()
+      if (heldPiece === pieceId) {
+        releasePiece(pieceId)
+      }
+    }
+
+    const handleWheelMove = event => {
+      const maxSize = 1
+      const minSize = 0.04
+      const increment = event.deltaY > 0 ? 1 : -1
+      scrollAmount.current += increment
+
+      let newSize = size - scrollAmount.current * 0.02
+      if (newSize > maxSize) {
+        newSize = maxSize
+        scrollAmount.current -= increment
+      } else if (newSize < minSize) {
+        newSize = minSize
+        scrollAmount.current -= increment
+      }
+
+      !isDeleted.current && updatePieceInDatabase(pieceId, { size: newSize })
+    }
 
     if (heldPiece === pieceId) {
       setAmOwner(true)
@@ -170,6 +171,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('wheel', handleWheelMove)
     }
+    // eslint-disable-next-line
   }, [size !== undefined, heldPiece])
 
   useEffect(() => {
@@ -181,10 +183,11 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     ) {
       removePiece(pieceId)
     }
-    
+
     if (holder && holder !== user.uid) {
       setAmOwner(false)
     }
+    // eslint-disable-next-line
   }, [holder])
 
   return game && name ? (

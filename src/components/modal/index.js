@@ -79,7 +79,7 @@ Modal.Close = function ModalClose({ children, ...restProps }) {
 
     window.addEventListener('keydown', handleKeyPress)
     return () => window.removeEventListener('keydown', handleKeyPress)
-  }, [])
+  }, [closeModal])
 
   return (
     <Close ref={hoverRef} onClick={closeModal} {...restProps}>

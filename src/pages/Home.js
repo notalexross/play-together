@@ -11,6 +11,15 @@ export default function Home() {
   const [isNicknameModalOpen, setIsNicknameModalOpen] = useState(false)
   const buttonRef = useRef()
 
+  const displayName = user && user.displayName
+
+  const enterGameRoom = () => {
+    createRoom().then(roomId => {
+      console.log('moving to game room')
+      history.push(`${ROUTES.GAMES}/${roomId}`)
+    })
+  }
+
   const handleClick = event => {
     event && event.preventDefault()
     user.displayName ? enterGameRoom() : setIsNicknameModalOpen(true)
@@ -20,18 +29,12 @@ export default function Home() {
     buttonRef.current.disabled = true
   }
 
-  const enterGameRoom = () => {
-    createRoom().then(roomId => {
-      console.log('moving to game room')
-      history.push(`${ROUTES.GAMES}/${roomId}`)
-    })
-  }
-
   useEffect(() => {
-    if (user && user.displayName && buttonRef.current.disabled) {
+    if (displayName && buttonRef.current.disabled) {
       enterGameRoom()
     }
-  }, [user && user.displayName])
+    // eslint-disable-next-line
+  }, [displayName])
 
   return (
     <>

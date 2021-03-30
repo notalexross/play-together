@@ -62,7 +62,7 @@ export default function ChatContainer({ onFocus = () => {}, isExpanded = false }
         container.lastChild.scrollIntoView()
       }
     }
-  }, [allMessages])
+  }, [allMessages, user.uid])
 
   return (
     <Chat>

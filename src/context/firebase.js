@@ -28,16 +28,6 @@ function ContextProvider({ children }) {
       })
   }
 
-  const signIn = () => {
-    if (firebase.auth().currentUser) return
-    firebase
-      .auth()
-      .signInAnonymously()
-      .catch(error => {
-        console.error(error)
-      })
-  }
-
   const setNickname = async newNickname => {
     return await currentUser
       .updateProfile({
@@ -104,25 +94,35 @@ function ContextProvider({ children }) {
       })
   }
 
-  const initApp = () => {
-    !firebase.apps.length && firebase.initializeApp(FIREBASE_CONFIG)
-
-    const listener = firebase.auth().onAuthStateChanged(user => {
-      setCurrentUser(user)
-      if (user) {
-        console.log('signed in')
-      } else {
-        console.log('signed out')
-        signIn()
-      }
-    })
-
-    return listener
-  }
-
   useEffect(() => {
+    const signIn = () => {
+      if (firebase.auth().currentUser) return
+      firebase
+        .auth()
+        .signInAnonymously()
+        .catch(error => {
+          console.error(error)
+        })
+    }
+
+    const initApp = () => {
+      !firebase.apps.length && firebase.initializeApp(FIREBASE_CONFIG)
+
+      const listener = firebase.auth().onAuthStateChanged(user => {
+        setCurrentUser(user)
+        if (user) {
+          console.log('signed in')
+        } else {
+          console.log('signed out')
+          signIn()
+        }
+      })
+
+      return listener
+    }
+
     return initApp()
-  }, [])
+  }, [firebase])
 
   useEffect(() => {
     if (!currentUser) return
@@ -144,7 +144,8 @@ function ContextProvider({ children }) {
     })
 
     return listener
-  }, [currentUser])
+    // eslint-disable-next-line
+  }, [currentUser, firebase])
 
   return (
     <Provider

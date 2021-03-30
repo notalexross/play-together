@@ -34,7 +34,7 @@ export default function FavoritablePiece({
   useEffect(() => {
     const inFavorites = favorites.some(favorite => favorite.id === piece.id)
     setIsFavorite(inFavorites)
-  }, [favorites])
+  }, [favorites, piece.id])
 
   return (
     <div

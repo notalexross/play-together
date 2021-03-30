@@ -17,6 +17,7 @@ export default function RoomRedirect({ children }) {
       setRoomExists(exists)
       setIsLoading(false)
     })
+    // eslint-disable-next-line
   }, [user])
 
   let render = <Loading />

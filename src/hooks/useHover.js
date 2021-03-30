@@ -22,7 +22,7 @@ export default function useHover(hoverRef) {
       ref.removeEventListener('mouseleave', onMouseLeave)
       ref.removeEventListener('touchstart', onTouchStart)
     }
-  }, [])
+  }, [hoverRef])
 
   return [isHovered, hoverRef]
 }

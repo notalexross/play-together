@@ -27,7 +27,7 @@ export default function Panel({ children, startCollapsed = false, innerRef, widt
 
   useEffect(() => {
     isSmall ? setIsCollapsed(false) : setIsCollapsed(startCollapsed)
-  }, [isSmall])
+  }, [isSmall, setIsCollapsed, startCollapsed])
 
   return (
     <Wrapper ref={innerRef} width={width} {...restProps}>
@@ -85,7 +85,7 @@ Panel.Collapse = function PanelCollapse({ direction = 'right', ...restProps }) {
   useEffect(() => {
     setCollapseDirection(direction)
     isCollapsed ? setTooltip('expand') : setTooltip('collapse')
-  }, [isCollapsed])
+  }, [isCollapsed, direction, setCollapseDirection, setTooltip])
 
   const handleClick = () => {
     setIsCollapsed(prev => !prev)

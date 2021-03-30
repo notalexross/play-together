@@ -89,58 +89,6 @@ function ContextProvider({ children }) {
     error && console.error(error)
   }
 
-  const initPiecesListener = () => {
-    piecesIdsRef.on(
-      'child_added',
-      snapshot => {
-        const pieceId = snapshot.key
-        const value = snapshot.val()
-        onPieceAddedToDatabase(pieceId, value, false)
-        console.log(`(listener) new piece: ${pieceId}`)
-      },
-      alertError
-    )
-    piecesIdsRef.on(
-      'child_changed',
-      snapshot => {
-        // TODO this is triggering too many times? (it should only be triggering twice)
-        const pieceId = snapshot.key
-        const value = snapshot.val()
-        onPieceAddedToDatabase(pieceId, value, true)
-        console.log(`(listener) piece brought to front: ${pieceId}`)
-      },
-      alertError
-    )
-    piecesIdsRef.on(
-      'child_removed',
-      snapshot => {
-        const pieceId = snapshot.key
-        onPieceRemovedFromDatabase(pieceId)
-        console.log(`(listener) piece removed: ${pieceId}`)
-      },
-      alertError
-    )
-  }
-
-  const removePiecesListener = () => {
-    piecesIdsRef.off()
-  }
-
-  const onPieceRemovedFromDatabase = pieceId => {
-    setPieces(pieces => {
-      const newPieces = { ...pieces }
-      delete newPieces[pieceId]
-
-      return newPieces
-    })
-  }
-
-  const onPieceAddedToDatabase = (pieceId, value = true, pieceUpdated = false) => {
-    if (pieceUpdated) lastUpdated.current = pieceId
-
-    setPieces(pieces => ({ ...pieces, [pieceId]: value }))
-  }
-
   const trackProperty = (pieceId, property, callback) => {
     if (!allowedProperties.includes(property)) return
 
@@ -198,9 +146,62 @@ function ContextProvider({ children }) {
   }
 
   useEffect(() => {
+    const onPieceRemovedFromDatabase = pieceId => {
+      setPieces(pieces => {
+        const newPieces = { ...pieces }
+        delete newPieces[pieceId]
+
+        return newPieces
+      })
+    }
+
+    const onPieceAddedToDatabase = (pieceId, value = true, pieceUpdated = false) => {
+      if (pieceUpdated) lastUpdated.current = pieceId
+
+      setPieces(pieces => ({ ...pieces, [pieceId]: value }))
+    }
+
+    const initPiecesListener = () => {
+      piecesIdsRef.on(
+        'child_added',
+        snapshot => {
+          const pieceId = snapshot.key
+          const value = snapshot.val()
+          onPieceAddedToDatabase(pieceId, value, false)
+          console.log(`(listener) new piece: ${pieceId}`)
+        },
+        alertError
+      )
+      piecesIdsRef.on(
+        'child_changed',
+        snapshot => {
+          // TODO this is triggering too many times? (it should only be triggering twice)
+          const pieceId = snapshot.key
+          const value = snapshot.val()
+          onPieceAddedToDatabase(pieceId, value, true)
+          console.log(`(listener) piece brought to front: ${pieceId}`)
+        },
+        alertError
+      )
+      piecesIdsRef.on(
+        'child_removed',
+        snapshot => {
+          const pieceId = snapshot.key
+          onPieceRemovedFromDatabase(pieceId)
+          console.log(`(listener) piece removed: ${pieceId}`)
+        },
+        alertError
+      )
+    }
+
+    const removePiecesListener = () => {
+      piecesIdsRef.off()
+    }
+
     initPiecesListener()
 
     return removePiecesListener
+    // eslint-disable-next-line
   }, [])
 
   return (

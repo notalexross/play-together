@@ -40,12 +40,10 @@ Chat.TextInput = React.forwardRef(({ value, maxLength = 100, ...restProps }, ref
   prevScrollHeight.current = ref.current && ref.current.scrollHeight
 
   useEffect(() => {
-    if (!error && value.length === maxLength) {
-      setError(`Reached ${maxLength} Character Limit`)
-    } else {
-      setError('')
-    }
-  }, [value])
+    setError(error =>
+      !error && value.length === maxLength ? `Reached ${maxLength} Character Limit` : ''
+    )
+  }, [value, maxLength, setError])
 
   if (value.length === 0) {
     rowCount.current = 1
