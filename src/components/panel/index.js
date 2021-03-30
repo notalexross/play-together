@@ -82,14 +82,14 @@ Panel.Collapse = function PanelCollapse({ direction = 'right', ...restProps }) {
 
   const opposite = direction === 'left' ? 'right' : direction === 'right' ? 'left' : null
 
+  const handleClick = () => {
+    setIsCollapsed(prev => !prev)
+  }
+
   useEffect(() => {
     setCollapseDirection(direction)
     isCollapsed ? setTooltip('expand') : setTooltip('collapse')
   }, [isCollapsed, direction, setCollapseDirection, setTooltip])
-
-  const handleClick = () => {
-    setIsCollapsed(prev => !prev)
-  }
 
   return (
     <Collapse direction={direction} collapsed={isCollapsed} {...restProps}>

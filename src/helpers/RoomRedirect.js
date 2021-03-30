@@ -11,15 +11,6 @@ export default function RoomRedirect({ children }) {
   const [roomExists, setRoomExists] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    if (!user) return
-    doesRoomExist(roomId).then(exists => {
-      setRoomExists(exists)
-      setIsLoading(false)
-    })
-    // eslint-disable-next-line
-  }, [user])
-
   let render = <Loading />
   if (user && !isLoading) {
     if (roomExists) {
@@ -32,6 +23,15 @@ export default function RoomRedirect({ children }) {
       render = <Redirect to={ROUTES.HOME} />
     }
   }
+
+  useEffect(() => {
+    if (!user) return
+    doesRoomExist(roomId).then(exists => {
+      setRoomExists(exists)
+      setIsLoading(false)
+    })
+    // eslint-disable-next-line
+  }, [user])
 
   return render
 }

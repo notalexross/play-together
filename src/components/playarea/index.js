@@ -103,7 +103,6 @@ Playarea.Board = function PlayareaBoard({
     width: '100%',
     filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
     transform: `rotate(${-rotation}deg)`
-    // background: 'purple',
   }
 
   return (

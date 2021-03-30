@@ -13,7 +13,6 @@ export default function Modal({ children, isOpen = false, setIsOpen = () => {}, 
 
   const handleClick = event => {
     if (event.target !== event.currentTarget) return
-
     setIsOpen(false)
   }
 
@@ -74,11 +73,16 @@ Modal.Close = function ModalClose({ children, ...restProps }) {
 
   useEffect(() => {
     const handleKeyPress = event => {
-      if (event.key === 'Escape' || event.keyCode === 27) closeModal()
+      if (event.key === 'Escape' || event.keyCode === 27) {
+        closeModal()
+      }
     }
 
     window.addEventListener('keydown', handleKeyPress)
-    return () => window.removeEventListener('keydown', handleKeyPress)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress)
+    }
   }, [closeModal])
 
   return (

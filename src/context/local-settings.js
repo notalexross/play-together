@@ -48,7 +48,6 @@ function ContextProvider({ children }) {
     const rotatedY = translatedY * Math.cos(angleRadians) + translatedX * Math.sin(angleRadians)
     const untranslatedX = rotatedX + 50
     const untranslatedY = rotatedY + 50
-
     return [untranslatedX, untranslatedY]
   }
 

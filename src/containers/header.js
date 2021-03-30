@@ -47,7 +47,6 @@ export default function HeaderContainer() {
 
   const handleCloseColorPicker = () => {
     if (currentColor === userColor) return
-
     setColor(currentColor)
   }
 

@@ -39,12 +39,6 @@ Chat.TextInput = React.forwardRef(({ value, maxLength = 100, ...restProps }, ref
 
   prevScrollHeight.current = ref.current && ref.current.scrollHeight
 
-  useEffect(() => {
-    setError(error =>
-      !error && value.length === maxLength ? `Reached ${maxLength} Character Limit` : ''
-    )
-  }, [value, maxLength, setError])
-
   if (value.length === 0) {
     rowCount.current = 1
   } else {
@@ -56,6 +50,12 @@ Chat.TextInput = React.forwardRef(({ value, maxLength = 100, ...restProps }, ref
       rowCount.current++
     }
   }
+
+  useEffect(() => {
+    setError(error =>
+      !error && value.length === maxLength ? `Reached ${maxLength} Character Limit` : ''
+    )
+  }, [value, maxLength, setError])
 
   return (
     <>
@@ -120,12 +120,16 @@ Chat.Form = function ChatForm({ children, ...restProps }) {
   return <Form {...restProps}>{children}</Form>
 }
 
-Chat.Section = function ChatSection({ children, isExpanded, ...restProps }) {
+Chat.Section = function ChatSection({ children, isExpanded = false, ...restProps }) {
   return (
     <Section isExpanded={isExpanded} {...restProps}>
       {children}
     </Section>
   )
+}
+
+Chat.Section.propTypes = {
+  isExpanded: PropTypes.bool
 }
 
 Chat.List = function ChatList({ children, ...restProps }) {

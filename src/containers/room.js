@@ -69,13 +69,11 @@ export default function RoomContainer() {
 
   const handleSettingsHeaderClick = () => {
     if (!isSmall) return
-
     setSettingsIsExpanded(prev => !prev)
   }
 
   const handleChatExpand = (toggle = true) => {
     if (!isSmall) return
-
     toggle ? setChatIsExpanded(prev => !prev) : setChatIsExpanded(true)
   }
 

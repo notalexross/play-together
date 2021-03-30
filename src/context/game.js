@@ -28,7 +28,6 @@ function ContextProvider({ children }) {
       alert(
         `Adding ${numberToAdd} piece(s) will put you over the ${maxPieces} pieces limit, remove some before trying again`
       )
-
       return true
     }
 
@@ -46,11 +45,8 @@ function ContextProvider({ children }) {
     const pieceRef = piecesIdsRef.push()
     const pieceId = pieceRef.key
     pieceRef.set(firebase.database.ServerValue.TIMESTAMP, alertError)
-
     updatePieceInDatabase(pieceId, { id: pieceId, game, name, color, size, holder, position })
-
     console.log(`added piece to database: ${pieceId}`)
-
     return pieceId
   }
 
@@ -66,6 +62,7 @@ function ContextProvider({ children }) {
       mappedEntries.push([`ids/${pieceId}`, firebase.database.ServerValue.TIMESTAMP])
       // using server timestamp causes child_updated to fire twice
     }
+
     const updates = Object.fromEntries(mappedEntries)
     piecesRef.update(updates, alertError)
   }
@@ -91,7 +88,6 @@ function ContextProvider({ children }) {
 
   const trackProperty = (pieceId, property, callback) => {
     if (!allowedProperties.includes(property)) return
-
     const detailsRef = database.ref(`rooms/${roomId}/pieces/details/${pieceId}/${property}`)
     detailsRef.on('value', snap => callback(snap.val()), alertError)
   }
@@ -113,7 +109,6 @@ function ContextProvider({ children }) {
 
   const addPiece = (piece, position) => {
     if (areTooManyPieces()) return
-
     const pieceId = addPieceToDatabase({ ...piece, position, holder: user.uid })
     setHeldPiece(pieceId)
   }
@@ -124,9 +119,7 @@ function ContextProvider({ children }) {
 
   const addMultiplePieces = (newPieces, positions) => {
     if (newPieces.length !== positions.length) return
-
     if (areTooManyPieces(newPieces.length)) return
-
     newPieces.forEach((piece, idx) => {
       addPieceToDatabase({ ...piece, position: positions[idx] })
     })
@@ -141,7 +134,6 @@ function ContextProvider({ children }) {
     const relativeX = ((mouseX - containerRect.left) / containerRect.width) * 100
     const relativeY = ((mouseY - containerRect.top) / containerRect.height) * 100
     const position = getRotatedPosition(relativeX, relativeY)
-
     return position
   }
 
@@ -150,14 +142,12 @@ function ContextProvider({ children }) {
       setPieces(pieces => {
         const newPieces = { ...pieces }
         delete newPieces[pieceId]
-
         return newPieces
       })
     }
 
     const onPieceAddedToDatabase = (pieceId, value = true, pieceUpdated = false) => {
       if (pieceUpdated) lastUpdated.current = pieceId
-
       setPieces(pieces => ({ ...pieces, [pieceId]: value }))
     }
 

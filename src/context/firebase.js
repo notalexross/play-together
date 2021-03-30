@@ -57,7 +57,6 @@ function ContextProvider({ children }) {
     const R = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
     const G = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
     const B = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
-
     return `#${R}${G}${B}`
   }
 
@@ -83,6 +82,7 @@ function ContextProvider({ children }) {
     console.log('checking if room exists')
     const roomsRef = firebase.firestore().collection('rooms')
     const docRef = roomsRef.doc(roomId)
+
     return await docRef
       .get()
       .then(doc => {
@@ -126,7 +126,6 @@ function ContextProvider({ children }) {
 
   useEffect(() => {
     if (!currentUser) return
-
     setIsLoading(false)
 
     const usersRef = firebase.firestore().collection('users')
@@ -134,9 +133,7 @@ function ContextProvider({ children }) {
     const listener = query.onSnapshot(snapshot => {
       if (snapshot.metadata.hasPendingWrites) return
       if (!snapshot.exists) return
-
       setUserColor(snapshot.data().color)
-
       // update displayName
       currentUser.reload().then(() => {
         forceRender()

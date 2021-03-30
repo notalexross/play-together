@@ -13,7 +13,6 @@ export default function SettingsContainer() {
 
   const selectBoard = event => {
     if (globalSettings.game === event.target.dataset.value) return
-
     changeGlobalSetting('game', event.target.dataset.value)
     rotatePlayarea(0)
   }
@@ -24,7 +23,6 @@ export default function SettingsContainer() {
 
   const handleAutoPopulate = () => {
     const layout = layoutsConfig[globalSettings.game]
-
     if (layout) {
       const pieces = layout.map(([id, _]) => piecesConfig[id])
       const positions = layout.map(([_, position]) => position)

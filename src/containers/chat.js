@@ -21,9 +21,7 @@ export default function ChatContainer({ onFocus = () => {}, isExpanded = false }
   const handleSubmit = event => {
     event.preventDefault()
     inputRef.current.focus()
-
     if (text.length < 1) return
-
     sendMessage(text)
     setText('')
   }
@@ -53,11 +51,9 @@ export default function ChatContainer({ onFocus = () => {}, isExpanded = false }
 
   useEffect(() => {
     const container = logRef.current
-
     if (container && container.lastChild) {
       const lastMessageAuthor = allMessages[allMessages.length - 1].uid
       const scrollAmount = container.scrollHeight - container.clientHeight - container.scrollTop
-
       if (scrollAmount < 100 || lastMessageAuthor === user.uid) {
         container.lastChild.scrollIntoView()
       }

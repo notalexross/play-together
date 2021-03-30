@@ -87,7 +87,6 @@ function ContextProvider({ children }) {
       const newListener = query.onSnapshot(snapshot => {
         if (snapshot.metadata.hasPendingWrites) return
         if (!snapshot.data()) return
-
         console.log(`updating user: ${uid}`)
         const displayName = snapshot.data().displayName
         const color = snapshot.data().color
