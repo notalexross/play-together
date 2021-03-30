@@ -33,10 +33,22 @@ export const Header = styled.div`
 `
 
 export const Body = styled.div`
-  user-select: none;
-  padding: 0.25em 1em 0.5em 1em;
   background: #1e1e1e;
   border-top: solid 1px #444;
+
+  &:hover {
+    background: #555;
+  }
+`
+
+export const BodyInner = styled.span.attrs(({ href }) => ({
+  as: href && 'a'
+}))`
+  display: block;
+  user-select: none;
+  padding: 0.25em 1em 0.5em 1em;
+  cursor: pointer;
+  color: inherit;
 `
 
 export const IconWrapper = styled.div`

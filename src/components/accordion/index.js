@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { ChevronRight } from '@styled-icons/boxicons-regular/ChevronRight'
 import { ChevronDown } from '@styled-icons/boxicons-regular/ChevronDown'
-import { Container, Item, Header, Body, IconWrapper } from './styles'
+import { Container, Item, Header, Body, BodyInner, IconWrapper } from './styles'
 
 const ToggleContext = React.createContext()
 
@@ -33,5 +33,9 @@ Accordion.Header = function AccordionHeader({ children, ...restProps }) {
 Accordion.Body = function AccordionBody({ children, ...restProps }) {
   const { toggleShow } = useContext(ToggleContext)
 
-  return toggleShow ? <Body {...restProps}>{children}</Body> : null
+  return toggleShow ? (
+    <Body>
+      <BodyInner {...restProps}>{children}</BodyInner>
+    </Body>
+  ) : null
 }

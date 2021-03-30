@@ -104,6 +104,36 @@ export default function SettingsContainer() {
         <Accordion.Header>Local Options</Accordion.Header>
         <Accordion.Body onClick={() => rotatePlayarea()}>Rotate Board</Accordion.Body>
       </Accordion.Item>
+      <Accordion.Item>
+        <Accordion.Header>About</Accordion.Header>
+        {process.env.REACT_APP_SOCIAL_PORTFOLIO && (
+          <Accordion.Body
+            href={process.env.REACT_APP_SOCIAL_PORTFOLIO}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Portfolio
+          </Accordion.Body>
+        )}
+        {process.env.REACT_APP_SOCIAL_GITHUB && (
+          <Accordion.Body
+            href={process.env.REACT_APP_SOCIAL_GITHUB}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </Accordion.Body>
+        )}
+        {process.env.REACT_APP_SOCIAL_TWITTER && (
+          <Accordion.Body
+            href={process.env.REACT_APP_SOCIAL_TWITTER}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Twitter
+          </Accordion.Body>
+        )}
+      </Accordion.Item>
     </Accordion>
   )
 }
