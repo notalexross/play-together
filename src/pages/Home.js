@@ -15,7 +15,6 @@ export default function Home() {
 
   const enterGameRoom = () => {
     createRoom().then(roomId => {
-      console.log('moving to game room')
       history.push(`${ROUTES.GAMES}/${roomId}`)
     })
   }
@@ -33,7 +32,7 @@ export default function Home() {
     if (displayName && buttonRef.current.disabled) {
       enterGameRoom()
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [displayName])
 
   return (

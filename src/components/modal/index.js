@@ -1,9 +1,11 @@
 import React, { useEffect, useContext } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
-import { Container, Overlay, Close, Title, Text, Subtext, Form, Submit, InputText } from './styles'
+/* eslint-disable import/no-extraneous-dependencies */
 import { CloseCircle as CloseCircleEmpty } from '@styled-icons/remix-line'
 import { CloseCircle as CloseCircleFilled } from '@styled-icons/remix-fill'
+/* eslint-enable import/no-extraneous-dependencies */
+import { Container, Overlay, Close, Title, Text, Subtext, Form, Submit, InputText } from './styles'
 import useHover from '../../hooks/useHover'
 
 const ModalContext = React.createContext()
@@ -55,19 +57,17 @@ Modal.Submit = function ModalSubmit({ children, ...restProps }) {
   return <Submit {...restProps}>{children}</Submit>
 }
 
-Modal.InputText = React.forwardRef(({ children, type = 'text', ...restProps }, ref) => {
-  return (
-    <InputText type={type} ref={ref} {...restProps}>
-      {children}
-    </InputText>
-  )
-})
+Modal.InputText = React.forwardRef(({ children, type = 'text', ...restProps }, ref) => (
+  <InputText type={type} ref={ref} {...restProps}>
+    {children}
+  </InputText>
+))
 
 Modal.InputText.propTypes = {
   type: PropTypes.string
 }
 
-Modal.Close = function ModalClose({ children, ...restProps }) {
+Modal.Close = function ModalClose({ ...restProps }) {
   const [isHovered, hoverRef] = useHover()
   const { closeModal } = useContext(ModalContext)
 

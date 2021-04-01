@@ -30,7 +30,9 @@ export default function Playarea({
 
   const ratio = isVertical ? 1 / aspectRatio : aspectRatio
 
-  let parentHeight, parentWidth, parent
+  let parentHeight
+  let parentWidth
+  let parent
   if (containerRef && containerRef.current) {
     parent = containerRef.current.parentElement
     parentHeight = containerRef.current.parentElement.clientHeight
@@ -119,13 +121,11 @@ Playarea.Board.propTypes = {
   paddingFraction: PropTypes.number
 }
 
-Playarea.BoardPiecesContainer = React.forwardRef(({ ...restProps }, ref) => {
-  return (
-    <BoardPiecesOuter>
-      <BoardPiecesContainer ref={ref} {...restProps} />
-    </BoardPiecesOuter>
-  )
-})
+Playarea.BoardPiecesContainer = React.forwardRef(({ ...restProps }, ref) => (
+  <BoardPiecesOuter>
+    <BoardPiecesContainer ref={ref} {...restProps} />
+  </BoardPiecesOuter>
+))
 
 Playarea.Pieces = function PlayareaPieces({ children, ...restProps }) {
   const { isVertical, padding } = useContext(PlayareaContext)
@@ -155,12 +155,12 @@ Playarea.Pieces = function PlayareaPieces({ children, ...restProps }) {
 }
 
 Playarea.Piece = function PlayareaPiece({
-  style,
+  style = {},
   game,
   name,
   color,
   sizeFraction = 0.1,
-  holderColor,
+  holderColor = undefined,
   ...restProps
 }) {
   const { basis } = useContext(PlayareaContext)
@@ -210,10 +210,10 @@ Playarea.Piece = function PlayareaPiece({
 }
 
 Playarea.Piece.propTypes = {
-  style: PropTypes.object,
-  game: PropTypes.string,
-  name: PropTypes.string,
-  color: PropTypes.string,
+  style: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+  game: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
   sizeFraction: PropTypes.number,
   holderColor: PropTypes.string
 }

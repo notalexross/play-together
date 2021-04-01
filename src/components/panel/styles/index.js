@@ -34,7 +34,7 @@ export const Container = styled.section`
         return 'direction: ltr;'
       }
       default:
-        break
+        return ''
     }
   }}
 
@@ -43,15 +43,13 @@ export const Container = styled.section`
   }
 `
 
-export const Test = styled.div``
-
 export const Inner = styled.div`
   display: Flex;
   flex-direction: column;
   box-sizing: border-box;
   height: 100%;
   direction: ltr;
-  width: ${({ width }) => (width ? width : '100%')};
+  width: ${({ width }) => width || '100%'};
 `
 
 export const Header = styled.div`
@@ -83,7 +81,8 @@ export const Collapse = styled.div`
   transition: transform 0.2s;
 
   ${({ direction, collapsed }) => {
-    let opposite, offset
+    let opposite
+    let offset
     switch (direction) {
       case 'left': {
         opposite = 'right'

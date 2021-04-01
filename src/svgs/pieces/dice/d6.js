@@ -1,6 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-function SvgComponent({ customvalue, ...restProps }, svgRef) {
+const SvgComponent = React.forwardRef(({ customvalue = 0, ...restProps }, svgRef) => {
   const number = customvalue
 
   const dots = [
@@ -58,7 +59,10 @@ function SvgComponent({ customvalue, ...restProps }, svgRef) {
       </g>
     </svg>
   )
+})
+
+SvgComponent.propTypes = {
+  customvalue: PropTypes.number
 }
 
-const ForwardRef = React.forwardRef(SvgComponent)
-export default ForwardRef
+export default SvgComponent

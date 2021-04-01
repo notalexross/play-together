@@ -45,5 +45,7 @@ export default function NicknameModal({
 }
 
 NicknameModal.propTypes = {
+  isOpen: PropTypes.bool,
+  setIsOpen: PropTypes.func,
   onComplete: PropTypes.func
 }

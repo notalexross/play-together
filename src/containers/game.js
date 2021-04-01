@@ -4,8 +4,8 @@ import { windowContext } from '../context/window'
 import { gameContext } from '../context/game'
 import { settingsContext } from '../context/settings'
 import { localSettingsContext } from '../context/local-settings'
-import MovablePiece from './movable-piece.js'
-import FavoritablePiece from './favoritable-piece.js'
+import MovablePiece from './movable-piece'
+import FavoritablePiece from './favoritable-piece'
 
 export default function GameContainer() {
   const { containerRef, pieces, addPiece, getRelativePosition } = useContext(gameContext)

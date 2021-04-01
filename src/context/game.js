@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useParams } from 'react-router-dom'
-import { firebaseContext } from '../context/firebase'
-import { localSettingsContext } from '../context/local-settings'
+import { firebaseContext } from './firebase'
+import { localSettingsContext } from './local-settings'
+import alertError from '../utils/alert-error'
 
 const context = React.createContext()
 const { Provider } = context
@@ -15,7 +16,7 @@ function ContextProvider({ children }) {
   const containerRef = useRef()
   const lastUpdated = useRef()
 
-  const firebase = window.firebase
+  const { firebase } = window
   const database = firebase.database()
 
   const allowedProperties = ['game', 'name', 'color', 'size', 'holder', 'position', 'custom_value']
@@ -25,13 +26,31 @@ function ContextProvider({ children }) {
 
   const areTooManyPieces = (numberToAdd = 1) => {
     if (Object.keys(pieces).length + numberToAdd > maxPieces) {
-      alert(
+      alertError(
         `Adding ${numberToAdd} piece(s) will put you over the ${maxPieces} pieces limit, remove some before trying again`
       )
       return true
     }
 
     return false
+  }
+
+  const updatePieceInDatabase = (pieceId, properties) => {
+    const filteredEntries = Object.entries(properties).filter(entry => (
+      allowedProperties.includes(entry[0])
+    ))
+    const mappedEntries = filteredEntries.map(([key, value]) => [
+      `details/${pieceId}/${key}`,
+      value
+    ])
+    if (lastUpdated.current !== pieceId) {
+      // keep track of time of last update, for layering
+      mappedEntries.push([`ids/${pieceId}`, firebase.database.ServerValue.TIMESTAMP])
+      // using server timestamp causes child_updated to fire twice
+    }
+
+    const updates = Object.fromEntries(mappedEntries)
+    piecesRef.update(updates, alertError)
   }
 
   const addPieceToDatabase = ({
@@ -46,25 +65,7 @@ function ContextProvider({ children }) {
     const pieceId = pieceRef.key
     pieceRef.set(firebase.database.ServerValue.TIMESTAMP, alertError)
     updatePieceInDatabase(pieceId, { id: pieceId, game, name, color, size, holder, position })
-    console.log(`added piece to database: ${pieceId}`)
     return pieceId
-  }
-
-  const updatePieceInDatabase = (pieceId, properties) => {
-    const filteredEntries = Object.entries(properties).filter(entry =>
-      allowedProperties.includes(entry[0])
-    )
-    const mappedEntries = filteredEntries.map(([key, value]) => {
-      return [`details/${pieceId}/${key}`, value]
-    })
-    if (lastUpdated.current !== pieceId) {
-      // keep track of time of last update, for layering
-      mappedEntries.push([`ids/${pieceId}`, firebase.database.ServerValue.TIMESTAMP])
-      // using server timestamp causes child_updated to fire twice
-    }
-
-    const updates = Object.fromEntries(mappedEntries)
-    piecesRef.update(updates, alertError)
   }
 
   const removePieceFromDatabase = pieceId => {
@@ -72,18 +73,11 @@ function ContextProvider({ children }) {
     const detailRef = piecesRef.child(`details/${pieceId}`)
     idRef.remove()
     detailRef.remove()
-    console.log(`removed piece from database: ${pieceId}`)
   }
 
   const removeAllPiecesFromDatabase = () => {
     // TODO the local delete triggers before confirmed on database... not a huge deal, but causes issues if permissions not set right
     piecesRef.remove()
-    console.log(`removed all pieces from database`)
-  }
-
-  const alertError = error => {
-    error && alert(error)
-    error && console.error(error)
   }
 
   const trackProperty = (pieceId, property, callback) => {
@@ -139,8 +133,8 @@ function ContextProvider({ children }) {
 
   useEffect(() => {
     const onPieceRemovedFromDatabase = pieceId => {
-      setPieces(pieces => {
-        const newPieces = { ...pieces }
+      setPieces(state => {
+        const newPieces = { ...state }
         delete newPieces[pieceId]
         return newPieces
       })
@@ -148,7 +142,7 @@ function ContextProvider({ children }) {
 
     const onPieceAddedToDatabase = (pieceId, value = true, pieceUpdated = false) => {
       if (pieceUpdated) lastUpdated.current = pieceId
-      setPieces(pieces => ({ ...pieces, [pieceId]: value }))
+      setPieces(state => ({ ...state, [pieceId]: value }))
     }
 
     const initPiecesListener = () => {
@@ -158,7 +152,6 @@ function ContextProvider({ children }) {
           const pieceId = snapshot.key
           const value = snapshot.val()
           onPieceAddedToDatabase(pieceId, value, false)
-          console.log(`(listener) new piece: ${pieceId}`)
         },
         alertError
       )
@@ -169,7 +162,6 @@ function ContextProvider({ children }) {
           const pieceId = snapshot.key
           const value = snapshot.val()
           onPieceAddedToDatabase(pieceId, value, true)
-          console.log(`(listener) piece brought to front: ${pieceId}`)
         },
         alertError
       )
@@ -178,7 +170,6 @@ function ContextProvider({ children }) {
         snapshot => {
           const pieceId = snapshot.key
           onPieceRemovedFromDatabase(pieceId)
-          console.log(`(listener) piece removed: ${pieceId}`)
         },
         alertError
       )
@@ -191,7 +182,7 @@ function ContextProvider({ children }) {
     initPiecesListener()
 
     return removePiecesListener
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

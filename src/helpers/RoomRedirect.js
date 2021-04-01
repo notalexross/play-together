@@ -17,7 +17,7 @@ export default function RoomRedirect({ children }) {
       if (user.displayName) {
         render = children
       } else {
-        render = <NicknameModal onComplete={() => {}} isOpen={true} />
+        render = <NicknameModal onComplete={() => {}} isOpen />
       }
     } else {
       render = <Redirect to={ROUTES.HOME} />
@@ -30,7 +30,7 @@ export default function RoomRedirect({ children }) {
       setRoomExists(exists)
       setIsLoading(false)
     })
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
   return render

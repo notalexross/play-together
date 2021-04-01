@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { GlobalStyle } from './styles/global'
+import GlobalStyle from './styles/global'
 import { PreventTransitionsOnResize } from './components'
 import * as ROUTES from './constants/routes'
 import { WindowContextProvider } from './context/window'

@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react'
+/* eslint-disable import/no-extraneous-dependencies */
 import { ChevronRight } from '@styled-icons/boxicons-regular/ChevronRight'
 import { ChevronDown } from '@styled-icons/boxicons-regular/ChevronDown'
+/* eslint-enable import/no-extraneous-dependencies */
 import { Container, Item, Header, Body, BodyInner, IconWrapper } from './styles'
 
 const ToggleContext = React.createContext()

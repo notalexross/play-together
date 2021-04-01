@@ -13,10 +13,8 @@ Feature.Text = function FeatureText({ children, ...restProps }) {
   return <Text {...restProps}>{children}</Text>
 }
 
-Feature.Button = React.forwardRef(({ children, ...restProps }, ref) => {
-  return (
-    <Button ref={ref} {...restProps}>
-      {children}
-    </Button>
-  )
-})
+Feature.Button = React.forwardRef(({ children, ...restProps }, ref) => (
+  <Button ref={ref} {...restProps}>
+    {children}
+  </Button>
+))

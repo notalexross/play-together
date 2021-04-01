@@ -41,9 +41,7 @@ export const Body = styled.div`
   }
 `
 
-export const BodyInner = styled.span.attrs(({ href }) => ({
-  as: href && 'a'
-}))`
+export const BodyInner = styled.span.attrs(({ href }) => ({ as: href && 'a' }))`
   display: block;
   user-select: none;
   padding: 0.25em 1em 0.5em 1em;

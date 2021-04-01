@@ -6,7 +6,7 @@ import GameContainer from './game'
 import ChatContainer from './chat'
 import { windowContext } from '../context/window'
 import { ChatContextProvider } from '../context/chat'
-import useForceRender from '../hooks/useForceRender.js'
+import useForceRender from '../hooks/useForceRender'
 
 export default function RoomContainer() {
   const [chatIsExpanded, setChatIsExpanded] = useState(false)
@@ -22,17 +22,18 @@ export default function RoomContainer() {
   const isSmall = windowWidth <= 800
 
   const appHeight = document.body.scrollHeight
-  let settingsExpandHeight,
-    settingsHeaderBottom,
-    settingsBodyStyle,
-    chatExpandedStyle,
-    chatExpandHeight,
-    settingsHeaderAbsBottom
+  let settingsExpandHeight
+  let settingsHeaderBottom
+  let settingsBodyStyle
+  let chatExpandedStyle
+  let chatExpandHeight
+  let settingsHeaderAbsBottom
 
   if (settingsHeaderContainerRef && settingsHeaderContainerRef.current) {
     settingsHeaderAbsBottom = settingsHeaderContainerRef.current.getBoundingClientRect().bottom
     settingsHeaderBottom = parseInt(
-      window.getComputedStyle(settingsHeaderContainerRef.current).height
+      window.getComputedStyle(settingsHeaderContainerRef.current).height,
+      10
     )
     settingsExpandHeight = appHeight - settingsHeaderAbsBottom - 87
     // 87 from trial and error... can't use main panel bottom, as changes when chat opens (whilst settings open)
@@ -80,7 +81,7 @@ export default function RoomContainer() {
   useEffect(() => {
     // without this, the playarea renders before the chat panel and so the playarea parent height used is out of date.
     forceRender()
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatIsExpanded, settingsIsExpanded])
 
   // added forceRender to onTransitionEnd event of collapse button, so playarea panel gets updated parent width
@@ -88,11 +89,11 @@ export default function RoomContainer() {
     <Panel.Container ref={panelContainerRef}>
       <Panel
         style={!isSmall && !isLargest ? { position: 'absolute' } : null}
-        width={isSmall ? `100%` : '350px'}
+        width={isSmall ? '100%' : '350px'}
         startCollapsed={false}
       >
         <Panel.Header innerRef={settingsHeaderContainerRef} onClick={handleSettingsHeaderClick}>
-          <Panel.Collapse direction={'left'} onTransitionEnd={forceRender} />
+          <Panel.Collapse direction="left" onTransitionEnd={forceRender} />
           <Panel.Title>Settings</Panel.Title>
         </Panel.Header>
         {(!isSmall || settingsIsExpanded) && (
@@ -109,10 +110,10 @@ export default function RoomContainer() {
       <Panel
         innerRef={chatContainerRef}
         style={chatExpandedStyle}
-        width={isSmall ? `100%` : '350px'}
+        width={isSmall ? '100%' : '350px'}
       >
         <Panel.Header onClick={() => handleChatExpand()}>
-          <Panel.Collapse direction={'right'} onTransitionEnd={forceRender} />
+          <Panel.Collapse direction="right" onTransitionEnd={forceRender} />
           <Panel.Title>Chat</Panel.Title>
         </Panel.Header>
         <Panel.Body>

@@ -4,11 +4,11 @@ export default function roll(
 ) {
   const randomNumber = Math.ceil(Math.random() * sides)
   callback(randomNumber)
-  time *= 1.3
-  
-  if (time < 500) {
+  const newTime = time * 1.3
+
+  if (newTime < 500) {
     setTimeout(() => {
-      roll(callback, { sides, time, maxTime, multiplier })
-    }, time)
+      roll(callback, { sides, time: newTime, maxTime, multiplier })
+    }, newTime)
   }
 }

@@ -1,8 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+/* eslint-disable import/no-extraneous-dependencies */
 import { CollapseRight } from '@styled-icons/open-iconic/CollapseRight'
 import { CollapseLeft } from '@styled-icons/open-iconic/CollapseLeft'
-import { Tooltip } from '..'
+/* eslint-enable import/no-extraneous-dependencies */
+import Tooltip from '../tooltip'
 import {
   Panels,
   Container,
@@ -48,13 +50,11 @@ Panel.propTypes = {
   startCollapsed: PropTypes.bool
 }
 
-Panel.Container = React.forwardRef(({ children, ...restProps }, ref) => {
-  return (
-    <Panels ref={ref} {...restProps}>
-      {children}
-    </Panels>
-  )
-})
+Panel.Container = React.forwardRef(({ children, ...restProps }, ref) => (
+  <Panels ref={ref} {...restProps}>
+    {children}
+  </Panels>
+))
 
 Panel.Header = function PanelHeader({ children, innerRef, ...restProps }) {
   return (
@@ -80,7 +80,7 @@ Panel.Collapse = function PanelCollapse({ direction = 'right', ...restProps }) {
   const { isCollapsed, setIsCollapsed, setCollapseDirection } = useContext(CollapseContext)
   const [tooltip, setTooltip] = useState()
 
-  const opposite = direction === 'left' ? 'right' : direction === 'right' ? 'left' : null
+  const opposite = direction === 'left' ? 'right' : 'left'
 
   const handleClick = () => {
     setIsCollapsed(prev => !prev)

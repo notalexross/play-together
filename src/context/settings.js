@@ -10,13 +10,12 @@ function ContextProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true)
   const [globalSettings, setGlobalSettings] = useState()
 
-  const firebase = window.firebase
+  const { firebase } = window
   const firestore = firebase.firestore()
   const roomRef = firestore.collection('rooms').doc(roomId)
   const settingsRef = roomRef.collection('settings').doc('settings')
 
   const changeGlobalSetting = (setting, value) => {
-    console.log(`changing ${setting} to ${value}`)
     settingsRef.set({ [setting]: value }, { merge: true })
   }
 
@@ -33,15 +32,16 @@ function ContextProvider({ children }) {
     }
 
     const initSettingsListener = () => {
-      return settingsRef.onSnapshot(snapshot => {
+      const listener = settingsRef.onSnapshot(snapshot => {
         const settings = snapshot.data()
         updateDefaultSettings(settings)
         setGlobalSettings(settings)
       })
+      return listener
     }
 
     return initSettingsListener()
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

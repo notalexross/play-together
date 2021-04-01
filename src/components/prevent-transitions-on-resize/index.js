@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { PreventTransitions } from './styles'
+import PreventTransitions from './styles'
 
 export default function PreventTransitionsOnResize() {
   useEffect(() => {

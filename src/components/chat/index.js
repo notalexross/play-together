@@ -41,20 +41,16 @@ Chat.TextInput = React.forwardRef(({ value, maxLength = 100, ...restProps }, ref
 
   if (value.length === 0) {
     rowCount.current = 1
-  } else {
-    if (
-      ref.current &&
-      rowCount.current < 3 &&
-      ref.current.scrollHeight > prevScrollHeight.current
-    ) {
-      rowCount.current++
-    }
+  } else if (
+    ref.current &&
+    rowCount.current < 3 &&
+    ref.current.scrollHeight > prevScrollHeight.current
+  ) {
+    rowCount.current += 1
   }
 
   useEffect(() => {
-    setError(error =>
-      !error && value.length === maxLength ? `Reached ${maxLength} Character Limit` : ''
-    )
+    setError(err => (!err && value.length === maxLength ? `Reached ${maxLength} Character Limit` : ''))
   }, [value, maxLength, setError])
 
   return (
@@ -78,15 +74,13 @@ Chat.TextInput.propTypes = {
   maxLength: PropTypes.number
 }
 
-Chat.Log = React.forwardRef(({ children, isExpanded = false, ...restProps }, ref) => {
-  return (
-    <Log isExpanded={isExpanded}>
-      <LogInner ref={ref} {...restProps}>
-        {children}
-      </LogInner>
-    </Log>
-  )
-})
+Chat.Log = React.forwardRef(({ children, isExpanded = false, ...restProps }, ref) => (
+  <Log isExpanded={isExpanded}>
+    <LogInner ref={ref} {...restProps}>
+      {children}
+    </LogInner>
+  </Log>
+))
 
 Chat.Log.propTypes = {
   isExpanded: PropTypes.bool
@@ -100,7 +94,7 @@ Chat.Timestamp = function ChatTimestamp({ children, ...restProps }) {
   return <Timestamp {...restProps}>{children}</Timestamp>
 }
 
-Chat.Sender = function ChatSender({ children, color, ...restProps }) {
+Chat.Sender = function ChatSender({ children, color = '#fff', ...restProps }) {
   return (
     <Sender color={color} {...restProps}>
       {children}
@@ -144,7 +138,7 @@ Chat.Heading = function ChatHeading({ children, ...restProps }) {
   )
 }
 
-Chat.User = function ChatUser({ children, color, ...restProps }) {
+Chat.User = function ChatUser({ children, color = '#fff', ...restProps }) {
   return (
     <User color={color} {...restProps}>
       {children}

@@ -67,7 +67,8 @@ export const Arrow = styled.div`
   height: 0;
 
   ${({ side, arrowLength, arrowWidth }) => {
-    let transform, oppositeSide
+    let transform
+    let oppositeSide
     switch (side) {
       case 'top': {
         transform = 'translateY(94%)'

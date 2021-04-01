@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
-export const PreventTransitions = createGlobalStyle`
+export default createGlobalStyle`
   .prevent-transitions * {
     transition: none !important;
   }

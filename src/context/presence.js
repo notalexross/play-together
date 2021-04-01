@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from 'react'
 import { useParams } from 'react-router-dom'
-import { firebaseContext } from '../context/firebase'
+import { firebaseContext } from './firebase'
+import alertError from '../utils/alert-error'
 
 const context = React.createContext()
 const { Provider } = context
@@ -12,12 +13,7 @@ function ContextProvider({ children }) {
   const [storedUsers, setStoredUsers] = useState({})
   const userListeners = useRef({})
 
-  const firebase = window.firebase
-
-  const alertError = error => {
-    error && alert(error)
-    error && console.error(error)
-  }
+  const { firebase } = window
 
   const addToStoredUsers = uids => {
     const firestore = firebase.firestore()
@@ -27,10 +23,9 @@ function ContextProvider({ children }) {
     filteredUids.forEach(uid => {
       const query = usersRef.doc(uid)
       query.get().then(doc => {
-        const displayName = doc.data().displayName
-        const color = doc.data().color
-        setStoredUsers(storedUsers => ({
-          ...storedUsers,
+        const { displayName, color } = doc.data()
+        setStoredUsers(state => ({
+          ...state,
           [uid]: {
             displayName,
             color
@@ -54,19 +49,18 @@ function ContextProvider({ children }) {
       connectedRef.on(
         'value',
         snap => {
-          console.log(new Date())
-
           if (snap.val() === true) {
             const connection = connectionsRef.push()
             connection
               .onDisconnect()
-              .remove(err => err && console.error('could not establish onDisconnect event', err))
+              .remove(err => {
+                if (err) {
+                  console.error('could not establish onDisconnect event', err)
+                }
+              })
               .then(() => {
                 connection.set(true)
-                console.log('going online: tracking presence')
               })
-          } else {
-            console.log('connection lost')
           }
         },
         alertError
@@ -77,7 +71,6 @@ function ContextProvider({ children }) {
     const goOffline = () => {
       database.goOffline()
       connectedRef.off()
-      console.log('going offline')
     }
 
     const addUserListener = uid => {
@@ -87,11 +80,9 @@ function ContextProvider({ children }) {
       const newListener = query.onSnapshot(snapshot => {
         if (snapshot.metadata.hasPendingWrites) return
         if (!snapshot.data()) return
-        console.log(`updating user: ${uid}`)
-        const displayName = snapshot.data().displayName
-        const color = snapshot.data().color
-        setStoredUsers(storedUsers => ({
-          ...storedUsers,
+        const { displayName, color } = snapshot.data()
+        setStoredUsers(state => ({
+          ...state,
           [uid]: {
             displayName,
             color
@@ -132,7 +123,7 @@ function ContextProvider({ children }) {
         'child_removed',
         snapshot => {
           if (!snapshot) return
-          setOnlineUsers(users => users.filter(user => user !== snapshot.key))
+          setOnlineUsers(users => users.filter(key => key !== snapshot.key))
           removeUserListener(snapshot.key)
         },
         alertError
@@ -140,7 +131,6 @@ function ContextProvider({ children }) {
     }
 
     initPresenceListeners()
-    console.log('mounting presence listeners')
     goOnline()
 
     return () => {

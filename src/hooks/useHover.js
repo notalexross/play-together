@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from 'react'
 
-export default function useHover(hoverRef) {
+export default function useHover(componentRef) {
   const [isHovered, setIsHovered] = useState(false)
   const defaultRef = useRef(null)
 
-  hoverRef = hoverRef || defaultRef
+  const hoverRef = componentRef || defaultRef
 
   useEffect(() => {
     const ref = hoverRef.current

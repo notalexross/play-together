@@ -19,23 +19,21 @@ function ContextProvider({ children }) {
 
   const globalSettingsGame = globalSettings && globalSettings.game
   const localSettingsPiecesGroup = localSettings && localSettings.piecesGroup
-  const gameSettings = gamesConfig[globalSettingsGame] || gamesConfig['default']
+  const gameSettings = gamesConfig[globalSettingsGame] || gamesConfig.default
 
-  const firebase = window.firebase
+  const { firebase } = window
   const firestore = firebase.firestore()
   const userRef = firestore.collection('users').doc(user.uid)
   const settingsRef = userRef.collection('settings').doc('settings')
   const favoritesRef = userRef.collection('settings').doc('favorites')
 
   const changeLocalSetting = (setting, value) => {
-    console.log(`changing ${setting} to ${value}`)
     settingsRef.set({ [setting]: value }, { merge: true })
   }
 
-  const rotatePlayarea = newAngle => {
-    if (newAngle === undefined) {
-      newAngle = (localSettings.rotation + gameSettings.rotationIncrement) % 360
-    }
+  const rotatePlayarea = to => {
+    const newAngle =
+      to !== undefined ? to : (localSettings.rotation + gameSettings.rotationIncrement) % 360
 
     changeLocalSetting('rotation', newAngle)
   }
@@ -51,9 +49,9 @@ function ContextProvider({ children }) {
     return [untranslatedX, untranslatedY]
   }
 
-  const getUnrotatedPosition = (mouseX, mouseY) => {
-    return getRotatedPosition(mouseX, mouseY, -localSettings.rotation)
-  }
+  const getUnrotatedPosition = (mouseX, mouseY) => (
+    getRotatedPosition(mouseX, mouseY, -localSettings.rotation)
+  )
 
   const addToFavorites = piece => {
     if (favorites.some(favorite => favorite.id === piece.id)) return
@@ -81,18 +79,20 @@ function ContextProvider({ children }) {
     }
 
     const initSettingsListener = () => {
-      return settingsRef.onSnapshot(snapshot => {
+      const listener = settingsRef.onSnapshot(snapshot => {
         const settings = snapshot.data()
         updateDefaultSettings(settings)
         setLocalSettings(settings)
       })
+      return listener
     }
 
     const initFavoritesListener = () => {
-      return favoritesRef.onSnapshot(snapshot => {
+      const listener = favoritesRef.onSnapshot(snapshot => {
         const data = snapshot.data() && snapshot.data().pieces
         data && setFavorites(data)
       })
+      return listener
     }
 
     const settingsListener = initSettingsListener()
@@ -102,7 +102,7 @@ function ContextProvider({ children }) {
       settingsListener()
       favoritesListener()
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
@@ -115,8 +115,9 @@ function ContextProvider({ children }) {
         setPiecesGroup(favorites)
       } else {
         const set = setsConfig[localSettingsPiecesGroup] || []
-        !set.length &&
-          console.log('remember to add new pieces to config files before trying to use them!')
+        if (!set.length) {
+          console.error('remember to add new pieces to config files before trying to use them!')
+        }
         const setMapped = set.map(piece => ({ id: piece, ...piecesConfig[piece] }))
         setPiecesGroup(setMapped)
       }
@@ -134,7 +135,7 @@ function ContextProvider({ children }) {
     if (globalSettingsGame) {
       changeLocalSetting('piecesGroup', globalSettingsGame)
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalSettingsGame])
 
   return (

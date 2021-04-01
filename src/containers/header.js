@@ -1,13 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react'
+/* eslint-disable import/no-extraneous-dependencies */
 import { Copy as CopyEmpty } from '@styled-icons/boxicons-regular/Copy'
 import { Copy as CopyFilled } from '@styled-icons/boxicons-solid/Copy'
 import { EditBox as EditBoxEmpty } from '@styled-icons/remix-line'
 import { EditBox as EditBoxFilled } from '@styled-icons/remix-fill'
+/* eslint-enable import/no-extraneous-dependencies */
 import * as ROUTES from '../constants/routes'
-import { Hover } from '../components'
+import { Hover, Header, Tooltip, ColorPicker } from '../components'
 import NicknameModal from '../modals/nickname-modal'
-import { Header, Tooltip, ColorPicker } from '../components'
-import useHover from '../hooks/useHover.js'
+import useHover from '../hooks/useHover'
 import { windowContext } from '../context/window'
 import { firebaseContext } from '../context/firebase'
 
@@ -25,16 +26,13 @@ export default function HeaderContainer() {
   let renderUrlCopyField
   if (isLarge) {
     renderUrlCopyField = <Header.TextCopy>{window.location.href}</Header.TextCopy>
+  } else if (isHovered) {
+    renderUrlCopyField = <CopyFilled style={{ height: '20px', width: '20px' }} />
   } else {
-    if (isHovered) {
-      renderUrlCopyField = <CopyFilled style={{ height: '20px', width: '20px' }} />
-    } else {
-      renderUrlCopyField = <CopyEmpty style={{ height: '20px', width: '20px' }} />
-    }
+    renderUrlCopyField = <CopyEmpty style={{ height: '20px', width: '20px' }} />
   }
 
   const handleClick = () => {
-    console.log('copying')
     const copyField = document.createElement('input')
     copyField.style = 'position: absolute; left: -1000px; top: -1000px'
     copyField.value = window.location.href
@@ -43,6 +41,10 @@ export default function HeaderContainer() {
     document.execCommand('copy')
     document.body.removeChild(copyField)
     setTooltip('copied')
+  }
+
+  const handleKeyUp = event => {
+    event.key === 'Enter' && handleClick()
   }
 
   const handleCloseColorPicker = () => {
@@ -68,8 +70,14 @@ export default function HeaderContainer() {
       <Header.Wrapper style={{ flex: 2 }}>
         <Header.Text style={{ order: isSmall ? '1' : '0' }}>
           {isSmall ? null : 'Shareable Link:'}
-          <Tooltip tooltip={tooltip} side={isLarge ? 'right' : isSmall ? 'left' : 'bottom'}>
-            <div ref={hoverRef} onClick={handleClick}>
+          <Tooltip tooltip={tooltip} side={(isLarge && 'right') || (isSmall && 'left') || 'bottom'}>
+            <div
+              ref={hoverRef}
+              role="button"
+              tabIndex={0}
+              onClick={handleClick}
+              onKeyUp={handleKeyUp}
+            >
               {renderUrlCopyField}
             </div>
           </Tooltip>

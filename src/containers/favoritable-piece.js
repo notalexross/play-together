@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react'
 import PropTypes from 'prop-types'
+/* eslint-disable import/no-extraneous-dependencies */
+import { Star } from '@styled-icons/bootstrap/Star'
+import { StarFill } from '@styled-icons/bootstrap/StarFill'
+/* eslint-enable import/no-extraneous-dependencies */
 import { localSettingsContext } from '../context/local-settings'
 import PlayareaContext from '../context/playarea'
 import { Playarea } from '../components'
-import { Star } from '@styled-icons/bootstrap/Star'
-import { StarFill } from '@styled-icons/bootstrap/StarFill'
 import useHover from '../hooks/useHover'
 
 export default function FavoritablePiece({
@@ -31,6 +33,10 @@ export default function FavoritablePiece({
     isFavorite ? removeFromFavorites(piece.id) : addToFavorites(piece)
   }
 
+  const handleKeyUp = event => {
+    event.key === 'Enter' && handleFavoriting()
+  }
+
   useEffect(() => {
     const inFavorites = favorites.some(favorite => favorite.id === piece.id)
     setIsFavorite(inFavorites)
@@ -44,7 +50,10 @@ export default function FavoritablePiece({
       <Playarea.Piece {...restProps} />
       <div
         style={{ position: 'absolute', bottom: 0, right: 0, cursor: 'pointer' }}
+        role="button"
+        tabIndex={0}
         onClick={handleFavoriting}
+        onKeyUp={handleKeyUp}
       >
         {Favorite}
       </div>

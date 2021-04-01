@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import FIREBASE_CONFIG from '../constants/firebase-config'
-import useForceRender from '../hooks/useForceRender.js'
+import useForceRender from '../hooks/useForceRender'
 
 const context = React.createContext()
 const { Provider } = context
@@ -11,12 +11,23 @@ function ContextProvider({ children }) {
   const [userColor, setUserColor] = useState()
   const forceRender = useForceRender()
 
-  const firebase = window.firebase
+  const { firebase } = window
 
-  const updateUserInDatabase = async (user, { color } = {}) => {
+  const randomBasicColor = () => {
+    const R = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
+    const G = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
+    const B = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
+    return `#${R}${G}${B}`
+  }
+
+  const updateLocalColor = newColor => {
+    setUserColor(newColor)
+    return newColor
+  }
+
+  const updateUserInDatabase = (user, { color } = {}) => {
     const usersRef = firebase.firestore().collection('users')
-
-    return await usersRef
+    usersRef
       .doc(user.uid)
       .set({
         displayName: user.displayName,
@@ -28,13 +39,12 @@ function ContextProvider({ children }) {
       })
   }
 
-  const setNickname = async newNickname => {
-    return await currentUser
+  const setNickname = newNickname => {
+    currentUser
       .updateProfile({
         displayName: newNickname
       })
       .then(() => {
-        console.log('updated display name')
         updateUserInDatabase(currentUser)
         forceRender()
       })
@@ -48,47 +58,27 @@ function ContextProvider({ children }) {
     updateUserInDatabase(currentUser, { color: newColor })
   }
 
-  const updateLocalColor = newColor => {
-    setUserColor(newColor)
-    return newColor
-  }
-
-  const randomBasicColor = () => {
-    const R = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
-    const G = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
-    const B = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
-    return `#${R}${G}${B}`
-  }
-
   const createRoom = async () => {
-    console.log('creating game room')
     const roomsRef = firebase.firestore().collection('rooms')
 
-    return await roomsRef
+    return roomsRef
       .add({
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         createdBy: currentUser.uid
       })
-      .then(docRef => {
-        console.log(`created room: ${docRef.id}`)
-        return docRef.id
-      })
+      .then(docRef => docRef.id)
       .catch(error => {
         console.error(error)
       })
   }
 
   const doesRoomExist = async roomId => {
-    console.log('checking if room exists')
     const roomsRef = firebase.firestore().collection('rooms')
     const docRef = roomsRef.doc(roomId)
 
-    return await docRef
+    return docRef
       .get()
-      .then(doc => {
-        console.log(`room ${doc.exists ? 'exists' : 'does not exist'}`)
-        return doc.exists
-      })
+      .then(doc => doc.exists)
       .catch(error => {
         console.error(error)
       })
@@ -110,12 +100,7 @@ function ContextProvider({ children }) {
 
       const listener = firebase.auth().onAuthStateChanged(user => {
         setCurrentUser(user)
-        if (user) {
-          console.log('signed in')
-        } else {
-          console.log('signed out')
-          signIn()
-        }
+        !user && signIn()
       })
 
       return listener
@@ -125,7 +110,7 @@ function ContextProvider({ children }) {
   }, [firebase])
 
   useEffect(() => {
-    if (!currentUser) return
+    if (!currentUser) return undefined
     setIsLoading(false)
 
     const usersRef = firebase.firestore().collection('users')
@@ -141,7 +126,7 @@ function ContextProvider({ children }) {
     })
 
     return listener
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser, firebase])
 
   return (

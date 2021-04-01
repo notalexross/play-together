@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { useParams } from 'react-router-dom'
-import { firebaseContext } from '../context/firebase'
-import { presenceContext } from '../context/presence'
+import { firebaseContext } from './firebase'
+import { presenceContext } from './presence'
 
 const context = React.createContext()
 const { Provider } = context
@@ -21,7 +21,6 @@ function ContextProvider({ children }) {
   const messagesRef = roomRef.collection('messages')
 
   const sendMessage = message => {
-    console.log('sending message')
     messagesRef.add({
       uid: user.uid,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -31,7 +30,6 @@ function ContextProvider({ children }) {
 
   useEffect(() => {
     const initMessaging = () => {
-      console.log('initialising messaging')
       const query = messagesRef
         .where('createdAt', '>', timeJoined.current)
         .orderBy('createdAt', 'desc')
@@ -46,13 +44,10 @@ function ContextProvider({ children }) {
           addToStoredUsers(uids)
         }
 
-        console.log('updating messages')
-
         setMessages(
           snapshot.docs.reverse().map(doc => {
-            const id = doc.id
-            const uid = doc.data().uid
-            const message = doc.data().content
+            const { id } = doc
+            const { uid, content } = doc.data()
             const time = doc.data().createdAt.toDate()
             const hours = time.getHours().toString().padStart(2, '0').slice(0, 2)
             const minutes = time.getMinutes().toString().padStart(2, '0').slice(0, 2)
@@ -61,7 +56,7 @@ function ContextProvider({ children }) {
               id,
               uid,
               timestamp: `${hours}:${minutes}`,
-              message
+              message: content
             }
           })
         )
@@ -69,7 +64,7 @@ function ContextProvider({ children }) {
     }
 
     return initMessaging()
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return <Provider value={{ sendMessage, messages }}>{children}</Provider>

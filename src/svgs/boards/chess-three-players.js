@@ -3,7 +3,7 @@ import * as React from 'react'
 function SvgComponent(props, svgRef) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2183 1891.3" ref={svgRef} {...props}>
-      <title>{'hexagon chessboard for three players'}</title>
+      <title>hexagon chessboard for three players</title>
       <path
         d="M690.219 3.033l-143 .03C366.302 317.534 184.84 631.69 3 945.627a413762.367 413762.367 0 01544.281 942.625h1088.532a413713.589 413713.589 0 01544.28-942.625 413735.261 413735.261 0 01-544.28-942.625c-315.198.01-630.396-.024-945.594.031z"
         fontSize={144}
@@ -661,7 +661,7 @@ function SvgComponent(props, svgRef) {
         transform="translate(25.125 1850.44)"
       >
         <tspan x={599.674} y={17.426}>
-          {'a'}
+          a
         </tspan>
       </text>
       <text
@@ -678,7 +678,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={454.358} y={216.006}>
-          {'1'}
+          1
         </tspan>
       </text>
       <text
@@ -695,7 +695,7 @@ function SvgComponent(props, svgRef) {
         transform="translate(25.125 1850.44)"
       >
         <tspan x={736.65} y={17.426}>
-          {'b'}
+          b
         </tspan>
       </text>
       <text
@@ -712,7 +712,7 @@ function SvgComponent(props, svgRef) {
         transform="translate(25.125 1850.44)"
       >
         <tspan x={854.848} y={17.426}>
-          {'c'}
+          c
         </tspan>
       </text>
       <text
@@ -729,7 +729,7 @@ function SvgComponent(props, svgRef) {
         transform="translate(25.125 1850.44)"
       >
         <tspan x={976.859} y={17.426}>
-          {'d'}
+          d
         </tspan>
       </text>
       <text
@@ -746,7 +746,7 @@ function SvgComponent(props, svgRef) {
         transform="translate(25.125 1850.44)"
       >
         <tspan x={1109.037} y={17.426}>
-          {'e'}
+          e
         </tspan>
       </text>
       <text
@@ -763,7 +763,7 @@ function SvgComponent(props, svgRef) {
         transform="translate(25.125 1850.44)"
       >
         <tspan x={1247.571} y={17.426}>
-          {'f'}
+          f
         </tspan>
       </text>
       <text
@@ -780,7 +780,7 @@ function SvgComponent(props, svgRef) {
         transform="translate(25.125 1850.44)"
       >
         <tspan x={1364.498} y={17.426}>
-          {'g'}
+          g
         </tspan>
       </text>
       <text
@@ -797,7 +797,7 @@ function SvgComponent(props, svgRef) {
         transform="translate(25.125 1850.44)"
       >
         <tspan x={1500.489} y={17.426}>
-          {'h'}
+          h
         </tspan>
       </text>
       <text
@@ -814,7 +814,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={451.994} y={89.894}>
-          {'2'}
+          2
         </tspan>
       </text>
       <text
@@ -831,7 +831,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={453.978} y={-39.6}>
-          {'3'}
+          3
         </tspan>
       </text>
       <text
@@ -848,7 +848,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={451.735} y={-161.43}>
-          {'4'}
+          4
         </tspan>
       </text>
       <text
@@ -865,7 +865,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={452.999} y={-293.338}>
-          {'5'}
+          5
         </tspan>
       </text>
       <text
@@ -882,7 +882,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={458.105} y={-417}>
-          {'6'}
+          6
         </tspan>
       </text>
       <text
@@ -899,7 +899,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={452.566} y={-540.134}>
-          {'7'}
+          7
         </tspan>
       </text>
       <text
@@ -916,7 +916,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={452.137} y={-665.44}>
-          {'8'}
+          8
         </tspan>
       </text>
       <text
@@ -933,7 +933,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1407.584} y={1779.659}>
-          {'12'}
+          12
         </tspan>
       </text>
       <text
@@ -950,7 +950,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1404.204} y={1641.929}>
-          {'11'}
+          11
         </tspan>
       </text>
       <text
@@ -967,7 +967,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1407.306} y={1521.598}>
-          {'10'}
+          10
         </tspan>
       </text>
       <text
@@ -984,7 +984,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1393.984} y={1390.781}>
-          {'9'}
+          9
         </tspan>
       </text>
       <text
@@ -1001,7 +1001,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1392.72} y={1258.873}>
-          {'4'}
+          4
         </tspan>
       </text>
       <text
@@ -1018,7 +1018,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1387.613} y={1135.211}>
-          {'3'}
+          3
         </tspan>
       </text>
       <text
@@ -1035,7 +1035,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1393.153} y={1012.077}>
-          {'2'}
+          2
         </tspan>
       </text>
       <text
@@ -1052,7 +1052,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1393.582} y={886.771}>
-          {'1'}
+          1
         </tspan>
       </text>
       <text
@@ -1069,7 +1069,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'h'}</tspan>
+        <tspan>h</tspan>
       </text>
       <text
         style={{
@@ -1085,7 +1085,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'g'}</tspan>
+        <tspan>g</tspan>
       </text>
       <text
         style={{
@@ -1101,7 +1101,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'f'}</tspan>
+        <tspan>f</tspan>
       </text>
       <text
         style={{
@@ -1117,7 +1117,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'e'}</tspan>
+        <tspan>e</tspan>
       </text>
       <text
         style={{
@@ -1133,7 +1133,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'i'}</tspan>
+        <tspan>i</tspan>
       </text>
       <text
         style={{
@@ -1149,7 +1149,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'j'}</tspan>
+        <tspan>j</tspan>
       </text>
       <text
         style={{
@@ -1165,7 +1165,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'k'}</tspan>
+        <tspan>k</tspan>
       </text>
       <text
         style={{
@@ -1181,7 +1181,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'l'}</tspan>
+        <tspan>l</tspan>
       </text>
       <text
         style={{
@@ -1197,7 +1197,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1828.911} y={-604.663}>
-          {'8'}
+          8
         </tspan>
       </text>
       <text
@@ -1214,7 +1214,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1829.827} y={-730.775}>
-          {'7'}
+          7
         </tspan>
       </text>
       <text
@@ -1231,7 +1231,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1829.048} y={-860.269}>
-          {'6'}
+          6
         </tspan>
       </text>
       <text
@@ -1248,7 +1248,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1829.007} y={-982.099}>
-          {'5'}
+          5
         </tspan>
       </text>
       <text
@@ -1265,7 +1265,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1828.665} y={-1114.007}>
-          {'9'}
+          9
         </tspan>
       </text>
       <text
@@ -1282,7 +1282,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1844.087} y={-1237.669}>
-          {'10'}
+          10
         </tspan>
       </text>
       <text
@@ -1299,7 +1299,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1842.173} y={-1360.804}>
-          {'11'}
+          11
         </tspan>
       </text>
       <text
@@ -1316,7 +1316,7 @@ function SvgComponent(props, svgRef) {
         fontFamily="Liberation Serif"
       >
         <tspan x={-1843.95} y={-1486.109}>
-          {'12'}
+          12
         </tspan>
       </text>
       <text
@@ -1333,7 +1333,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'l'}</tspan>
+        <tspan>l</tspan>
       </text>
       <text
         style={{
@@ -1349,7 +1349,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'k'}</tspan>
+        <tspan>k</tspan>
       </text>
       <text
         style={{
@@ -1365,7 +1365,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'j'}</tspan>
+        <tspan>j</tspan>
       </text>
       <text
         style={{
@@ -1381,7 +1381,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'i'}</tspan>
+        <tspan>i</tspan>
       </text>
       <text
         style={{
@@ -1397,7 +1397,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'d'}</tspan>
+        <tspan>d</tspan>
       </text>
       <text
         style={{
@@ -1413,7 +1413,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'c'}</tspan>
+        <tspan>c</tspan>
       </text>
       <text
         style={{
@@ -1429,7 +1429,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'b'}</tspan>
+        <tspan>b</tspan>
       </text>
       <text
         style={{
@@ -1445,7 +1445,7 @@ function SvgComponent(props, svgRef) {
         writingMode="lr"
         fontFamily="Liberation Serif"
       >
-        <tspan>{'a'}</tspan>
+        <tspan>a</tspan>
       </text>
     </svg>
   )

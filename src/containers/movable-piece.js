@@ -27,7 +27,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   const { getUnrotatedPosition } = useContext(localSettingsContext)
   const [game, setGame] = useState()
   const [name, setName] = useState()
-  const [color, setColor] = useState()
+  const [color, setColor] = useState('#fff')
   const [size, setSize] = useState()
   const [position, setPosition] = useState([-1000, -1000])
   const [holder, setHolder] = useState()
@@ -92,13 +92,13 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   }
 
   useEffect(() => {
-    trackProperty(pieceId, 'game', game => setGame(game))
-    trackProperty(pieceId, 'name', name => setName(name))
-    trackProperty(pieceId, 'color', color => setColor(color))
-    trackProperty(pieceId, 'size', size => setSize(size))
-    trackProperty(pieceId, 'position', position => setPosition(position))
-    trackProperty(pieceId, 'holder', holder => setHolder(holder))
-    trackProperty(pieceId, 'custom_value', customValue => setCustomValue(customValue))
+    trackProperty(pieceId, 'game', setGame)
+    trackProperty(pieceId, 'name', setName)
+    trackProperty(pieceId, 'color', setColor)
+    trackProperty(pieceId, 'size', setSize)
+    trackProperty(pieceId, 'position', setPosition)
+    trackProperty(pieceId, 'holder', setHolder)
+    trackProperty(pieceId, 'custom_value', setCustomValue)
 
     return () => {
       unTrackProperty(pieceId, 'game')
@@ -109,20 +109,20 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       unTrackProperty(pieceId, 'holder')
       unTrackProperty(pieceId, 'custom_value')
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    if (size === undefined) return
+    if (size === undefined) return undefined
 
     const onMouseMove = event => {
       const isTouch = !!event.touches
       isTouch || event.preventDefault() // so chat doesn't get highlighted as you drag pieces
       const mouseX = event.clientX !== undefined ? event.clientX : event.touches[0].clientX
       const mouseY = event.clientY !== undefined ? event.clientY : event.touches[0].clientY
-      const position = getRelativePosition(mouseX, mouseY)
+      const relativePosition = getRelativePosition(mouseX, mouseY)
 
-      !isDeleted.current && updatePieceInDatabase(pieceId, { position })
+      !isDeleted.current && updatePieceInDatabase(pieceId, { position: relativePosition })
     }
 
     const handleMouseUp = event => {
@@ -171,7 +171,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('wheel', handleWheelMove)
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [size !== undefined, heldPiece])
 
   useEffect(() => {
@@ -187,7 +187,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     if (holder && holder !== user.uid) {
       setAmOwner(false)
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [holder])
 
   return game && name ? (
