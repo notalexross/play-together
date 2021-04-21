@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useCallback } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 /* eslint-disable import/no-extraneous-dependencies */
@@ -11,7 +11,7 @@ import useHover from '../../hooks/useHover'
 const ModalContext = React.createContext()
 
 export default function Modal({ children, isOpen = false, setIsOpen = () => {}, ...restProps }) {
-  const closeModal = () => setIsOpen(false)
+  const closeModal = useCallback(() => setIsOpen(false), [setIsOpen])
 
   const handleClick = event => {
     if (event.target !== event.currentTarget) return
