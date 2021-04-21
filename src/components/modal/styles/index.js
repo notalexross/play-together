@@ -17,29 +17,29 @@ const fadeIn = keyframes`
 `
 
 export const Overlay = styled.div`
-  z-index: 100;
   display: flex;
   position: fixed;
   align-items: center;
   justify-content: center;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.6);
   color: #000;
   animation: ${fadeIn} 0.1s linear 1;
 `
 
 export const Container = styled.section`
-  position: relative;
-  background: white;
-  padding: 2rem;
-  border-radius: 0.4rem;
-  max-width: 350px;
   display: flex;
+  position: relative;
   flex-direction: column;
   align-items: center;
+  max-width: 350px;
+  padding: 2rem;
+  border-radius: 0.4rem;
+  background-color: white;
   user-select: none;
   animation: ${drop} 0.1s linear 1;
 `
@@ -48,8 +48,8 @@ export const Close = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
-  line-height: 0;
   width: 20px;
+  line-height: 0;
 
   &:hover {
     cursor: pointer;
@@ -64,8 +64,8 @@ export const Text = styled.p`
 
 export const Subtext = styled.p`
   margin-top: 0.2rem;
-  font-size: 1.2rem;
   opacity: 0.8;
+  font-size: 1.2rem;
 `
 
 export const Form = styled.form`
@@ -77,6 +77,6 @@ export const Submit = styled.button`
 `
 
 export const InputText = styled.input`
-  font-family: inherit;
   padding: 0.8rem 1.2rem;
+  font-family: inherit;
 `

@@ -11,10 +11,10 @@ export default createGlobalStyle`
   }
   
   body {
-    font-family: "Inter", "Roobert", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 1.3rem;
     background-color: #1e1e1e;
     color: #e5e5e5;
+    font-family: "Inter", "Roobert", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.3rem;
   }
   
   a {
@@ -25,19 +25,19 @@ export default createGlobalStyle`
   button {
     margin-top: 1rem;
     padding: 0.8em 1.2em;
-    text-align: center;
-    text-transform: uppercase;
+    background-color: #e5e5e5;
+    color: #1e1e1e;
+    border: none;
     font-family: inherit;
     font-weight: 700;
-    border: none;
-    background: #e5e5e5;
-    color: #1e1e1e;
+    text-align: center;
+    text-transform: uppercase;
     letter-spacing: 0.05em;
     user-select: none;
   }
 
   button:active {
-    background: white;
+    background-color: white;
   }
 
   button:hover {
@@ -78,13 +78,13 @@ export default createGlobalStyle`
   }
   /* Track */
   ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px rgba(255,255,255,0.2);
     border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(255,255,255,0.2);
   }
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.4);
     border: solid 1px rgba(255,255,255,0.4);
     border-radius: 10px;
+    background-color: rgba(0,0,0,0.4);
   }
 `

@@ -1,56 +1,44 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  position: relative;
   display: flex;
-  justify-content: ${({ align }) => align};
+  position: relative;
   align-items: ${({ align }) => align};
+  justify-content: ${({ align }) => align};
 `
 
 export const Tip = styled.span`
   display: flex;
   position: absolute;
-  justify-content: ${({ align }) => align};
   align-items: ${({ align }) => align};
-  background: #1e1e1e;
-  padding: 0.3em 0.6em;
-  border-radius: 0.4em;
-  filter: drop-shadow(0 0 1px #fff);
-  user-select: none;
-  width: max-content;
-  max-width: ${({ maxWidth }) => maxWidth};
-  line-height: initial;
-  pointer-events: none;
-  opacity: 0;
-
+  justify-content: ${({ align }) => align};
+  ${({ side }) => `${side}: 0;`}
   ${({ side, separation, arrowLength }) => {
-    let transform
     switch (side) {
-      case 'top': {
-        transform = `translateY(calc(-100% - ${separation} - ${arrowLength}))`
-        break
-      }
       case 'right': {
-        transform = `translateX(calc(100% + ${separation} + ${arrowLength}))`
-        break
+        return `transform: translateX(calc(100% + ${separation} + ${arrowLength}));`
       }
       case 'bottom': {
-        transform = `translateY(calc(100% + ${separation} + ${arrowLength}))`
-        break
+        return `transform: translateY(calc(100% + ${separation} + ${arrowLength}));`
       }
       case 'left': {
-        transform = `translateX(calc(-100% - ${separation} - ${arrowLength}))`
-        break
+        return `transform: translateX(calc(-100% - ${separation} - ${arrowLength}));`
       }
-      default:
-        break
+      default: {
+        return `transform: translateY(calc(-100% - ${separation} - ${arrowLength}));`
+      }
     }
-
-    return `
-      ${side}: 0;
-      transform: ${transform};
-    `
   }}
+  width: max-content;
+  max-width: ${({ maxWidth }) => maxWidth};
+  padding: 0.3em 0.6em;
+  border-radius: 0.4em;
+  background-color: #1e1e1e;
+  filter: drop-shadow(0 0 1px #fff);
+  opacity: 0;
+  line-height: initial;
+  pointer-events: none;
+  user-select: none;
 `
 
 export const Wrapper = styled.div`
@@ -63,45 +51,27 @@ export const Wrapper = styled.div`
 
 export const Arrow = styled.div`
   position: absolute;
-  width: 0;
-  height: 0;
-
-  ${({ side, arrowLength, arrowWidth }) => {
-    let transform
-    let oppositeSide
+  ${({ side }) => {
     switch (side) {
-      case 'top': {
-        transform = 'translateY(94%)'
-        oppositeSide = 'bottom'
-        break
-      }
       case 'right': {
-        transform = 'translateX(-94%)'
-        oppositeSide = 'left'
-        break
+        return 'left: 0;\ntransform: translateX(-94%);'
       }
       case 'bottom': {
-        transform = 'translateY(-94%)'
-        oppositeSide = 'top'
-        break
+        return 'top: 0;\ntransform: translateY(-94%);'
       }
       case 'left': {
-        transform = 'translateX(94%)'
-        oppositeSide = 'right'
-        break
+        return 'right: 0;\ntransform: translateX(94%);'
       }
-      default:
-        break
+      default: {
+        return 'bottom: 0;\ntransform: translateY(94%);'
+      }
     }
-
-    return `
-      border-left: ${arrowWidth} solid transparent;
-      border-top: ${arrowWidth} solid transparent;
-      border-bottom: ${arrowWidth} solid transparent;
-      border-right: ${arrowWidth} solid transparent;
-      border-${side}: ${arrowLength} solid #1e1e1e;
-      ${oppositeSide}: 0;
-      transform: ${transform};
-    `
   }}
+  width: 0;
+  height: 0;
+  border-left: ${({ arrowWidth }) => arrowWidth} solid transparent;
+  border-top: ${({ arrowWidth }) => arrowWidth} solid transparent;
+  border-bottom: ${({ arrowWidth }) => arrowWidth} solid transparent;
+  border-right: ${({ arrowWidth }) => arrowWidth} solid transparent;
+  border-${({ side, arrowLength }) => `${side}: ${arrowLength} solid #1e1e1e`};
 `

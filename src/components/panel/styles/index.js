@@ -13,30 +13,16 @@ export const Panels = styled.div`
 
 export const Wrapper = styled.div`
   ${({ width }) => !width && 'flex-grow: 1;'}
-  box-shadow: 0 0 10px #000;
   z-index: 1;
+  box-shadow: 0 0 10px #000;
 `
 
-// transition max-width instead of width, as max width wont change responsively.
-// if use width for transition then animation will play when change from small to large width.
 export const Container = styled.section`
   position: relative;
   height: 100%;
-  transition: max-width 0.2s;
   max-width: ${({ collapsed, width }) => (collapsed ? '0' : width)};
-
-  ${({ direction }) => {
-    switch (direction) {
-      case 'left': {
-        return 'direction: rtl;'
-      }
-      case 'right': {
-        return 'direction: ltr;'
-      }
-      default:
-        return ''
-    }
-  }}
+  transition: max-width 0.2s;
+  direction: ${({ direction }) => (direction === 'left' ? 'rtl' : 'ltr')};
 
   @media (max-width: 800px) {
     transition: none;
@@ -48,25 +34,25 @@ export const Inner = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   height: 100%;
-  direction: ltr;
   width: ${({ width }) => width || '100%'};
+  direction: ltr;
 `
 
 export const Header = styled.div`
-  border-bottom: solid 1px #444;
-  box-sizing: border-box;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background: #1e1e1e;
+  justify-content: center;
+  box-sizing: border-box;
+  border-bottom: solid 1px #444;
+  background-color: #1e1e1e;
 `
 
 export const Title = styled.h1`
   padding: 1em;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  user-select: none;
   font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  user-select: none;
 `
 
 export const Body = styled.div`
@@ -76,39 +62,21 @@ export const Body = styled.div`
 `
 
 export const Collapse = styled.div`
-  z-index: 1;
   position: absolute;
+  z-index: 1;
+  ${({ direction }) => (direction === 'left' ? 'right' : 'left')}: 0.5em;
+  transform: ${({ collapsed, direction }) => {
+    if (!collapsed) return ''
+    return direction === 'left' ? 'translateX(3em)' : 'translateX(-3em)'
+  }};
   transition: transform 0.2s;
-
-  ${({ direction, collapsed }) => {
-    let opposite
-    let offset
-    switch (direction) {
-      case 'left': {
-        opposite = 'right'
-        offset = '3em'
-        break
-      }
-      case 'right': {
-        opposite = 'left'
-        offset = '-3em'
-        break
-      }
-      default:
-        break
-    }
-    return `
-      ${opposite}: 0.5em;
-      transform: translateX(${collapsed ? offset : '0'});
-    `
-  }}
 `
 
 export const CollapseInner = styled.div`
   width: 20px;
-  line-height: 0;
   padding: 0.5em;
   border-radius: 4px;
+  line-height: 0;
 
   &:hover {
     cursor: pointer;
