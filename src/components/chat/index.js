@@ -51,7 +51,7 @@ Chat.TextInput = React.forwardRef(({ value, maxLength = 100, ...restProps }, ref
 
   useEffect(() => {
     setError(err => (!err && value.length === maxLength ? `Reached ${maxLength} Character Limit` : ''))
-  }, [value, maxLength, setError])
+  }, [maxLength, value.length])
 
   return (
     <>

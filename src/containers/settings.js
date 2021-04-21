@@ -24,8 +24,8 @@ export default function SettingsContainer() {
   const handleAutoPopulate = () => {
     const layout = layoutsConfig[globalSettings.game]
     if (layout) {
-      const pieces = layout.map(([id, _]) => piecesConfig[id])
-      const positions = layout.map(([_, position]) => position)
+      const pieces = layout.map(([id]) => piecesConfig[id])
+      const positions = layout.map(([, position]) => position)
       addMultiplePieces(pieces, positions)
     }
   }

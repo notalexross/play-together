@@ -23,7 +23,7 @@ export default function GameContainer() {
     addPiece(piece, position)
   }
 
-  // paddingFraction on board has to be same on all displays, otherwise coordinates no longer work
+  // WARNING: paddingFraction on board must be consistent across all displays
   return (
     <Playarea
       aspectRatio={isSmall ? 0.81 : 0.75}
@@ -37,8 +37,8 @@ export default function GameContainer() {
       >
         <Playarea.BoardPiecesContainer ref={containerRef}>
           {Object.entries(pieces)
-            .sort(([_, a], [__, b]) => a - b)
-            .map(([pieceId, _]) => (
+            .sort(([, a], [, b]) => a - b)
+            .map(([pieceId]) => (
               <MovablePiece key={pieceId} pieceId={pieceId} />
             ))}
         </Playarea.BoardPiecesContainer>

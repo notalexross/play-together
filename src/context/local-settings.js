@@ -46,6 +46,7 @@ function ContextProvider({ children }) {
     const rotatedY = translatedY * Math.cos(angleRadians) + translatedX * Math.sin(angleRadians)
     const untranslatedX = rotatedX + 50
     const untranslatedY = rotatedY + 50
+
     return [untranslatedX, untranslatedY]
   }, [localSettings.rotation])
 
@@ -84,6 +85,7 @@ function ContextProvider({ children }) {
         updateDefaultSettings(settings)
         setLocalSettings(settings)
       })
+
       return listener
     }
 
@@ -92,6 +94,7 @@ function ContextProvider({ children }) {
         const data = snapshot.data() && snapshot.data().pieces
         data && setFavorites(data)
       })
+
       return listener
     }
 
@@ -114,9 +117,11 @@ function ContextProvider({ children }) {
         setPiecesGroup(favorites)
       } else {
         const set = setsConfig[localSettingsPiecesGroup] || []
+
         if (!set.length) {
           console.error('remember to add new pieces to config files before trying to use them!')
         }
+
         const setMapped = set.map(piece => ({ id: piece, ...piecesConfig[piece] }))
         setPiecesGroup(setMapped)
       }

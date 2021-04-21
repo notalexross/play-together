@@ -123,9 +123,15 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     if (!isSizeDefined) return undefined
     if (heldPiece !== pieceId) return undefined
 
-    const onMouseMove = event => {
+    const preventDragHighlightingText = event => {
       const isTouch = !!event.touches
-      isTouch || event.preventDefault() // so chat doesn't get highlighted as you drag pieces
+      isTouch || event.preventDefault()
+    }
+
+    const preventDoubleMouseEventsOnTouchend = event => event.preventDefault()
+
+    const onMouseMove = event => {
+      preventDragHighlightingText(event)
       const mouseX = event.clientX !== undefined ? event.clientX : event.touches[0].clientX
       const mouseY = event.clientY !== undefined ? event.clientY : event.touches[0].clientY
       const relativePosition = getRelativePosition(mouseX, mouseY)
@@ -134,8 +140,7 @@ export default function MovablePiece({ pieceId, ...restProps }) {
     }
 
     const handleMouseUp = event => {
-      // preventDefault on touchend event handler prevents mousedown and mouseup events triggering afterwards
-      event.preventDefault()
+      preventDoubleMouseEventsOnTouchend(event)
       if (heldPiece === pieceId) {
         releasePiece(pieceId)
       }

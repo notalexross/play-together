@@ -80,7 +80,8 @@ function ContextProvider({ children }) {
 
       const query = usersRef.doc(uid)
       const newListener = query.onSnapshot(snapshot => {
-        if (snapshot.metadata.hasPendingWrites) return
+        const isLocalUpdate = snapshot.metadata.hasPendingWrites
+        if (isLocalUpdate) return
         if (!snapshot.data()) return
         const { displayName, color } = snapshot.data()
         setStoredUsers(state => ({

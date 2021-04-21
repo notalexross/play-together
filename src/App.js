@@ -10,23 +10,21 @@ import GameRoom from './pages/GameRoom'
 
 export default function App() {
   return (
-    <>
-      <FirebaseContextProvider>
-        <GlobalStyle />
-        <PreventTransitionsOnResize />
-        <Router>
-          <WindowContextProvider>
-            <Switch>
-              <Route exact path={ROUTES.HOME}>
-                <Home />
-              </Route>
-              <Route exact path={`${ROUTES.GAMES}/:roomId`}>
-                <GameRoom />
-              </Route>
-            </Switch>
-          </WindowContextProvider>
-        </Router>
-      </FirebaseContextProvider>
-    </>
+    <FirebaseContextProvider>
+      <GlobalStyle />
+      <PreventTransitionsOnResize />
+      <Router>
+        <WindowContextProvider>
+          <Switch>
+            <Route exact path={ROUTES.HOME}>
+              <Home />
+            </Route>
+            <Route exact path={`${ROUTES.GAMES}/:roomId`}>
+              <GameRoom />
+            </Route>
+          </Switch>
+        </WindowContextProvider>
+      </Router>
+    </FirebaseContextProvider>
   )
 }

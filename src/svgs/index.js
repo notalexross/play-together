@@ -35,6 +35,7 @@ const Svg = React.forwardRef((
       break
     }
   }
+
   Component = Component || Svgs.piece.chess.bishop
 
   return (

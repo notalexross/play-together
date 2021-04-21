@@ -29,6 +29,7 @@ function ContextProvider({ children }) {
       alertError(
         `Adding ${numberToAdd} piece(s) will put you over the ${maxPieces} pieces limit, remove some before trying again`
       )
+
       return true
     }
 
@@ -44,9 +45,9 @@ function ContextProvider({ children }) {
       value
     ])
     if (lastUpdated.current !== pieceId) {
-      // keep track of time of last update, for layering
-      mappedEntries.push([`ids/${pieceId}`, firebase.database.ServerValue.TIMESTAMP])
-      // using server timestamp causes child_updated to fire twice
+      // WARNING: using server timestamp causes child_updated to fire twice
+      const timeUpdated = firebase.database.ServerValue.TIMESTAMP
+      mappedEntries.push([`ids/${pieceId}`, timeUpdated])
     }
 
     const updates = Object.fromEntries(mappedEntries)
@@ -63,7 +64,8 @@ function ContextProvider({ children }) {
   } = {}) => {
     const pieceRef = piecesIdsRef.push()
     const pieceId = pieceRef.key
-    pieceRef.set(firebase.database.ServerValue.TIMESTAMP, alertError)
+    const timeAdded = firebase.database.ServerValue.TIMESTAMP
+    pieceRef.set(timeAdded, alertError)
     updatePieceInDatabase(pieceId, { id: pieceId, game, name, color, size, holder, position })
 
     return pieceId
@@ -77,7 +79,7 @@ function ContextProvider({ children }) {
   }, [piecesRef])
 
   const removeAllPiecesFromDatabase = () => {
-    // TODO the local delete triggers before confirmed on database... not a huge deal, but causes issues if permissions not set right
+    // WARNING: The local delete triggers before confirmed on database... not a huge deal, but can cause issues if permissions not set right
     piecesRef.remove()
   }
 
@@ -129,6 +131,7 @@ function ContextProvider({ children }) {
     const relativeX = ((mouseX - containerRect.left) / containerRect.width) * 100
     const relativeY = ((mouseY - containerRect.top) / containerRect.height) * 100
     const position = getRotatedPosition(relativeX, relativeY)
+
     return position
   }, [getRotatedPosition])
 
@@ -137,6 +140,7 @@ function ContextProvider({ children }) {
       setPieces(state => {
         const newPieces = { ...state }
         delete newPieces[pieceId]
+
         return newPieces
       })
     }
@@ -159,7 +163,6 @@ function ContextProvider({ children }) {
       piecesIdsRef.on(
         'child_changed',
         snapshot => {
-          // TODO this is triggering too many times? (it should only be triggering twice)
           const pieceId = snapshot.key
           const value = snapshot.val()
           onPieceAddedToDatabase(pieceId, value, true)

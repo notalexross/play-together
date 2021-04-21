@@ -12,7 +12,7 @@ function ContextProvider({ children }) {
   const { roomId } = useParams()
   const [messages, setMessages] = useState([])
   const isFirstSnapshot = useRef(true)
-  // TODO this uses client local time, so susceptible to user just setting system clock backwards.
+  // WARNING: This uses client local time, so susceptible to user just setting system clock backwards.
   // if client clock is slow by more than 5 seconds then it won't see messages initially at all.
   const timeJoined = useRef(firebase.firestore.Timestamp.fromDate(new Date(Date.now() - 5000)))
 
@@ -35,8 +35,9 @@ function ContextProvider({ children }) {
         .orderBy('createdAt', 'desc')
         .limit(500)
 
-      return query.onSnapshot(snapshot => {
-        if (snapshot.docs.some(doc => doc.metadata.hasPendingWrites)) return // prevents triggering twice locally
+      const newMessageListener = query.onSnapshot(snapshot => {
+        const isLocalUpdate = snapshot.docs.some(doc => doc.metadata.hasPendingWrites)
+        if (isLocalUpdate) return
 
         if (isFirstSnapshot.current) {
           isFirstSnapshot.current = false
@@ -61,6 +62,8 @@ function ContextProvider({ children }) {
           })
         )
       })
+
+      return newMessageListener
     }
 
     return initMessaging()

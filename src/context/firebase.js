@@ -14,15 +14,9 @@ function ContextProvider({ children }) {
 
   const { firebase } = window
 
-  const randomBasicColor = () => {
-    const R = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
-    const G = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
-    const B = (Math.round(Math.random()) * 255).toString(16).padEnd(2, '0').slice(0, 3)
-    return `#${R}${G}${B}`
-  }
-
   const updateLocalColor = newColor => {
     setUserColor(newColor)
+
     return newColor
   }
 
@@ -107,13 +101,11 @@ function ContextProvider({ children }) {
     const usersRef = firebase.firestore().collection('users')
     const query = usersRef.doc(currentUser.uid)
     const listener = query.onSnapshot(snapshot => {
-      if (snapshot.metadata.hasPendingWrites) return
+      const isLocalUpdate = snapshot.metadata.hasPendingWrites
+      if (isLocalUpdate) return
       if (!snapshot.exists) return
       setUserColor(snapshot.data().color)
-      // update displayName
-      currentUser.reload().then(() => {
-        forceRender()
-      })
+      currentUser.reload().then(forceRender)
     })
 
     return listener

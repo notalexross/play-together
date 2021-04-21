@@ -4,6 +4,7 @@ import PreventTransitions from './styles'
 export default function PreventTransitionsOnResize() {
   useEffect(() => {
     let resizeTimeout
+
     const handleResize = () => {
       document.body.classList.add('prevent-transitions')
       clearTimeout(resizeTimeout)

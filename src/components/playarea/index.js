@@ -88,7 +88,6 @@ Playarea.Board = function PlayareaBoard({
   paddingFraction = 0.06,
   ...restProps
 }) {
-  // paddingFraction is relative to aspect ratio container, not board container
   const { basis, padding, rotation } = useContext(PlayareaContext)
 
   const boardPadding = paddingFraction * basis
@@ -101,7 +100,7 @@ Playarea.Board = function PlayareaBoard({
   }
 
   const svgStyle = {
-    height: '100%', // comment this when fixing size of svg
+    height: '100%',
     width: '100%',
     filter: `drop-shadow(0 0 ${basis * 0.002}px white) drop-shadow(0 0 ${basis * 0.005}px black)`,
     transform: `rotate(${-rotation}deg)`
@@ -188,7 +187,7 @@ Playarea.Piece = function PlayareaPiece({
     filter: highlight,
     cursor: 'grab',
     pointerEvents: 'none',
-    touchAction: 'none' // prevents screen scroll whilst dragging pieces
+    touchAction: 'none'
   }
 
   useEffect(() => {

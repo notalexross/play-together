@@ -29,7 +29,7 @@ export default function Panel({ children, innerRef, width, startCollapsed = fals
 
   useEffect(() => {
     isSmall ? setIsCollapsed(false) : setIsCollapsed(startCollapsed)
-  }, [isSmall, setIsCollapsed, startCollapsed])
+  }, [isSmall, startCollapsed])
 
   return (
     <Wrapper ref={innerRef} width={width} {...restProps}>
@@ -89,7 +89,7 @@ Panel.Collapse = function PanelCollapse({ direction = 'right', ...restProps }) {
   useEffect(() => {
     setCollapseDirection(direction)
     isCollapsed ? setTooltip('expand') : setTooltip('collapse')
-  }, [isCollapsed, direction, setCollapseDirection, setTooltip])
+  }, [isCollapsed, direction, setCollapseDirection])
 
   return (
     <Collapse direction={direction} collapsed={isCollapsed} {...restProps}>

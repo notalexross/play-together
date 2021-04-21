@@ -69,7 +69,7 @@ export default function HeaderContainer() {
       </Header.Wrapper>
       <Header.Wrapper style={{ flex: 2 }}>
         <Header.Text style={{ order: isSmall ? '1' : '0' }}>
-          {isSmall ? null : 'Shareable Link:'}
+          {!isSmall && 'Shareable Link:'}
           <Tooltip tooltip={tooltip} side={(isLarge && 'right') || (isSmall && 'left') || 'bottom'}>
             <div
               ref={hoverRef}
@@ -85,7 +85,7 @@ export default function HeaderContainer() {
       </Header.Wrapper>
       <Header.Wrapper>
         <Header.Text>
-          {isSmall ? null : 'Nickname: '}
+          {!isSmall && 'Nickname: '}
           <span style={{ color: currentColor }}>{user.displayName}</span>
           <Hover
             DefaultComponent={EditBoxEmpty}

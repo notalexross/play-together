@@ -37,6 +37,7 @@ function ContextProvider({ children }) {
         updateDefaultSettings(settings)
         setGlobalSettings(settings)
       })
+
       return listener
     }
 

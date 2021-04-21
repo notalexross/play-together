@@ -1,4 +1,3 @@
-// TODO some of this can possibly be rewritten to use useEffect
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import { Panel } from '../components'
 import SettingsContainer from './settings'
@@ -78,12 +77,10 @@ export default function RoomContainer() {
     toggle ? setChatIsExpanded(prev => !prev) : setChatIsExpanded(true)
   }
 
-  useEffect(() => {
-    // without this, the playarea renders before the chat panel and so the playarea parent height used is out of date.
-    forceRender()
-  }, [chatIsExpanded, forceRender, settingsIsExpanded])
+  const preventPlayareaRenderBeforeChat = () => forceRender()
 
-  // added forceRender to onTransitionEnd event of collapse button, so playarea panel gets updated parent width
+  useEffect(preventPlayareaRenderBeforeChat, [chatIsExpanded, forceRender, settingsIsExpanded])
+
   return (
     <Panel.Container ref={panelContainerRef}>
       <Panel
