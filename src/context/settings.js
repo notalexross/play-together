@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import DEFAULT_SETTINGS from '../constants/default-game-settings'
 
@@ -12,8 +12,8 @@ function ContextProvider({ children }) {
 
   const { firebase } = window
   const firestore = firebase.firestore()
-  const roomRef = firestore.collection('rooms').doc(roomId)
-  const settingsRef = roomRef.collection('settings').doc('settings')
+  const roomRef = useMemo(() => firestore.collection('rooms').doc(roomId), [firestore, roomId])
+  const settingsRef = useMemo(() => roomRef.collection('settings').doc('settings'), [roomRef])
 
   const changeGlobalSetting = (setting, value) => {
     settingsRef.set({ [setting]: value }, { merge: true })
@@ -41,8 +41,7 @@ function ContextProvider({ children }) {
     }
 
     return initSettingsListener()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [settingsRef])
 
   useEffect(() => {
     globalSettings ? setIsLoading(false) : setIsLoading(true)

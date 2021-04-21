@@ -81,8 +81,7 @@ export default function RoomContainer() {
   useEffect(() => {
     // without this, the playarea renders before the chat panel and so the playarea parent height used is out of date.
     forceRender()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chatIsExpanded, settingsIsExpanded])
+  }, [chatIsExpanded, forceRender, settingsIsExpanded])
 
   // added forceRender to onTransitionEnd event of collapse button, so playarea panel gets updated parent width
   return (

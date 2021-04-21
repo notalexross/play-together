@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { firebaseContext } from './firebase'
 import { localSettingsContext } from './local-settings'
@@ -6,6 +6,8 @@ import alertError from '../utils/alert-error'
 
 const context = React.createContext()
 const { Provider } = context
+
+const allowedProperties = ['game', 'name', 'color', 'size', 'holder', 'position', 'custom_value']
 
 function ContextProvider({ children }) {
   const { user } = useContext(firebaseContext)
@@ -17,11 +19,9 @@ function ContextProvider({ children }) {
   const lastUpdated = useRef()
 
   const { firebase } = window
-  const database = firebase.database()
-
-  const allowedProperties = ['game', 'name', 'color', 'size', 'holder', 'position', 'custom_value']
-  const piecesRef = database.ref(`rooms/${roomId}/pieces`)
-  const piecesIdsRef = database.ref(`rooms/${roomId}/pieces/ids`)
+  const database = useMemo(() => firebase.database(), [firebase])
+  const piecesRef = useMemo(() => database.ref(`rooms/${roomId}/pieces`), [database, roomId])
+  const piecesIdsRef = useMemo(() => database.ref(`rooms/${roomId}/pieces/ids`), [database, roomId])
   const maxPieces = 50
 
   const areTooManyPieces = (numberToAdd = 1) => {
@@ -35,7 +35,7 @@ function ContextProvider({ children }) {
     return false
   }
 
-  const updatePieceInDatabase = (pieceId, properties) => {
+  const updatePieceInDatabase = useCallback((pieceId, properties) => {
     const filteredEntries = Object.entries(properties).filter(entry => (
       allowedProperties.includes(entry[0])
     ))
@@ -51,7 +51,7 @@ function ContextProvider({ children }) {
 
     const updates = Object.fromEntries(mappedEntries)
     piecesRef.update(updates, alertError)
-  }
+  }, [firebase, piecesRef])
 
   const addPieceToDatabase = ({
     game,
@@ -65,41 +65,42 @@ function ContextProvider({ children }) {
     const pieceId = pieceRef.key
     pieceRef.set(firebase.database.ServerValue.TIMESTAMP, alertError)
     updatePieceInDatabase(pieceId, { id: pieceId, game, name, color, size, holder, position })
+
     return pieceId
   }
 
-  const removePieceFromDatabase = pieceId => {
+  const removePieceFromDatabase = useCallback(pieceId => {
     const idRef = piecesRef.child(`ids/${pieceId}`)
     const detailRef = piecesRef.child(`details/${pieceId}`)
     idRef.remove()
     detailRef.remove()
-  }
+  }, [piecesRef])
 
   const removeAllPiecesFromDatabase = () => {
     // TODO the local delete triggers before confirmed on database... not a huge deal, but causes issues if permissions not set right
     piecesRef.remove()
   }
 
-  const trackProperty = (pieceId, property, callback) => {
+  const trackProperty = useCallback((pieceId, property, callback) => {
     if (!allowedProperties.includes(property)) return
     const detailsRef = database.ref(`rooms/${roomId}/pieces/details/${pieceId}/${property}`)
     detailsRef.on('value', snap => callback(snap.val()), alertError)
-  }
+  }, [database, roomId])
 
-  const unTrackProperty = (pieceId, property) => {
+  const unTrackProperty = useCallback((pieceId, property) => {
     const detailsRef = database.ref(`rooms/${roomId}/pieces/details/${pieceId}/${property}`)
     detailsRef.off()
-  }
+  }, [database, roomId])
 
   const grabPiece = pieceId => {
     setHeldPiece(pieceId)
     updatePieceInDatabase(pieceId, { holder: user.uid })
   }
 
-  const releasePiece = pieceId => {
+  const releasePiece = useCallback(pieceId => {
     setHeldPiece(null)
     updatePieceInDatabase(pieceId, { holder: null })
-  }
+  }, [updatePieceInDatabase])
 
   const addPiece = (piece, position) => {
     if (areTooManyPieces()) return
@@ -107,9 +108,9 @@ function ContextProvider({ children }) {
     setHeldPiece(pieceId)
   }
 
-  const removePiece = pieceId => {
+  const removePiece = useCallback(pieceId => {
     removePieceFromDatabase(pieceId)
-  }
+  }, [removePieceFromDatabase])
 
   const addMultiplePieces = (newPieces, positions) => {
     if (newPieces.length !== positions.length) return
@@ -123,13 +124,13 @@ function ContextProvider({ children }) {
     Object.keys(pieces).length && removeAllPiecesFromDatabase()
   }
 
-  const getRelativePosition = (mouseX, mouseY) => {
+  const getRelativePosition = useCallback((mouseX, mouseY) => {
     const containerRect = containerRef.current.getBoundingClientRect()
     const relativeX = ((mouseX - containerRect.left) / containerRect.width) * 100
     const relativeY = ((mouseY - containerRect.top) / containerRect.height) * 100
     const position = getRotatedPosition(relativeX, relativeY)
     return position
-  }
+  }, [getRotatedPosition])
 
   useEffect(() => {
     const onPieceRemovedFromDatabase = pieceId => {
@@ -182,8 +183,7 @@ function ContextProvider({ children }) {
     initPiecesListener()
 
     return removePiecesListener
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [piecesIdsRef])
 
   return (
     <Provider

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext, useEffect, useState, useRef, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { firebaseContext } from './firebase'
 import { presenceContext } from './presence'
@@ -17,8 +17,8 @@ function ContextProvider({ children }) {
   const timeJoined = useRef(firebase.firestore.Timestamp.fromDate(new Date(Date.now() - 5000)))
 
   const firestore = firebase.firestore()
-  const roomRef = firestore.collection('rooms').doc(roomId)
-  const messagesRef = roomRef.collection('messages')
+  const roomRef = useMemo(() => firestore.collection('rooms').doc(roomId), [firestore, roomId])
+  const messagesRef = useMemo(() => roomRef.collection('messages'), [roomRef])
 
   const sendMessage = message => {
     messagesRef.add({
@@ -64,8 +64,7 @@ function ContextProvider({ children }) {
     }
 
     return initMessaging()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [addToStoredUsers, messagesRef])
 
   return <Provider value={{ sendMessage, messages }}>{children}</Provider>
 }

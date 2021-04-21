@@ -30,8 +30,7 @@ export default function RoomRedirect({ children }) {
       setRoomExists(exists)
       setIsLoading(false)
     })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  }, [doesRoomExist, roomId, user])
 
   return render
 }

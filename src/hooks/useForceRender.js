@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 export default function useForceRender() {
   const [, setValue] = useState(0)
 
-  return () => {
+  const forceRender = useCallback(() => {
     setValue(state => state + 1)
-  }
+  }, [])
+
+  return forceRender
 }

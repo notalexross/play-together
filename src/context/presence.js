@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from 'react'
+import React, { useState, useEffect, useContext, useRef, useCallback } from 'react'
 import { useParams } from 'react-router-dom'
 import { firebaseContext } from './firebase'
 import alertError from '../utils/alert-error'
@@ -12,13 +12,15 @@ function ContextProvider({ children }) {
   const [onlineUsers, setOnlineUsers] = useState([])
   const [storedUsers, setStoredUsers] = useState({})
   const userListeners = useRef({})
+  const currentStoredUsers = useRef()
 
   const { firebase } = window
+  currentStoredUsers.current = storedUsers
 
-  const addToStoredUsers = uids => {
+  const addToStoredUsers = useCallback(uids => {
     const firestore = firebase.firestore()
     const usersRef = firestore.collection('users')
-    const storedUids = Object.keys(storedUsers)
+    const storedUids = Object.keys(currentStoredUsers.current)
     const filteredUids = uids.filter(uid => !storedUids.includes(uid))
     filteredUids.forEach(uid => {
       const query = usersRef.doc(uid)
@@ -33,7 +35,7 @@ function ContextProvider({ children }) {
         }))
       })
     })
-  }
+  }, [firebase])
 
   useEffect(() => {
     const database = firebase.database()

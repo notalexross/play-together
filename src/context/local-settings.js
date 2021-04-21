@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react'
 import DEFAULT_LOCAL_SETTINGS from '../constants/default-local-settings'
 import { firebaseContext } from './firebase'
 import setsConfig from '../constants/sets-config'
@@ -13,7 +13,7 @@ function ContextProvider({ children }) {
   const { user } = useContext(firebaseContext)
   const { globalSettings } = useContext(settingsContext)
   const [isLoading, setIsLoading] = useState(true)
-  const [localSettings, setLocalSettings] = useState()
+  const [localSettings, setLocalSettings] = useState({})
   const [piecesGroup, setPiecesGroup] = useState([])
   const [favorites, setFavorites] = useState([])
 
@@ -23,13 +23,13 @@ function ContextProvider({ children }) {
 
   const { firebase } = window
   const firestore = firebase.firestore()
-  const userRef = firestore.collection('users').doc(user.uid)
-  const settingsRef = userRef.collection('settings').doc('settings')
-  const favoritesRef = userRef.collection('settings').doc('favorites')
+  const userRef = useMemo(() => firestore.collection('users').doc(user.uid), [firestore, user.uid])
+  const settingsRef = useMemo(() => userRef.collection('settings').doc('settings'), [userRef])
+  const favoritesRef = useMemo(() => userRef.collection('settings').doc('favorites'), [userRef])
 
-  const changeLocalSetting = (setting, value) => {
+  const changeLocalSetting = useCallback((setting, value) => {
     settingsRef.set({ [setting]: value }, { merge: true })
-  }
+  }, [settingsRef])
 
   const rotatePlayarea = to => {
     const newAngle =
@@ -38,7 +38,7 @@ function ContextProvider({ children }) {
     changeLocalSetting('rotation', newAngle)
   }
 
-  const getRotatedPosition = (mouseX, mouseY, angle = localSettings.rotation) => {
+  const getRotatedPosition = useCallback((mouseX, mouseY, angle = localSettings.rotation) => {
     const angleRadians = (angle / 180) * Math.PI
     const translatedX = mouseX - 50
     const translatedY = mouseY - 50
@@ -47,7 +47,7 @@ function ContextProvider({ children }) {
     const untranslatedX = rotatedX + 50
     const untranslatedY = rotatedY + 50
     return [untranslatedX, untranslatedY]
-  }
+  }, [localSettings.rotation])
 
   const getUnrotatedPosition = (mouseX, mouseY) => (
     getRotatedPosition(mouseX, mouseY, -localSettings.rotation)
@@ -102,8 +102,7 @@ function ContextProvider({ children }) {
       settingsListener()
       favoritesListener()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [favoritesRef, settingsRef])
 
   useEffect(() => {
     localSettings ? setIsLoading(false) : setIsLoading(true)
@@ -135,8 +134,7 @@ function ContextProvider({ children }) {
     if (globalSettingsGame) {
       changeLocalSetting('piecesGroup', globalSettingsGame)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalSettingsGame])
+  }, [changeLocalSetting, globalSettingsGame])
 
   return (
     <Provider

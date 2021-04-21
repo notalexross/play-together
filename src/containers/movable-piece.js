@@ -32,18 +32,26 @@ export default function MovablePiece({ pieceId, ...restProps }) {
   const [position, setPosition] = useState([-1000, -1000])
   const [holder, setHolder] = useState()
   const [customValue, setCustomValue] = useState()
-  const [amOwner, setAmOwner] = useState(false)
   const doubleClick = useRef(false)
   const isDeleted = useRef(false)
-  const scrollAmount = useRef(0)
+  const currentSize = useRef()
+  const currentHeldPiece = useRef()
+  const unRotatedX = useRef()
+  const unRotatedY = useRef()
 
-  const unRotatedPosition = position && getUnrotatedPosition(...position)
+  const isFirstRender = useRef(true)
+
+  currentSize.current = size
+  currentHeldPiece.current = heldPiece
+  const isSizeDefined = size !== undefined
+  const unRotatedPosition = (position && getUnrotatedPosition(...position)) || [];
+  [unRotatedX.current, unRotatedY.current] = unRotatedPosition
 
   const style = {
     position: 'absolute',
     transform: 'translate(-50%, -50%)',
-    left: `${unRotatedPosition && unRotatedPosition[0]}%`,
-    top: `${unRotatedPosition && unRotatedPosition[1]}%`,
+    left: `${unRotatedX.current}%`,
+    top: `${unRotatedY.current}%`,
     zIndex: 100,
     cursor: heldPiece === pieceId ? 'grabbing' : 'grab'
   }
@@ -109,11 +117,11 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       unTrackProperty(pieceId, 'holder')
       unTrackProperty(pieceId, 'custom_value')
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [pieceId, trackProperty, unTrackProperty])
 
-  useEffect(() => {
-    if (size === undefined) return undefined
+  const attachHeldPieceListeners = () => {
+    if (!isSizeDefined) return undefined
+    if (heldPiece !== pieceId) return undefined
 
     const onMouseMove = event => {
       const isTouch = !!event.touches
@@ -137,58 +145,59 @@ export default function MovablePiece({ pieceId, ...restProps }) {
       const maxSize = 1
       const minSize = 0.04
       const increment = event.deltaY > 0 ? 1 : -1
-      scrollAmount.current += increment
 
-      let newSize = size - scrollAmount.current * 0.02
+      let newSize = currentSize.current - increment * 0.02
       if (newSize > maxSize) {
         newSize = maxSize
-        scrollAmount.current -= increment
       } else if (newSize < minSize) {
         newSize = minSize
-        scrollAmount.current -= increment
       }
 
       !isDeleted.current && updatePieceInDatabase(pieceId, { size: newSize })
     }
 
-    if (heldPiece === pieceId) {
-      setAmOwner(true)
-      scrollAmount.current = 0
-
-      window.addEventListener('touchmove', onMouseMove)
-      window.addEventListener('touchend', handleMouseUp)
-
-      window.addEventListener('mousemove', onMouseMove)
-      window.addEventListener('mouseup', handleMouseUp)
-      window.addEventListener('wheel', handleWheelMove)
-    }
+    window.addEventListener('touchmove', onMouseMove)
+    window.addEventListener('touchend', handleMouseUp)
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup', handleMouseUp)
+    window.addEventListener('wheel', handleWheelMove)
 
     return () => {
       window.removeEventListener('touchmove', onMouseMove)
       window.removeEventListener('touchend', handleMouseUp)
-
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('wheel', handleWheelMove)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [size !== undefined, heldPiece])
+  }
 
-  useEffect(() => {
-    if (
-      !holder &&
-      amOwner &&
-      unRotatedPosition &&
-      unRotatedPosition.some(coord => coord < 0 || coord > 100)
-    ) {
+  const cleanUpPieces = () => {
+    if (isFirstRender.current) return
+    if (holder && holder !== user.uid) return
+
+    const isInsideBoard = [unRotatedX.current, unRotatedY.current].every(
+      coord => coord >= 0 && coord <= 100
+    )
+    const isCurrentOwnerButUnheldAndOutsideBoard =
+      holder === user.uid && currentHeldPiece.current !== pieceId && !isInsideBoard
+    const isOrphanedOutsideBoard = !holder && !isInsideBoard
+    const shouldRemove = isOrphanedOutsideBoard || isCurrentOwnerButUnheldAndOutsideBoard
+
+    if (shouldRemove) {
       removePiece(pieceId)
     }
+  }
 
-    if (holder && holder !== user.uid) {
-      setAmOwner(false)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [holder])
+  useEffect(
+    attachHeldPieceListeners,
+    [isSizeDefined, heldPiece, pieceId, getRelativePosition, updatePieceInDatabase, releasePiece]
+  )
+
+  useEffect(cleanUpPieces, [holder, pieceId, removePiece, user.uid])
+
+  useEffect(() => {
+    isFirstRender.current = false
+  }, [])
 
   return game && name ? (
     <Playarea.Piece

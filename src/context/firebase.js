@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import FIREBASE_CONFIG from '../constants/firebase-config'
 import useForceRender from '../hooks/useForceRender'
 
@@ -6,7 +6,7 @@ const context = React.createContext()
 const { Provider } = context
 
 function ContextProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const [userColor, setUserColor] = useState()
   const forceRender = useForceRender()
@@ -34,9 +34,7 @@ function ContextProvider({ children }) {
         color: color || userColor || updateLocalColor(randomBasicColor()),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       })
-      .catch(error => {
-        console.error(error)
-      })
+      .catch(console.error)
   }
 
   const setNickname = newNickname => {
@@ -48,9 +46,7 @@ function ContextProvider({ children }) {
         updateUserInDatabase(currentUser)
         forceRender()
       })
-      .catch(error => {
-        console.error(error)
-      })
+      .catch(console.error)
   }
 
   const setColor = newColor => {
@@ -58,7 +54,7 @@ function ContextProvider({ children }) {
     updateUserInDatabase(currentUser, { color: newColor })
   }
 
-  const createRoom = async () => {
+  const createRoom = useCallback(async () => {
     const roomsRef = firebase.firestore().collection('rooms')
 
     return roomsRef
@@ -67,22 +63,18 @@ function ContextProvider({ children }) {
         createdBy: currentUser.uid
       })
       .then(docRef => docRef.id)
-      .catch(error => {
-        console.error(error)
-      })
-  }
+      .catch(console.error)
+  }, [currentUser.uid, firebase])
 
-  const doesRoomExist = async roomId => {
+  const doesRoomExist = useCallback(async roomId => {
     const roomsRef = firebase.firestore().collection('rooms')
     const docRef = roomsRef.doc(roomId)
 
     return docRef
       .get()
       .then(doc => doc.exists)
-      .catch(error => {
-        console.error(error)
-      })
-  }
+      .catch(console.error)
+  }, [firebase])
 
   useEffect(() => {
     const signIn = () => {
@@ -90,9 +82,7 @@ function ContextProvider({ children }) {
       firebase
         .auth()
         .signInAnonymously()
-        .catch(error => {
-          console.error(error)
-        })
+        .catch(console.error)
     }
 
     const initApp = () => {
@@ -126,8 +116,7 @@ function ContextProvider({ children }) {
     })
 
     return listener
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser, firebase])
+  }, [currentUser, firebase, forceRender])
 
   return (
     <Provider

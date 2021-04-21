@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, useEffect } from 'react'
+import React, { useContext, useRef, useState, useEffect, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import * as ROUTES from '../constants/routes'
 import { firebaseContext } from '../context/firebase'
@@ -13,11 +13,11 @@ export default function Home() {
 
   const displayName = user && user.displayName
 
-  const enterGameRoom = () => {
+  const enterGameRoom = useCallback(() => {
     createRoom().then(roomId => {
       history.push(`${ROUTES.GAMES}/${roomId}`)
     })
-  }
+  }, [createRoom, history])
 
   const handleClick = event => {
     event && event.preventDefault()
@@ -32,8 +32,7 @@ export default function Home() {
     if (displayName && buttonRef.current.disabled) {
       enterGameRoom()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [displayName])
+  }, [displayName, enterGameRoom])
 
   return (
     <>
