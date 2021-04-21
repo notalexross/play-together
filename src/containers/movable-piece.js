@@ -9,7 +9,7 @@ import { firebaseContext } from '../context/firebase'
 import { presenceContext } from '../context/presence'
 import { localSettingsContext } from '../context/local-settings'
 import { Playarea } from '../components'
-import roll from '../utils/roll'
+import { roll } from '../utils'
 
 export default function MovablePiece({ pieceId, ...restProps }) {
   const {

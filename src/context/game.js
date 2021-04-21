@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef, useCallback, useMemo } 
 import { useParams } from 'react-router-dom'
 import { firebaseContext } from './firebase'
 import { localSettingsContext } from './local-settings'
-import alertError from '../utils/alert-error'
+import { alertError } from '../utils'
 
 const context = React.createContext()
 const { Provider } = context

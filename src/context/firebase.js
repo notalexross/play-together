@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import FIREBASE_CONFIG from '../constants/firebase-config'
 import useForceRender from '../hooks/useForceRender'
+import { getRandomPureColor } from '../utils'
 
 const context = React.createContext()
 const { Provider } = context
@@ -31,7 +32,7 @@ function ContextProvider({ children }) {
       .doc(user.uid)
       .set({
         displayName: user.displayName,
-        color: color || userColor || updateLocalColor(randomBasicColor()),
+        color: color || userColor || updateLocalColor(getRandomPureColor()),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       })
       .catch(console.error)
