@@ -84,8 +84,7 @@ function ContextProvider({ children }) {
       !firebase.apps.length && firebase.initializeApp(FIREBASE_CONFIG)
 
       const listener = firebase.auth().onAuthStateChanged(user => {
-        setCurrentUser(user)
-        !user && signIn()
+        user ? setCurrentUser(user) : signIn()
       })
 
       return listener
@@ -95,7 +94,7 @@ function ContextProvider({ children }) {
   }, [firebase])
 
   useEffect(() => {
-    if (!currentUser) return undefined
+    if (!currentUser.uid) return undefined
     setIsLoading(false)
 
     const usersRef = firebase.firestore().collection('users')
