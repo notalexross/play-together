@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: CICD
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      ref:
+        type: string
+        description: Branch, tag or SHA to checkout
+        required: false
+jobs:
+  cicd:
+    uses: notalexross/cicd-github/.github/workflows/cicd.yml@main
+    with:
+      ref: ${{ github.event.inputs.ref }}
+      host: firebase
+      deploy_message: "Via GitHub: ${{ github.repository }}/commit/{0}"
+      hash_filename: ${{ github.event.repository.id }}__hash
+      badge_filename_template: ${{ github.event.repository.id }}__badge__{0}.json
+    secrets:
+      GIST_AUTH_TOKEN: ${{ secrets.GIST_AUTH_TOKEN }}
+      BADGES_GIST_ID: ${{ secrets.BADGES_GIST_ID }}
+      FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
+      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      ENV: ${{ secrets.ENV }}
