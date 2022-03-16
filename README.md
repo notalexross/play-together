@@ -1,68 +1,54 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Play Together
 
-## Available Scripts
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/notalexross/72db2b6d509ae164dda3e99713864021/raw/360220967__badge__tests.json)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/notalexross/72db2b6d509ae164dda3e99713864021/raw/360220967__badge__coverage.json)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/notalexross/72db2b6d509ae164dda3e99713864021/raw/360220967__badge__lint.json)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/notalexross/72db2b6d509ae164dda3e99713864021/raw/360220967__badge__build.json)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/notalexross/72db2b6d509ae164dda3e99713864021/raw/360220967__badge__deploy.json)
+![badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/notalexross/72db2b6d509ae164dda3e99713864021/raw/360220967__badge__commit.json)
 
-In the project directory, you can run:
+## Description
 
-### `npm start`
+An online multiplayer tabletop games simulator, with live messaging, user presence tracking, and an interesting troll element. Any connected user can switch out the playing board, move pieces around, and change the size and/or colour of pieces. Even players not involved in the current game can join in and start interfering if they so desire. All that is needed is a link to the game room, easily copied by clicking the shareable link at the top of the page, and they can start trolling immediately—no login required.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Demo: https://play.rossdaniel.com \
+Portfolio Entry: https://rossdaniel.com/projects/play-together
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Prerequisites
 
-### `npm test`
+Requires [Node.js](https://nodejs.org).
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation
 
-### `npm run build`
+To clone the repository and install any dependencies, run the following commands:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```sh
+git clone https://github.com/notalexross/play-together.git
+cd play-together
+cp .env.example .env
+npm install
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Be sure to substitute your own values for the variables defined in `.env`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Development
 
-### `npm run eject`
+To run the app in development mode, run the following command and open http://localhost:3000 to view it in the browser.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```sh
+npm run start
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Production
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+To build the app for production to the `build` folder, run the following command:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```sh
+npm run build
+```
 
-## Learn More
+## Permission
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+You may freely clone this work and experiment with it in your local development environment, but please do not reproduce, redistribute, or present it as your own.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Copyright &copy; Daniel Ross
